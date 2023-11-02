@@ -1,0 +1,109 @@
+.gradient-custom {
+
+    background: steelblue;
+
+    min-height: 100vh;
+
+}
+
+.mb-0{
+    display: inline;
+}
+
+.card{
+    height: 400px;
+    width: 600px;
+    background-color: whitesmoke;
+    color : dimgray;
+    box-shadow: 0px 0px 0px 16px slategrey;
+}
+
+.col-12{
+    min-width: inherit;
+    position: relative;
+    top: 20vh;
+}
+
+.btn {
+    background: dodgerblue;
+    display: flex;
+    width: 10vh;
+    align-content: center;
+    justify-content: space-around;
+}
+
+.mb-md-5{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    margin-top: 0 !important;
+}
+.body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: stretch;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.login-container{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: -20px;
+}
+.bi-person-fill{
+    width: 40px;
+    height: 40px;
+    fill: dodgerblue;
+}
+.bi-person-fill-2{
+    width: 20px;
+    height: 20px;
+    fill: grey;
+}
+
+.button-forgot-container{
+    display: flex !important;
+    justify-content: space-between !important;
+    margin-top: 30px;
+}
+
+.bi-key-fill{
+    width: 20px !important;
+    height: 20px !important;
+    fill: grey;
+}
+
+.form-outline{
+    display: inline-flex;
+    flex-direction: row-reverse;
+}
+
+.input-group-prepend{
+    margin: 10px;
+    margin-left: 0px;
+    height: 6vh;
+}
+.input-group-text{
+    background-color: white;
+    border: 1px solid #ced4da;
+    border-right: 0;
+    border-radius: 0;
+}
+
+.form-control{
+    border-left: 0;
+    border-radius: 0;
+    padding: 0;
+}
+
+.forgot{
+    color : grey;
+}
