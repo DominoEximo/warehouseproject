@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-//@WebFilter(value = "/secured/*" , urlPatterns = "/loginFilter")
+//@WebFilter(value = "/secured/*")
 public class LogInFilter implements Filter {
 
     public void init(FilterConfig filterConfig) throws ServletException {
