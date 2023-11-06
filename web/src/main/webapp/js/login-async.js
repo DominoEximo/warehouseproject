@@ -1,25 +1,30 @@
-
-    $('#loginForm').submit(function (event){
+$(document).ready(function() {
+    $('#loginForm').submit(function(event) {
         event.preventDefault();
+        var formData = {
+            username: $('input[name="username"]').val(),
+            password: $('input[name="password"]').val()
+        };
         $.ajax({
             async: true,
             crossDomain: true,
-            method: $().attr("method"),
-            url: $('#loginForm').attr("action"),
+            method: $('#loginForm').attr("method"),
+            url:  "/loginAsync",
             dataType: 'json',
-            success: function (response){
+            data: formData,
+            complete: function(response){
+                var data = $.parseJSON(response.responseText)
+                console.log(data.result);
+                if (data.result == false){
+                    alert("Ervenytelen belepesi adatok!") //update in box TODO
+                }else {
+                    window.location.href = "secured/profile.html";
 
-                console.log("success")
-
-            },
-            error: function (error){
-                console.log("error")
-            },
-            complete: function (){
-                console.log("complete")
+                }
             }
         })
     })
+});
 
 
 
