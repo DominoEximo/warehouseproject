@@ -1,3 +1,7 @@
+
+*, *::after, *::before{
+    box-sizing: content-box !important;
+}
 .gradient-custom {
 
     background: steelblue;
@@ -106,4 +110,12 @@
 
 .forgot{
     color : grey;
+}
+
+.loginForm {
+    margin-block-end: 0 !important;
+}
+
+.h-100 {
+    height: 0%!important;
 }
