@@ -31,4 +31,5 @@
         <filter-name>loginFilter</filter-name>
         <url-pattern>/secured/*</url-pattern>
     </filter-mapping>
+
 </web-app>

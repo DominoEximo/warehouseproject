@@ -30,13 +30,27 @@
           <groupId>jakarta.servlet</groupId>
           <artifactId>jakarta.servlet-api</artifactId>
           <scope>provided</scope>
-      </dependency><dependency>
-          <groupId>org.glassfish.jersey.containers</groupId>
-          <artifactId>jersey-container-servlet</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>jakarta.servlet.jsp</groupId>
+          <artifactId>jakarta.servlet.jsp-api</artifactId>
+          <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>jakarta.servlet.jsp.jstl</groupId>
           <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.glassfish.web</groupId>
+          <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>jakarta.el</groupId>
+          <artifactId>jakarta.el-api</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.glassfish.jersey.containers</groupId>
+          <artifactId>jersey-container-servlet</artifactId>
       </dependency>
       <dependency>
           <groupId>org.glassfish.jersey.media</groupId>

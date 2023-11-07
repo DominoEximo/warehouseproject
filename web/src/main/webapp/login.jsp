@@ -1,3 +1,8 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <html>
 <head>
     <meta charset="ISO-8859-1">
@@ -44,6 +49,8 @@
                                         </a>
                                     </p>
                                 </div>
+
+                                <div style="color:red;"><c:out value="${errorMessage}"></c:out></div>
 
                             </div>
                         </div>

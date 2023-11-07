@@ -33,7 +33,9 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("secured/profile.html");
         }
         else {
-            response.sendRedirect("login.html?error=true");
+            request.setAttribute("errorMessage","Érvénytelen belépési adatok!");
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request,response);
         }
     }
 }
