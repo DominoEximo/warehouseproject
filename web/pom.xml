@@ -23,7 +23,7 @@
   <dependencies>
       <dependency>
           <groupId>hu.neuron.mentoring</groupId>
-          <artifactId>service</artifactId>
+          <artifactId>warehouse-client-api</artifactId>
           <version>1.0-SNAPSHOT</version>
       </dependency>
       <dependency>

@@ -10,8 +10,7 @@
   <packaging>pom</packaging>
   <name>warehouse</name>
     <modules>
-        <module>service</module>
-        <module>core</module>
+        <module>warehouse-client-api</module>
         <module>web</module>
     </modules>
 
