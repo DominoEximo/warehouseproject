@@ -55,13 +55,38 @@ public class LoginServletAsync extends HttpServlet {
         String user = req.getParameter("username");
         String password = req.getParameter("password");
 
+        resp.setContentType("application/json");
+        boolean result;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonObject json = new JsonObject();
         HttpSession session = req.getSession();
 
         session.setAttribute("authenticated", true);
         session.setAttribute("username", user);
         session.setAttribute("password",password);
 
-        resp.sendRedirect("/secured/profile.html");
+        if (password.equals("password") && user.equals("admin")) {
+            result = true;
+            json.addProperty("result",result);
+            String resultJson = gson.toJson(json);
+            PrintWriter out = resp.getWriter();
+            resp.setStatus(200);
+            resp.setCharacterEncoding("UTF-8");
+            out.write(resultJson);
+            out.flush();
+        }
+        else {
+            result = false;
+            json.addProperty("result",result);
+            String resultJson = gson.toJson(json);
+            PrintWriter out = resp.getWriter();
+            resp.setStatus(400);
+            resp.setCharacterEncoding("UTF-8");
+            out.write(resultJson);
+            out.flush();
+        }
+
+
 
 
     }

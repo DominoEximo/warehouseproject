@@ -8,7 +8,7 @@
     <script src="js/login-async.js"></script>
 </head>
 <body class="body">
-<form id="loginForm" action="/loginAsync" method="get">
+<form id="loginForm" action="/loginAsync" method="post">
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -47,6 +47,7 @@
                                         </a>
                                     </p>
                                 </div>
+                                <div style="color: red" id="err-msg"></div>
 
                             </div>
                         </div>
