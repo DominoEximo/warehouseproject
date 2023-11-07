@@ -16,7 +16,7 @@ $(document).ready(function() {
                 var data = $.parseJSON(response.responseText)
                 console.log(data.result);
                 if (data.result == false){
-                    alert("Ervenytelen belepesi adatok!") //update in box TODO
+                    $("#err-msg").html('<p>Érvénytelen belépési adatok!</p>')
                 }else {
                     window.location.href = "secured/profile.html";
 
