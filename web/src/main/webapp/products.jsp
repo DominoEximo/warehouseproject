@@ -11,8 +11,11 @@
     <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="../css/products.css"/>
+
 </head>
-<body>
+<body id="productBody">
+<div id='loader'><img src="/images/ZZ5H.gif" alt="Loading..."/></div>
+<div id='loaderOverlay'></div>
 <div class="outer-container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Warehouse</a>
@@ -29,65 +32,94 @@
             </form>
         </div>
     </nav>
-
-    <div class="profile-name-container">
-        <span class="profile-brand">Profile</span>
+    <div class="label-container">
+        <div class="profile-name-container">
+            <span class="profile-brand">Products</span>
+        </div>
+        <div>
+            <button id="refresh" type="button"  class="refresh-button btn btn-dark">Refresh</button>
+        </div>
+        <div id="overlay">
+            <div class="cv-spinner">
+                <span class="spinner"></span>
+            </div>
+        </div>
     </div>
-
     <div class="data-container">
         <table id="products" class="table">
             <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Category</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Unit</th>
-                <th scope="col">Purchase Price</th>
-                <th scope="col">Sell Price</th>
-                <th scope="col">Description</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="product" items="${products}">
-
                 <tr>
-                    <td>
-                        <c:out value="${product.name}"></c:out>
-                    </td>
-
-                    <td>
-                        <c:out value="${product.category}"></c:out>
-                    </td>
-
-                    <td>
-                        <c:out value="${product.amount}"></c:out>
-                    </td>
-
-                    <td>
-                        <c:out value="${product.unit}"></c:out>
-                    </td>
-
-                    <td>
-                        <c:out value="${product.purchasePrice}"></c:out>
-                    </td>
-
-                    <td>
-                        <c:out value="${product.sellPrice}"></c:out>
-                    </td>
-
-                    <td>
-                        <c:out value="${product.description}"></c:out>
-                    </td>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Unit</th>
+                    <th>Purchase rice</th>
+                    <th>Sell price</th>
+                    <th>Description</th>
                 </tr>
-
-            </c:forEach>
+            </thead>
+            <tbody id="table-body">
 
             </tbody>
 
         </table>
         <script>
-            $(document).ready(function () {
-                $('#products').DataTable();
+            $(document).ready(function ()
+            {
+
+                $('#products').DataTable({});
+
+
+
+
+
+
+
+
+
+                $("#refresh").on('click',function () {
+                    var x = document.getElementById("loaderOverlay");
+                    var y = document.getElementById("loader");
+                    x.style.display = "block";
+                    y.style.display = "block";
+                    setTimeout(function (){
+                        $.getJSON("/api/ProductService/getProducts", function(data) {
+                            var productList = '';
+                            $.each(data, function(key, value) {
+                                productList += '<tr id="rowVehicleStatus" class="">';
+                                productList += '<td>'+value.name+'</td>';
+                                productList += '<td>'+value.category+'</td>';
+                                productList += '<td>'+value.amount+'</td>';
+                                productList += '<td>'+value.unit+'</td>';
+                                productList += '<td>'+value.purchasePrice+'</td>';
+                                productList += '<td>'+value.sellPrice+'</td>';
+                                productList += '<td>'+value.description+'</td>';
+                                productList += '</tr>';
+                            });
+
+                            // We use .html instead of .append here, to make sure we don't add the same
+                            // entries when the interval is ran for the n-th time.
+                            $('#products').html(productList);
+                            $('#products').DataTable({
+                                bDestroy : true
+                            });
+
+                        }).done(function (){
+                            x.style.display = "none";
+                            y.style.display = "none";
+                        });
+                    },2000);
+
+
+                });
+                $(document).on({
+                    ajaxStart: function(){
+
+                    },
+                    ajaxStop: function(){
+                        $("body").removeClass("loading");
+                    }
+                });
             });
         </script>
     </div>

@@ -30,20 +30,36 @@
 
 }
 
+.label-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+}
+
 .profile-brand{
     color: black;
     font-size: large;
     font-weight: bold !important;
     font-size: 1.6rem !important;
     padding-left: 11vh;
+    margin-right: 650px;
 }
 
 .profile-name-container{
     display: flex;
-    flex-direction: column;
+    flex-direction: row !important;
     flex-wrap: nowrap;
     align-items: baseline;
     margin-bottom: 5vh;
+    width: 850px !important;
+}
+
+.refresh-button{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
 }
 
 .data-container{
@@ -74,4 +90,26 @@
 
 .address{
     margin-bottom: 15px;
+}
+#loader{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    left: 50rem;
+    top: 20rem;
+    position: absolute;
+    align-items: stretch;
+    align-content: flex-end;
+    justify-content: space-around;
+    z-index: 3 !important;
+    display: none;
+}
+
+#loaderOverlay{
+    background: grey;
+    z-index: 2 !important;
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    display: none;
 }
