@@ -22,11 +22,6 @@
 
   <dependencies>
       <dependency>
-          <groupId>hu.neuron.mentoring</groupId>
-          <artifactId>warehouse-client-api</artifactId>
-          <version>1.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
           <groupId>jakarta.servlet</groupId>
           <artifactId>jakarta.servlet-api</artifactId>
           <scope>provided</scope>
@@ -49,17 +44,6 @@
           <artifactId>jakarta.el-api</artifactId>
       </dependency>
       <dependency>
-          <groupId>org.glassfish.jersey.containers</groupId>
-          <artifactId>jersey-container-servlet</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.glassfish.jersey.media</groupId>
-          <artifactId>jersey-media-json-jackson</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.glassfish.jersey.inject</groupId>
-          <artifactId>jersey-cdi2-se</artifactId>
-      </dependency><dependency>
           <groupId>org.jboss.weld.se</groupId>
           <artifactId>weld-se-core</artifactId>
       </dependency>
@@ -81,6 +65,29 @@
           <groupId>org.webjars</groupId>
           <artifactId>jquery</artifactId>
       </dependency>
+      <dependency>
+          <groupId>hu.neuron.mentoring</groupId>
+          <artifactId>warehouse-client-api</artifactId>
+          <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+          <groupId>jakarta.ws.rs</groupId>
+          <artifactId>jakarta.ws.rs-api</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.glassfish.jersey.containers</groupId>
+          <artifactId>jersey-container-servlet</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.glassfish.jersey.inject</groupId>
+          <artifactId>jersey-hk2</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.glassfish.jersey.media</groupId>
+          <artifactId>jersey-media-json-jackson</artifactId>
+      </dependency>
+
+
 
 
   </dependencies>

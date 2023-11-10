@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
+<%@ page session="true" %>
 <html>
 <head>
     <meta charset="ISO-8859-1">
