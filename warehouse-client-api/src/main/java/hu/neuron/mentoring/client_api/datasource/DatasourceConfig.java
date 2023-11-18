@@ -2,7 +2,11 @@ package hu.neuron.mentoring.client_api.datasource;
 
 
 import hu.neuron.mentoring.client_api.Product;
+import hu.neuron.mentoring.client_api.utility.ScriptRunnerUtil;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +26,10 @@ public class DatasourceConfig {
 
     private PreparedStatement stmt;
 
-    static final String GETALLPRODUCTSQUERY = "SELECT NAME FROM PUBLIC.PRODUCTS";
+    String path = "C:\\Users\\PappD\\IdeaProjects\\warehouseproject\\warehouse-client-api\\src\\main\\resources\\data.sql";
+
+    static final String ADDPRODUCT = "INSERT INTO WAREHOUSE.products (name,category,amount,unit,purchaseprice,sellprice,description) VALUES(?,?,?,?,?,?,?)";
+    static final String GETALLPRODUCTSQUERY = "SELECT * FROM WAREHOUSE.products";
 
 
     public DatasourceConfig() {}
@@ -31,7 +38,9 @@ public class DatasourceConfig {
     public static synchronized DatasourceConfig getInstance() {
         if (instance == null){
             instance = new DatasourceConfig();
+            instance.setUpDB();
         }
+
         return  instance;
     }
 
@@ -84,6 +93,8 @@ public class DatasourceConfig {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
 
             conn = DriverManager.getConnection(url,username,pass);
+
+
         }catch (SQLException e ){
             throw new RuntimeException("SQL Exception");
         }catch (ClassNotFoundException e){
@@ -104,22 +115,53 @@ public class DatasourceConfig {
 
 
     public List<Product>  getProductsFromDatabase()  {
+
         List<Product> mockedData = new ArrayList<>();
         try {
+
             stmt = conn.prepareStatement(GETALLPRODUCTSQUERY);
 
             ResultSet rs = stmt.executeQuery();
 
-            while (rs.next()) {
-                System.out.println(rs.getString("NAME"));
-                //mockedData.add(new Product(rs.getString(0), rs.getString(1), rs.getInt(2), rs.getString(3), rs.getBigDecimal(4), rs.getBigDecimal(5), rs.getString(6)));
+            while (rs.next()){
+                mockedData.add(new Product(rs.getString("name"),rs.getString("category"),rs.getInt("amount"),rs.getString("unit"),rs.getBigDecimal("purchaseprice"),rs.getBigDecimal("sellprice"),rs.getString("description")));
             }
+        }catch (SQLException e){
+            System.out.println(e);
+        }
+        return mockedData;
+
+    }
+
+    public void setUpDB(){
+        openConnection();
+        try {
+            ScriptRunnerUtil.runScript(path, conn);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+
+    }
+
+    public void addProduct(Product product){
+        try {
+
+            stmt = conn.prepareStatement(ADDPRODUCT);
+
+            stmt.setString(1,product.getName());
+            stmt.setString(2,product.getCategory());
+            stmt.setInt(3,product.getAmount());
+            stmt.setString(4,product.getUnit());
+            stmt.setBigDecimal(5,product.getPurchasePrice());
+            stmt.setBigDecimal(6,product.getSellPrice());
+            stmt.setString(7,product.getDescription());
+
+            stmt.executeUpdate();
 
 
         }catch (SQLException e){
             System.out.println(e);
         }
-        return mockedData;
     }
 
 }

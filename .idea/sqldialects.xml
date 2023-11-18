@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/482b8d75-cfd6-4049-acd5-54179696f735/console.sql" dialect="HSQLDB" />
     <file url="file://$PROJECT_DIR$/warehouse-client-api/src/main/java/hu/neuron/mentoring/client_api/datasource/DatasourceConfig.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/warehouse-client-api/src/main/resources/data.sql" dialect="HSQLDB" />
   </component>

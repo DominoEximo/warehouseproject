@@ -1,13 +1,12 @@
 package hu.neuron.mentoring.web.service.impl;
 
+import com.google.gson.JsonObject;
 import hu.neuron.mentoring.client_api.Product;
 import hu.neuron.mentoring.client_api.datasource.DatasourceConfig;
 import hu.neuron.mentoring.web.service.ProductService;
 
-import jakarta.ws.rs.GET;
+import jakarta.ws.rs.*;
 
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import java.math.BigDecimal;
@@ -34,10 +33,17 @@ public class ProductServiceImpl implements ProductService {
 
         DatasourceConfig datasourceConfig = DatasourceConfig.getInstance();
 
-        datasourceConfig.openConnection();
         mockedData = datasourceConfig.getProductsFromDatabase();
-        datasourceConfig.closeConnection();
+
 
         return mockedData;
+    }
+    @Path("/addProduct")
+    @PUT
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
+    @Override
+    public void addProduct( Product product){
+        DatasourceConfig.getInstance().addProduct(product);
     }
 }
