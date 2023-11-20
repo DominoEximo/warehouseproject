@@ -98,9 +98,6 @@
             <version>3.1.0</version>
         </dependency>
 
-        <!-- These next two are needed because we are using Tomcat, which  -->
-        <!-- is not a full JEE server - it's just a servlet container.     -->
-
         <!-- the Jersey implementation -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -133,6 +130,18 @@
             <artifactId>mybatis</artifactId>
             <version>3.5.7</version>
         </dependency>
+        <!-- JPA -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.2.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.3.1.Final</version>
+        </dependency>
+
 
     </dependencies>
 </dependencyManagement>
