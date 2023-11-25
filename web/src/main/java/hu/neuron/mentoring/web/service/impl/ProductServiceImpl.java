@@ -2,6 +2,7 @@ package hu.neuron.mentoring.web.service.impl;
 
 import com.google.gson.JsonObject;
 import hu.neuron.mentoring.client_api.Product;
+import hu.neuron.mentoring.client_api.dao.ProductDAO;
 import hu.neuron.mentoring.client_api.datasource.DatasourceConfig;
 import hu.neuron.mentoring.web.service.ProductService;
 
@@ -31,9 +32,11 @@ public class ProductServiceImpl implements ProductService {
         //mockedData.add(new Product("Sertés","Hús",15,"kg",new BigDecimal(30),new BigDecimal(110),"Magyar sertés"));
 
 
-        DatasourceConfig datasourceConfig = DatasourceConfig.getInstance();
+        DatasourceConfig.getInstance();
 
-        mockedData = datasourceConfig.getProductsFromDatabase();
+        ProductDAO productDAO = new ProductDAO();
+
+        mockedData = productDAO.getAll();
 
 
         return mockedData;

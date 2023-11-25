@@ -26,7 +26,7 @@ public class DatasourceConfig {
 
     private PreparedStatement stmt;
 
-    String path = "C:\\Users\\PappD\\IdeaProjects\\warehouse\\warehouse-client-api\\src\\main\\resources\\data.sql";
+    String path = "C:\\Users\\PappD\\IdeaProjects\\warehouseproject\\warehouse-client-api\\src\\main\\resources\\data.sql";
 
     static final String ADDPRODUCT = "INSERT INTO WAREHOUSE.products (name,category,amount,unit,purchaseprice,sellprice,description) VALUES(?,?,?,?,?,?,?)";
     static final String GETALLPRODUCTSQUERY = "SELECT * FROM WAREHOUSE.products";
