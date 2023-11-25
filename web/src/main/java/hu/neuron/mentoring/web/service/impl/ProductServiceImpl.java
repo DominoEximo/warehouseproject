@@ -1,14 +1,19 @@
 package hu.neuron.mentoring.web.service.impl;
 
 import com.google.gson.JsonObject;
+import hu.neuron.mentoring.client_api.Category;
 import hu.neuron.mentoring.client_api.Product;
+import hu.neuron.mentoring.client_api.Unit;
+import hu.neuron.mentoring.client_api.dao.CategoryDAO;
 import hu.neuron.mentoring.client_api.dao.ProductDAO;
+import hu.neuron.mentoring.client_api.dao.UnitDAO;
 import hu.neuron.mentoring.client_api.datasource.DatasourceConfig;
 import hu.neuron.mentoring.web.service.ProductService;
 
 import jakarta.ws.rs.*;
 
 import jakarta.ws.rs.core.MediaType;
+import org.jboss.weld.environment.se.bindings.Parameters;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -18,26 +23,51 @@ import java.util.List;
 @Path("/ProductService")
 public class ProductServiceImpl implements ProductService {
 
-    @Path("/getProducts")
+    @Path("/getProducts/{page}/{length}/{category}")
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    @Override
-    public List<Product> getProducts()  {
-        List<Product> mockedData = new ArrayList<>();
 
-        //mockedData.add(new Product("Alma","Gyümölcs",3,"kg",new BigDecimal(100),new BigDecimal(200),"Magyar alma"));
-        //mockedData.add(new Product("Körte","Gyümölcs",5,"kg",new BigDecimal(40),new BigDecimal(300),"Lengyel körte"));
-        //mockedData.add(new Product("Barack","Gyümölcs",2,"kg",new BigDecimal(50),new BigDecimal(120),"Holland barack"));
-        //mockedData.add(new Product("Csirke","Hús",10,"kg",new BigDecimal(25),new BigDecimal(30),"Magyar csirke"));
-        //mockedData.add(new Product("Sertés","Hús",15,"kg",new BigDecimal(30),new BigDecimal(110),"Magyar sertés"));
+    public List<Product> getProducts(@PathParam("page") int page,@PathParam("length") int length,@PathParam("category") int categoryId) {
+        List<Product> mockedData;
+        DatasourceConfig.getInstance();
+
+        ProductDAO productDAO = ProductDAO.getInstance();
+
+
+        mockedData = productDAO.getByCategoryPageinated(page,length,categoryId);
+
+        return mockedData;
+    }
+
+    @Path("/getProducts///")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Product> getProducts() {
+        List<Product> mockedData;
 
 
         DatasourceConfig.getInstance();
 
-        ProductDAO productDAO = new ProductDAO();
+        ProductDAO productDAO = ProductDAO.getInstance();
 
         mockedData = productDAO.getAll();
 
+        return mockedData;
+    }
+    @Path("/getProducts/{page}/{length}")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Override
+    public List<Product> getProducts(@PathParam("page") int page,@PathParam("length") int length) {
+        List<Product> mockedData;
+
+
+        DatasourceConfig.getInstance();
+
+        ProductDAO productDAO = ProductDAO.getInstance();
+
+
+            mockedData = productDAO.getAllPageinated(page,length);
 
         return mockedData;
     }
@@ -47,6 +77,31 @@ public class ProductServiceImpl implements ProductService {
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public void addProduct( Product product){
-        DatasourceConfig.getInstance().addProduct(product);
+
+        DatasourceConfig.getInstance();
+        ProductDAO productDAO = ProductDAO.getInstance();
+        productDAO.save(product);
+    }
+
+    @Path("/getCategories")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Override
+    public List<Category> getCategories() {
+
+        CategoryDAO categoryDAO = CategoryDAO.getInstance();
+
+        return categoryDAO.getAll();
+    }
+
+    @Path("/getUnits")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    @Override
+    public List<Unit> getUnits() {
+
+        UnitDAO unitDao = UnitDAO.getInstance();
+
+        return unitDao.getAll();
     }
 }

@@ -1,7 +1,9 @@
 package hu.neuron.mentoring.client_api.datasource;
 
 
+import hu.neuron.mentoring.client_api.Category;
 import hu.neuron.mentoring.client_api.Product;
+import hu.neuron.mentoring.client_api.Unit;
 import hu.neuron.mentoring.client_api.utility.ScriptRunnerUtil;
 
 import java.io.File;
@@ -124,7 +126,7 @@ public class DatasourceConfig {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()){
-                mockedData.add(new Product(rs.getString("name"),rs.getString("category"),rs.getInt("amount"),rs.getString("unit"),rs.getBigDecimal("purchaseprice"),rs.getBigDecimal("sellprice"),rs.getString("description")));
+                mockedData.add(new Product(rs.getString("name"),rs.getObject("category", Category.class),rs.getInt("amount"),rs.getObject("unit", Unit.class),rs.getBigDecimal("purchaseprice"),rs.getBigDecimal("sellprice"),rs.getString("description")));
             }
         }catch (SQLException e){
             System.out.println(e);
@@ -149,9 +151,9 @@ public class DatasourceConfig {
             stmt = conn.prepareStatement(ADDPRODUCT);
 
             stmt.setString(1,product.getName());
-            stmt.setString(2,product.getCategory());
+            stmt.setObject(2,product.getCategory());
             stmt.setInt(3,product.getAmount());
-            stmt.setString(4,product.getUnit());
+            stmt.setObject(4,product.getUnit());
             stmt.setBigDecimal(5,product.getPurchasePrice());
             stmt.setBigDecimal(6,product.getSellPrice());
             stmt.setString(7,product.getDescription());

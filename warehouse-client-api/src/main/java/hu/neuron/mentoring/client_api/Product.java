@@ -1,9 +1,6 @@
 package hu.neuron.mentoring.client_api;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,14 +11,19 @@ import java.util.Objects;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-    private String category;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category",referencedColumnName = "id")
+    private Category category;
 
     private Integer amount;
-    private String unit;
+
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "unit",referencedColumnName = "id")
+    private Unit unit;
 
     private BigDecimal purchasePrice;
 
@@ -30,11 +32,19 @@ public class Product {
     private String description;
 
 
-    public Product(String name, String category, Integer amount, String unit, BigDecimal purchasePrice, BigDecimal sellPrice, String description) {
+    public Product(String name, Category category, Integer amount, Unit unit, BigDecimal purchasePrice, BigDecimal sellPrice, String description) {
         this.name = name;
         this.category = category;
         this.amount = amount;
         this.unit = unit;
+        this.purchasePrice = purchasePrice;
+        this.sellPrice = sellPrice;
+        this.description = description;
+    }
+
+    public Product(String name, Integer amount, BigDecimal purchasePrice, BigDecimal sellPrice, String description) {
+        this.name = name;
+        this.amount = amount;
         this.purchasePrice = purchasePrice;
         this.sellPrice = sellPrice;
         this.description = description;
@@ -59,11 +69,11 @@ public class Product {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -75,11 +85,11 @@ public class Product {
         this.amount = amount;
     }
 
-    public String getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
