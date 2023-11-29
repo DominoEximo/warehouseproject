@@ -107,7 +107,11 @@
           <groupId>org.jboss.weld.servlet</groupId>
           <artifactId>weld-servlet-shaded</artifactId>
       </dependency>
-
+      <dependency>
+          <groupId>org.primefaces</groupId>
+          <artifactId>primefaces</artifactId>
+          <classifier>jakarta</classifier>
+      </dependency>
   </dependencies>
   <build>
     <plugins>

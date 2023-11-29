@@ -10,6 +10,8 @@ import jakarta.inject.Named;
 public class HelloWorldBean {
     private String msg;
 
+    private Integer number1;
+
     public String getMsg() {
         return msg;
     }
@@ -22,4 +24,11 @@ public class HelloWorldBean {
         msg = "Hello World!! JFS example.. ";
     }
 
+    public Integer getNumber1() {
+        return number1;
+    }
+
+    public void setNumber1(Integer number1) {
+        this.number1 = number1;
+    }
 }
