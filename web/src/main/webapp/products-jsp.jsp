@@ -35,7 +35,7 @@
         <div class="collapse navbar-collapse optionList" id="navbarSupportedContent">
 
             <form class="form-inline my-2 my-lg-0">
-                <a class="nav-link" href="products.jsp">Products <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="products-jsp.jsp">Products <span class="sr-only">(current)</span></a>
                 <a class="nav-link" href="#">Orders <span class="sr-only">(current)</span></a>
                 <a class="nav-link" href="/secured/profile.html">Profile <span class="sr-only">(current)</span></a>
             </form>

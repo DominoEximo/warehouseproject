@@ -20,9 +20,9 @@
     <maven.compiler.source>11</maven.compiler.source>
     <junit.version>5.9.2</junit.version>
   </properties>
-<dependencyManagement>
 
 
+    <dependencyManagement>
     <dependencies>
         <dependency>
             <groupId>hu.neuron.mentoring</groupId>
@@ -147,8 +147,27 @@
             <version>1.18.28</version>
             <scope>compile</scope>
         </dependency>
-
-
+        <dependency>
+            <groupId>jakarta.faces</groupId>
+            <artifactId>jakarta.faces-api</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.1.0-M1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.faces</artifactId>
+            <version>4.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld.servlet</groupId>
+            <artifactId>weld-servlet-shaded</artifactId>
+            <version>4.0.0.Final</version>
+        </dependency>
 
 
     </dependencies>
