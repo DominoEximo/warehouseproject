@@ -5,16 +5,118 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-      <title>JavaCodeGeeks</title>
+      <title>#{product['title']}</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+      <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css"/>
+      <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css"/>
+      <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.7.1.min.js"></script>
+      <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+      <link rel="stylesheet" href="../css/products.css"/>
+      <script>
+            $(document).ready(function(){
+                  $("#myInput").on("keyup", function() {
+                        var value = $(this).val().toLowerCase();
+                        $("#productsTable tbody tr").filter(function() {
+                              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                  });
+            });
+      </script>
 </h:head>
-<h:body>
-      <p:panelGrid columns="2">
-            <h:outputText value="#{helloWorldBean.msg}"/>
-            <p:inputText/>
-      </p:panelGrid>
-      <div class="field col-12 md:col-4">
-            <p:outputLabel for="@next" value="Basic Spinner"/>
-            <p:spinner id="basic" value="#{helloWorldBean.number1}"/>
+<h:body id="productBody">
+      <div id='loader'><img src="/images/ZZ5H.gif" alt="Loading..."/></div>
+      <div id='loaderOverlay'></div>
+      <div class="outer-container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                  <a class="navbar-brand" href="#">#{product['title']}</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                  </button>
+
+                  <div class="collapse navbar-collapse optionList" id="navbarSupportedContent">
+
+                        <form class="form-inline my-2 my-lg-0">
+                              <a class="nav-link" href="products-jsp.jsp">#{product['Products']} <span class="sr-only">(current)</span></a>
+                              <a class="nav-link" href="#">#{product['Orders']} <span class="sr-only">(current)</span></a>
+                              <a class="nav-link" href="/secured/profile.html">#{product['Profile']} <span class="sr-only">(current)</span></a>
+                              <h:form id="form">
+
+                                    <br />
+                                    <h:commandButton value="English"
+                                                     action="#{localeBean.changeLanguage('en')}"
+                                                     rendered="#{localeBean.locale == 'hu_HU'}"/>
+                                    <h:commandButton  value="Magyar"
+                                                     action="#{localeBean.changeLanguage('hu_HU')}"
+                                                     rendered="#{localeBean.locale == 'en'}"/>
+                              </h:form>
+                        </form>
+                  </div>
+            </nav>
+            <div class="label-container">
+                  <div class="profile-name-container">
+                        <span class="profile-brand">#{product['listName']}</span>
+                  </div>
+                  <div>
+                        <input id="myInput" type="text" placeholder="#{product['search']}"/>
+                        <h:form>
+                              <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{productBean.length}" modifyValueOnWheel="false"></p:inputNumber>
+                        </h:form>
+                        <h:form>
+                              <h:selectOneMenu id="categories" value="#{productBean.category}">
+                                    <f:selectItems value="#{productBean.categories}"/>
+                                    <p:ajax event="change" process="@this" update="@this"></p:ajax>
+                              </h:selectOneMenu>
+                        </h:form>
+                              <h:selectOneMenu id="units" value="#{productBean.unit}">
+                                    <f:selectItem itemLabel="Select One" itemValue=""/>
+                                    <f:selectItems  value="#{productBean.units}"/>
+                              </h:selectOneMenu>
+
+
+                  </div>
+                  <div>
+                        <p:commandButton action="#{productBean.loadProductsPaginatedFiltered()}" update="productsTable" disableOnAjax="false" id="refresh" value="#{product['refresh']}"  class="refresh-button btn btn-dark"></p:commandButton>
+                  </div>
+                  <div id="overlay">
+                        <div class="cv-spinner">
+                              <span class="spinner"></span>
+                        </div>
+                  </div>
+            </div>
+            <div class="data-container">
+                  <p:dataTable id="productsTable" var="productVar" value="#{productBean.products}">
+                        <p:column headerText="#{product['name']}">
+                              <h:outputText value="#{productVar.name}" />
+                        </p:column>
+
+                        <p:column headerText="#{product['category']}">
+                              <h:outputText value="#{productVar.category.categoryName}" />
+                        </p:column>
+
+                        <p:column headerText="#{product['amount']}">
+                              <h:outputText value="#{productVar.amount}" />
+                        </p:column>
+
+                        <p:column headerText="#{product['unit']}">
+                              <h:outputText value="#{productVar.unit.unitName}" />
+                        </p:column>
+                        <p:column headerText="#{product['purchasePrice']}">
+                              <h:outputText value="#{productVar.purchasePrice}" />
+                        </p:column>
+                        <p:column headerText="#{product['sellPrice']}">
+                              <h:outputText value="#{productVar.sellPrice}" />
+                        </p:column>
+                        <p:column headerText="#{product['description']}">
+                              <h:outputText value="#{productVar.description}" />
+                        </p:column>
+                  </p:dataTable>
+
+                  <div>
+                        <button id="prev" type="button"  class=" btn btn-dark">#{product['prev']}</button>
+                        <button id="next" type="button"  class=" btn btn-dark">#{product['next']}</button>
+                  </div>
+
+            </div>
       </div>
 </h:body>
 </html>

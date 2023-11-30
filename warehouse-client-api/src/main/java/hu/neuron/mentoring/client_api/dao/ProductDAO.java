@@ -84,7 +84,7 @@ public class ProductDAO implements DAO<Product>{
         Product test4 = new Product("Csirke3",categoryDAO.findByName("Hus"),10, unitDAO.findByName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús");
 
         for (int i = 0; i< 10; i++){
-            save(new Product("Csirke3",categoryDAO.findByName("Hus"),10, new Unit("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús"));
+            save(new Product("Csirke3",categoryDAO.findByName("Hus"),10, unitDAO.findByName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús"));
 
         }
         save(test);
