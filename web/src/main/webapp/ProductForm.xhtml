@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>#{product.formTitle}</title>
+    <h:outputStylesheet name="css/primeflex3.css" library="showcase"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css"/>
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="../css/products.css"/>
+</h:head>
+
+<h:body>
+    <h:form style="display: flex !important; flex-direction: column; flex-wrap: nowrap; align-items: center">
+        <h:panelGrid id="grid" cellpadding="7" columns="2" styleClass="mb-3">
+            <p:outputLabel for="name" value="#{product.formName}"/>
+            <p:inputText id="name" value="#{formProcessBean.product.name}"
+                         requiredMessage="Name is required"/>
+
+            <p:outputLabel for="category" value="#{product.formCategory}"/>
+            <h:selectOneMenu id="category" value="#{formProcessBean.chosenCategory}" requiredMessage="Category is required">
+                <f:selectItems value="#{productBean.categories}"/>
+                <p:ajax event="change" process="@this" update="@this"></p:ajax>
+            </h:selectOneMenu>
+
+            <p:outputLabel for="unit" value="#{product.formUnit}"/>
+            <h:selectOneMenu id="unit" value="#{formProcessBean.chosenUnit}" requiredMessage="Unit is required">
+                <f:selectItems value="#{productBean.units}"/>
+                <p:ajax event="change" process="@this" update="@this"></p:ajax>
+            </h:selectOneMenu>
+
+            <p:outputLabel for="amount" value="#{product.formAmount}"/>
+            <p:inputNumber id="amount" value="#{formProcessBean.product.amount}"
+                           requiredMessage="Amount is required"/>
+
+            <p:outputLabel for="purchasePrice" value="#{product.formPPrice}"/>
+            <p:inputNumber id="purchasePrice" value="#{formProcessBean.product.purchasePrice}"
+                           requiredMessage="Purchase Price is required"/>
+
+            <p:outputLabel for="sellPrice" value="#{product.formSPrice}"/>
+            <p:inputNumber id="sellPrice" value="#{formProcessBean.product.sellPrice}"
+                           requiredMessage="Sell Price is required"/>
+
+            <p:outputLabel for="description" value="#{product.formDescription}"/>
+            <p:inputText id="description" value="#{formProcessBean.product.description}"
+                         requiredMessage="Description is required"/>
+        </h:panelGrid>
+
+        <p:commandButton value="#{product.add}" id="btnForm" process="@form" update="grid msgs" action="#{formProcessBean.processForm()}" styleClass="mr-2"/>
+
+
+        <p:messages id="msgs"/>
+    </h:form>
+</h:body>
+
+</html>

@@ -63,6 +63,7 @@ public class ProductBean implements Serializable {
     }
 
     public void setCategory(String category) {
+        page = 1;
         this.category = category;
     }
 
@@ -101,5 +102,22 @@ public class ProductBean implements Serializable {
     public void loadProductsPaginatedFiltered(){
         products = null;
         products = ProductDAO.getInstance().getByCategoryPageinated(page,length,CategoryDAO.getInstance().findByName(category).getId().intValue());
+    }
+
+    public void nextPage(){
+            if(ProductDAO.getInstance().getAllByCategory(CategoryDAO.getInstance().findByName(category).getId().intValue()).size() / length > page){
+                page += 1;
+                loadProductsPaginatedFiltered();
+            }
+
+
+
+    }
+    public void prevPage(){
+        if(page > 1){
+            page -= 1;
+            loadProductsPaginatedFiltered();
+        }
+
     }
 }

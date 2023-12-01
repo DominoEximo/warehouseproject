@@ -69,9 +69,10 @@ public class ProductDAO implements DAO<Product>{
 
     }
 
-    public List<Product> getAllByCategory(String category){
-        String query = "SELECT p FROM Product p where p.category.categoryName = " + category;
-        return em.createNamedQuery(query, Product.class).getResultList();
+    public List<Product> getAllByCategory(int category){
+        Query query = em.createQuery("select p From Product p where p.category.id ="+ category);
+        List <Product> productList = query.getResultList();
+        return productList;
     }
 
     private void setUpMockedData(){

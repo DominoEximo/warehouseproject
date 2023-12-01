@@ -113,3 +113,10 @@
     min-height: 100%;
     display: none;
 }
+
+.button-container{
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+}
