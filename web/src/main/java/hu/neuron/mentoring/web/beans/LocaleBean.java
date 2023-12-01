@@ -1,14 +1,17 @@
 package hu.neuron.mentoring.web.beans;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
+import jakarta.ws.rs.ApplicationPath;
+
 import java.io.Serializable;
 import java.util.Locale;
 
 @Named
-@SessionScoped
+@ApplicationScoped
 public class LocaleBean implements Serializable {
 
     private String locale = "en";
