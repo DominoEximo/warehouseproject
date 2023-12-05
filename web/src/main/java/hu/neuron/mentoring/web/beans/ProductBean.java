@@ -39,6 +39,7 @@ public class ProductBean implements Serializable {
         CategoryDAO categoryDAO = CategoryDAO.getInstance();
         UnitDAO unitDAO = UnitDAO.getInstance();
         categories = categoryDAO.getAll().stream().map(Category::getCategoryName).collect(Collectors.toList());
+        category = "Hus";
         units = unitDAO.getAll().stream().map(Unit::getUnitName).collect(Collectors.toList());
     }
 
@@ -59,6 +60,7 @@ public class ProductBean implements Serializable {
     }
 
     public String getCategory() {
+        page = 1;
         return category;
     }
 
@@ -105,7 +107,7 @@ public class ProductBean implements Serializable {
     }
 
     public void nextPage(){
-            if(ProductDAO.getInstance().getAllByCategory(CategoryDAO.getInstance().findByName(category).getId().intValue()).size() / length > page){
+            if(ProductDAO.getInstance().getAllByCategory(CategoryDAO.getInstance().findByName(category).getId().intValue()).size() / length >= page){
                 page += 1;
                 loadProductsPaginatedFiltered();
             }
