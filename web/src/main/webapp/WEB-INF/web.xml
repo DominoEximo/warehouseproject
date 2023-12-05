@@ -64,5 +64,9 @@
         <welcome-file>login.html</welcome-file>
         <welcome-file>login.html</welcome-file>
     </welcome-file-list>
-
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
 </web-app>

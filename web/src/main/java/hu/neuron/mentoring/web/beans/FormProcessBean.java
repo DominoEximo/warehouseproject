@@ -5,13 +5,14 @@ import hu.neuron.mentoring.clientapi.dao.CategoryDAO;
 import hu.neuron.mentoring.clientapi.dao.ProductDAO;
 import hu.neuron.mentoring.clientapi.dao.UnitDAO;
 import hu.neuron.mentoring.clientapi.entity.Product;
+import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
 
-@Named
+@ManagedBean
 @SessionScoped
 public class FormProcessBean implements Serializable {
 

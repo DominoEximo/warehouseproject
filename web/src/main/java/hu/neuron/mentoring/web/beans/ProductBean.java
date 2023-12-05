@@ -7,17 +7,27 @@ import hu.neuron.mentoring.clientapi.dao.UnitDAO;
 import hu.neuron.mentoring.clientapi.entity.Category;
 import hu.neuron.mentoring.clientapi.entity.Product;
 import hu.neuron.mentoring.clientapi.entity.Unit;
+import hu.neuron.mentoring.clientapi.service.ProductServiceImpl;
+import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.annotation.ManagedProperty;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Named
+@Component
 @SessionScoped
-public class ProductBean implements Serializable {
+public class ProductBean  implements Serializable {
+
+    @Autowired
+    ProductServiceImpl productService;
 
     private List<Product> products;
 
@@ -37,9 +47,9 @@ public class ProductBean implements Serializable {
     public void init(){
         CategoryDAO categoryDAO = CategoryDAO.getInstance();
         UnitDAO unitDAO = UnitDAO.getInstance();
-        categories = categoryDAO.getAll().stream().map(Category::getCategoryName).collect(Collectors.toList());
+        categories = productService.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
         category = "Hus";
-        units = unitDAO.getAll().stream().map(Unit::getUnitName).collect(Collectors.toList());
+        units = productService.getUnits().stream().map(Unit::getUnitName).collect(Collectors.toList());
     }
 
     public List<Product> getProducts() {
