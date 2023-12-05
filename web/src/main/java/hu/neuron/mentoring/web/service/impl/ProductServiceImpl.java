@@ -1,23 +1,19 @@
 package hu.neuron.mentoring.web.service.impl;
 
-import com.google.gson.JsonObject;
-import hu.neuron.mentoring.client_api.Category;
-import hu.neuron.mentoring.client_api.Product;
-import hu.neuron.mentoring.client_api.Unit;
-import hu.neuron.mentoring.client_api.dao.CategoryDAO;
-import hu.neuron.mentoring.client_api.dao.ProductDAO;
-import hu.neuron.mentoring.client_api.dao.UnitDAO;
-import hu.neuron.mentoring.client_api.datasource.DatasourceConfig;
+
+import hu.neuron.mentoring.clientapi.dao.CategoryDAO;
+import hu.neuron.mentoring.clientapi.dao.ProductDAO;
+import hu.neuron.mentoring.clientapi.dao.UnitDAO;
+import hu.neuron.mentoring.clientapi.datasource.DatasourceConfig;
+import hu.neuron.mentoring.clientapi.entity.Category;
+import hu.neuron.mentoring.clientapi.entity.Product;
+import hu.neuron.mentoring.clientapi.entity.Unit;
 import hu.neuron.mentoring.web.service.ProductService;
 
 import jakarta.ws.rs.*;
 
 import jakarta.ws.rs.core.MediaType;
-import org.jboss.weld.environment.se.bindings.Parameters;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/ProductService")
@@ -27,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
 
-    public List<Product> getProducts(@PathParam("page") int page,@PathParam("length") int length,@PathParam("category") int categoryId) {
+    public List<Product> getProducts(@PathParam("page") int page, @PathParam("length") int length, @PathParam("category") int categoryId) {
         List<Product> mockedData;
         DatasourceConfig.getInstance();
 

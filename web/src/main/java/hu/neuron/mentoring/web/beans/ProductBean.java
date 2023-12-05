@@ -1,18 +1,17 @@
 package hu.neuron.mentoring.web.beans;
 
-import hu.neuron.mentoring.client_api.Category;
-import hu.neuron.mentoring.client_api.Product;
-import hu.neuron.mentoring.client_api.Unit;
-import hu.neuron.mentoring.client_api.dao.CategoryDAO;
-import hu.neuron.mentoring.client_api.dao.ProductDAO;
-import hu.neuron.mentoring.client_api.dao.UnitDAO;
-import jakarta.annotation.ManagedBean;
+
+import hu.neuron.mentoring.clientapi.dao.CategoryDAO;
+import hu.neuron.mentoring.clientapi.dao.ProductDAO;
+import hu.neuron.mentoring.clientapi.dao.UnitDAO;
+import hu.neuron.mentoring.clientapi.entity.Category;
+import hu.neuron.mentoring.clientapi.entity.Product;
+import hu.neuron.mentoring.clientapi.entity.Unit;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

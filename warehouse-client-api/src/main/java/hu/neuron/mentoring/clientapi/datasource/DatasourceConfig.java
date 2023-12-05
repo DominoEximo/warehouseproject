@@ -1,14 +1,12 @@
-package hu.neuron.mentoring.client_api.datasource;
+package hu.neuron.mentoring.clientapi.datasource;
 
 
-import hu.neuron.mentoring.client_api.Category;
-import hu.neuron.mentoring.client_api.Product;
-import hu.neuron.mentoring.client_api.Unit;
-import hu.neuron.mentoring.client_api.utility.ScriptRunnerUtil;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import hu.neuron.mentoring.clientapi.utility.ScriptRunnerUtil;
+import hu.neuron.mentoring.clientapi.entity.Category;
+import hu.neuron.mentoring.clientapi.entity.Product;
+import hu.neuron.mentoring.clientapi.entity.Unit;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

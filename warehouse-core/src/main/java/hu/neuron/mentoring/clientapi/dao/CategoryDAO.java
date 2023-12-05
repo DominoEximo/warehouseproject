@@ -1,8 +1,9 @@
-package hu.neuron.mentoring.client_api.dao;
+package hu.neuron.mentoring.clientapi.dao;
 
-import hu.neuron.mentoring.client_api.Category;
-import hu.neuron.mentoring.client_api.Product;
-import hu.neuron.mentoring.client_api.datasource.DatasourceConfig;
+
+
+import hu.neuron.mentoring.clientapi.datasource.DatasourceConfig;
+import hu.neuron.mentoring.clientapi.entity.Category;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;

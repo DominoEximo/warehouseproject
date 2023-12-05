@@ -1,13 +1,13 @@
 package hu.neuron.mentoring.web.beans;
 
-import hu.neuron.mentoring.client_api.Product;
-import hu.neuron.mentoring.client_api.dao.CategoryDAO;
-import hu.neuron.mentoring.client_api.dao.ProductDAO;
-import hu.neuron.mentoring.client_api.dao.UnitDAO;
+
+import hu.neuron.mentoring.clientapi.dao.CategoryDAO;
+import hu.neuron.mentoring.clientapi.dao.ProductDAO;
+import hu.neuron.mentoring.clientapi.dao.UnitDAO;
+import hu.neuron.mentoring.clientapi.entity.Product;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
-import org.primefaces.PrimeFaces;
 
 import java.io.Serializable;
 

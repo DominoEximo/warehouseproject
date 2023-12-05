@@ -1,4 +1,4 @@
-package hu.neuron.mentoring.client_api;
+package hu.neuron.mentoring.clientapi.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

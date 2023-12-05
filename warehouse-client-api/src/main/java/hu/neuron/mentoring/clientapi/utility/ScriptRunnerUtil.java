@@ -1,4 +1,4 @@
-package hu.neuron.mentoring.client_api.utility;
+package hu.neuron.mentoring.clientapi.utility;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 

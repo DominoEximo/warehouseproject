@@ -1,9 +1,10 @@
 package hu.neuron.mentoring.web.service;
 
-import com.google.gson.JsonObject;
-import hu.neuron.mentoring.client_api.Category;
-import hu.neuron.mentoring.client_api.Product;
-import hu.neuron.mentoring.client_api.Unit;
+
+
+import hu.neuron.mentoring.clientapi.entity.Category;
+import hu.neuron.mentoring.clientapi.entity.Product;
+import hu.neuron.mentoring.clientapi.entity.Unit;
 
 import java.util.List;
 

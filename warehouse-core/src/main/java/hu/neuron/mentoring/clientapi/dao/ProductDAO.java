@@ -1,15 +1,14 @@
-package hu.neuron.mentoring.client_api.dao;
+package hu.neuron.mentoring.clientapi.dao;
 
-import hu.neuron.mentoring.client_api.Category;
-import hu.neuron.mentoring.client_api.Product;
-import hu.neuron.mentoring.client_api.Unit;
-import hu.neuron.mentoring.client_api.datasource.DatasourceConfig;
+
+
+import hu.neuron.mentoring.clientapi.datasource.DatasourceConfig;
+import hu.neuron.mentoring.clientapi.entity.Product;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
 import java.util.List;
 
