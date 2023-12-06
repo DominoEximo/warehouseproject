@@ -1,22 +1,7 @@
 package hu.neuron.mentoring.web.service.impl;
 
 
-import hu.neuron.mentoring.clientapi.dao.CategoryDAO;
-import hu.neuron.mentoring.clientapi.dao.ProductDAO;
-import hu.neuron.mentoring.clientapi.dao.UnitDAO;
-import hu.neuron.mentoring.clientapi.datasource.DatasourceConfig;
-import hu.neuron.mentoring.clientapi.entity.Category;
-import hu.neuron.mentoring.clientapi.entity.Product;
-import hu.neuron.mentoring.clientapi.entity.Unit;
-import hu.neuron.mentoring.web.service.ProductService;
-
-import jakarta.ws.rs.*;
-
-import jakarta.ws.rs.core.MediaType;
-
-import java.util.List;
-
-@Path("/ProductService")
+/*@Path("/ProductService")
 public class ProductServiceImpl implements ProductService {
 
     @Path("/getProducts/{page}/{length}/{category}")
@@ -100,4 +85,4 @@ public class ProductServiceImpl implements ProductService {
 
         return unitDao.getAll();
     }
-}
+}*/

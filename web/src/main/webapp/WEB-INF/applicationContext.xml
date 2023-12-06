@@ -5,8 +5,9 @@
        xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/data/jpa https://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-
-    <jpa:repositories base-package="hu.neuron.mentoring.clientapi.repositories">
+    <context:annotation-config/>
+    <context:component-scan base-package="hu.neuron.mentoring"/>
+    <jpa:repositories base-package="hu.neuron.mentoring.core.repositories">
 
     </jpa:repositories>
     <bean id="entityManagerFactory"
@@ -19,10 +20,11 @@
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
-    <bean id="productBean" class="hu.neuron.mentoring.web.beans.ProductBean"/>
+    <bean id="productService" class="hu.neuron.mentoring.core.service.ProductServiceImpl"/>
+    <bean id="productDAO" class="hu.neuron.mentoring.core.dao.ProductDAO"/>
+    <bean lazy-init="true" id="productBean" class="hu.neuron.mentoring.web.beans.ProductBean"/>
     <bean lazy-init="true" id="localeBean" class="hu.neuron.mentoring.web.beans.LocaleBean"/>
     <bean lazy-init="true" id="formProcessBean" class="hu.neuron.mentoring.web.beans.FormProcessBean"/>
-    <context:annotation-config/>
-    <context:component-scan base-package="hu.neuron.mentoring.clientapi"/>
+
 
 </beans>

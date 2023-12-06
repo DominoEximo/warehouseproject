@@ -1,4 +1,4 @@
-package hu.neuron.mentoring.clientapi.repositories;
+package hu.neuron.mentoring.core.repositories;
 
 import hu.neuron.mentoring.clientapi.entity.Unit;
 import org.springframework.data.jpa.repository.JpaRepository;

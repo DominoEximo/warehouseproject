@@ -1,15 +1,15 @@
-package hu.neuron.mentoring.clientapi.service;
+package hu.neuron.mentoring.core.service;
 
 import hu.neuron.mentoring.clientapi.entity.Category;
 import hu.neuron.mentoring.clientapi.entity.Product;
 import hu.neuron.mentoring.clientapi.entity.Unit;
-import hu.neuron.mentoring.clientapi.repositories.CategoryRepository;
-import hu.neuron.mentoring.clientapi.repositories.ProductRepository;
-import hu.neuron.mentoring.clientapi.repositories.UnitRepository;
+import hu.neuron.mentoring.clientapi.service.ProductService;
+import hu.neuron.mentoring.core.repositories.CategoryRepository;
+import hu.neuron.mentoring.core.repositories.ProductRepository;
+import hu.neuron.mentoring.core.repositories.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,6 +34,12 @@ public class ProductServiceImpl  implements ProductService, Serializable {
     @Override
     public void addProduct(Product product) {
         productRepository.save(product);
+
+    }
+
+    @Override
+    public void deleteProduct(long id) {
+        productRepository.deleteById(id);
     }
 
     @Override
@@ -44,5 +50,11 @@ public class ProductServiceImpl  implements ProductService, Serializable {
     @Override
     public List<Unit> getUnits() {
         return unitRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getByCategoryPaginated(int page, int length, Category category) {
+        List<Product> products = (List<Product>) productRepository.getAllByCategory(category,PageRequest.of(page-1,length));
+        return products;
     }
 }

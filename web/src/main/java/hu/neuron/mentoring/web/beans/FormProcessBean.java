@@ -1,21 +1,23 @@
 package hu.neuron.mentoring.web.beans;
 
 
-import hu.neuron.mentoring.clientapi.dao.CategoryDAO;
-import hu.neuron.mentoring.clientapi.dao.ProductDAO;
-import hu.neuron.mentoring.clientapi.dao.UnitDAO;
+import hu.neuron.mentoring.core.dao.CategoryDAO;
+import hu.neuron.mentoring.core.dao.ProductDAO;
+import hu.neuron.mentoring.core.dao.UnitDAO;
 import hu.neuron.mentoring.clientapi.entity.Product;
-import jakarta.annotation.ManagedBean;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.inject.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-@ManagedBean
+@Component
 @SessionScoped
 public class FormProcessBean implements Serializable {
 
+    @Autowired
+    ProductDAO productDAO;
     private Product product;
 
     private String chosenCategory;
@@ -39,7 +41,7 @@ public class FormProcessBean implements Serializable {
         if(product.getName() != null){
             product.setCategory(CategoryDAO.getInstance().findByName(chosenCategory));
             product.setUnit(UnitDAO.getInstance().findByName(chosenUnit));
-            ProductDAO.getInstance().save(product);
+            productDAO.save(product);
         }
 
     }

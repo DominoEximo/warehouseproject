@@ -15,13 +15,13 @@ public class Product {
     private Long id;
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "category",referencedColumnName = "id")
     private Category category;
 
     private Integer amount;
 
-    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.MERGE,orphanRemoval = true)
     @JoinColumn(name = "unit",referencedColumnName = "id")
     private Unit unit;
 

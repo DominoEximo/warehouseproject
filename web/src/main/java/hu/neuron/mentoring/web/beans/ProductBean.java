@@ -1,22 +1,17 @@
 package hu.neuron.mentoring.web.beans;
 
 
-import hu.neuron.mentoring.clientapi.dao.CategoryDAO;
-import hu.neuron.mentoring.clientapi.dao.ProductDAO;
-import hu.neuron.mentoring.clientapi.dao.UnitDAO;
+import hu.neuron.mentoring.clientapi.service.ProductService;
+import hu.neuron.mentoring.core.dao.CategoryDAO;
+import hu.neuron.mentoring.core.dao.ProductDAO;
 import hu.neuron.mentoring.clientapi.entity.Category;
 import hu.neuron.mentoring.clientapi.entity.Product;
 import hu.neuron.mentoring.clientapi.entity.Unit;
-import hu.neuron.mentoring.clientapi.service.ProductServiceImpl;
-import jakarta.annotation.ManagedBean;
+import hu.neuron.mentoring.core.service.ProductServiceImpl;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.annotation.ManagedProperty;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,7 +22,10 @@ import java.util.stream.Collectors;
 public class ProductBean  implements Serializable {
 
     @Autowired
-    ProductServiceImpl productService;
+    ProductService productService;
+
+    @Autowired
+    ProductDAO productDAO;
 
     private List<Product> products;
 
@@ -45,8 +43,7 @@ public class ProductBean  implements Serializable {
 
     @PostConstruct
     public void init(){
-        CategoryDAO categoryDAO = CategoryDAO.getInstance();
-        UnitDAO unitDAO = UnitDAO.getInstance();
+        productDAO.setUpMockedData();
         categories = productService.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
         category = "Hus";
         units = productService.getUnits().stream().map(Unit::getUnitName).collect(Collectors.toList());
@@ -112,11 +109,11 @@ public class ProductBean  implements Serializable {
 
     public void loadProductsPaginatedFiltered(){
         products = null;
-        products = ProductDAO.getInstance().getByCategoryPageinated(page,length,CategoryDAO.getInstance().findByName(category).getId().intValue());
+        products = productDAO.getByCategoryPageinated(page,length,CategoryDAO.getInstance().findByName(category));
     }
 
     public void nextPage(){
-            if(ProductDAO.getInstance().getAllByCategory(CategoryDAO.getInstance().findByName(category).getId().intValue()).size() / length >= page){
+            if(productDAO.getAllByCategory(CategoryDAO.getInstance().findByName(category).getId().intValue()).size() / length >= page){
                 page += 1;
                 loadProductsPaginatedFiltered();
             }

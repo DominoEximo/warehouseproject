@@ -1,4 +1,4 @@
-package hu.neuron.mentoring.clientapi.dao;
+package hu.neuron.mentoring.core.dao;
 
 import java.util.List;
 

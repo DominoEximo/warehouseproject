@@ -3,9 +3,6 @@ package hu.neuron.mentoring.clientapi.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Data
 public class Category {
