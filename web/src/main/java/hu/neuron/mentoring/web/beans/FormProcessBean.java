@@ -1,6 +1,8 @@
 package hu.neuron.mentoring.web.beans;
 
 
+import hu.neuron.mentoring.clientapi.service.CategoryService;
+import hu.neuron.mentoring.clientapi.service.UnitService;
 import hu.neuron.mentoring.core.dao.CategoryDAO;
 import hu.neuron.mentoring.core.dao.ProductDAO;
 import hu.neuron.mentoring.core.dao.UnitDAO;
@@ -18,6 +20,12 @@ public class FormProcessBean implements Serializable {
 
     @Autowired
     ProductDAO productDAO;
+
+    @Autowired
+    CategoryService categoryService;
+
+    @Autowired
+    UnitService unitService;
     private Product product;
 
     private String chosenCategory;
@@ -39,10 +47,11 @@ public class FormProcessBean implements Serializable {
 
     public void processForm(){
         if(product.getName() != null){
-            product.setCategory(CategoryDAO.getInstance().findByName(chosenCategory));
-            product.setUnit(UnitDAO.getInstance().findByName(chosenUnit));
+            product.setCategory(categoryService.findByName(chosenCategory));
+            product.setUnit(unitService.findByName(chosenUnit));
             productDAO.save(product);
         }
+        setProduct(new Product());
 
     }
 

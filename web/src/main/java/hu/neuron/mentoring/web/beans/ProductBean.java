@@ -1,6 +1,7 @@
 package hu.neuron.mentoring.web.beans;
 
 
+import hu.neuron.mentoring.clientapi.service.CategoryService;
 import hu.neuron.mentoring.clientapi.service.ProductService;
 import hu.neuron.mentoring.core.dao.CategoryDAO;
 import hu.neuron.mentoring.core.dao.ProductDAO;
@@ -24,8 +25,9 @@ public class ProductBean  implements Serializable {
     @Autowired
     ProductService productService;
 
+
     @Autowired
-    ProductDAO productDAO;
+    CategoryService categoryService;
 
     private List<Product> products;
 
@@ -43,7 +45,7 @@ public class ProductBean  implements Serializable {
 
     @PostConstruct
     public void init(){
-        productDAO.setUpMockedData();
+        productService.setUpMockedData();
         categories = productService.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
         category = "Hus";
         units = productService.getUnits().stream().map(Unit::getUnitName).collect(Collectors.toList());
@@ -109,11 +111,11 @@ public class ProductBean  implements Serializable {
 
     public void loadProductsPaginatedFiltered(){
         products = null;
-        products = productDAO.getByCategoryPageinated(page,length,CategoryDAO.getInstance().findByName(category));
+        products = productService.getByCategoryPaginated(page,length,categoryService.findByName(category));
     }
 
     public void nextPage(){
-            if(productDAO.getAllByCategory(CategoryDAO.getInstance().findByName(category).getId().intValue()).size() / length >= page){
+            if(productService.getAllByCategory(categoryService.findByName(category)).size() / length >= page){
                 page += 1;
                 loadProductsPaginatedFiltered();
             }

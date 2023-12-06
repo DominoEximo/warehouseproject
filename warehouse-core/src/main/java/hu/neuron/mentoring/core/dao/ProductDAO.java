@@ -6,11 +6,15 @@ import hu.neuron.mentoring.clientapi.datasource.DatasourceConfig;
 import hu.neuron.mentoring.clientapi.entity.Category;
 import hu.neuron.mentoring.clientapi.entity.Product;
 import hu.neuron.mentoring.clientapi.service.ProductService;
+import hu.neuron.mentoring.core.repositories.CategoryRepository;
+import hu.neuron.mentoring.core.repositories.ProductRepository;
+import hu.neuron.mentoring.core.repositories.UnitRepository;
 import hu.neuron.mentoring.core.service.ProductServiceImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
@@ -28,7 +32,13 @@ public class ProductDAO implements Serializable, DAO<Product>{
     EntityManager em;
 
     @Autowired
-    ProductService productService;
+    ProductRepository productRepository;
+
+    @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    UnitRepository unitRepository;
 
 
     public ProductDAO() {
@@ -37,7 +47,7 @@ public class ProductDAO implements Serializable, DAO<Product>{
 
     @Override
     public void save(Product product){
-        productService.addProduct(product);
+        productRepository.save(product);
     }
 
 
@@ -48,17 +58,11 @@ public class ProductDAO implements Serializable, DAO<Product>{
 
     @Override
     public List<Product> getAll() {
-        Query query = em.createQuery("From Product ");
-        int pageNumber = 1;
-        int pageSize = 10;
-        query.setFirstResult((pageNumber-1) * pageSize);
-        query.setMaxResults(pageSize);
-        List <Product> productList = query.getResultList();
-        return em.createQuery("SELECT p FROM Product p", Product.class).getResultList();
+        return productRepository.findAll();
     }
     @Override
-    public void delete(Product product) {
-       productService.deleteProduct(product.getId());
+    public void delete(long id) {
+       productRepository.deleteById(id);
     }
     @Override
     public Product update(Product product) {
@@ -66,23 +70,19 @@ public class ProductDAO implements Serializable, DAO<Product>{
 
     }
 
-    public List<Product> getAllByCategory(int category){
-        Query query = em.createQuery("select p From Product p where p.category.id ="+ category);
-        List <Product> productList = query.getResultList();
-        return productList;
+    public List<Product> getAllByCategory(Category category){
+        return productRepository.getAllByCategory(category);
     }
 
     public void setUpMockedData(){
         DatasourceConfig.getInstance();
-        CategoryDAO categoryDAO = CategoryDAO.getInstance();
-        UnitDAO unitDAO = UnitDAO.getInstance();
-        Product test = new Product("Csirke",categoryDAO.findByName("Hus"),10, unitDAO.findByName("kg"),BigDecimal.valueOf(40),BigDecimal.valueOf(300),"Hús");
-        Product test2 = new Product("Körte",categoryDAO.findByName("Gyumolcs"),10, unitDAO.findByName("kg"),BigDecimal.valueOf(2),BigDecimal.valueOf(2000),"körtee");
-        Product test3 = new Product("Alma",categoryDAO.findByName("Gyumolcs"),10, unitDAO.findByName("lbs"),BigDecimal.valueOf(10),BigDecimal.valueOf(10),"Almaa");
-        Product test4 = new Product("Csirke3",categoryDAO.findByName("Hus"),10, unitDAO.findByName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús");
+        Product test = new Product("Csirke",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(40),BigDecimal.valueOf(300),"Hús");
+        Product test2 = new Product("Körte",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(2),BigDecimal.valueOf(2000),"körtee");
+        Product test3 = new Product("Alma",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("lbs"),BigDecimal.valueOf(10),BigDecimal.valueOf(10),"Almaa");
+        Product test4 = new Product("Csirke3",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús");
 
         for (int i = 0; i< 10; i++){
-            save(new Product("Csirke3",categoryDAO.findByName("Hus"),10, unitDAO.findByName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús"));
+            save(new Product("Csirke3",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús"));
 
         }
         save(test);
@@ -91,14 +91,10 @@ public class ProductDAO implements Serializable, DAO<Product>{
         save(test4);
     }
     public List<Product> getAllPageinated(int pageNumber, int pageSize) {
-        Query query = em.createQuery("From Product ");
-        query.setFirstResult((pageNumber-1) * pageSize);
-        query.setMaxResults(pageSize);
-        List <Product> productList = query.getResultList();
-        return productService.getProducts(pageNumber,pageSize);
+        return (List<Product>) productRepository.findAll(PageRequest.of(pageNumber-1,pageSize));
     }
     public List<Product> getByCategoryPageinated(int pageNumber, int pageSize, Category category) {
 
-        return productService.getByCategoryPaginated(pageNumber,pageSize,category);
+        return productRepository.getAllByCategory(category, PageRequest.of(pageNumber-1,pageSize));
     }
 }

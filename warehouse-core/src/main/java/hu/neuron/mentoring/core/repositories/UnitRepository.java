@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface UnitRepository extends JpaRepository<Unit,Long> {
 
-    List<Unit> findByUnitName(String name);
+    Unit findByUnitName(String name);
 }

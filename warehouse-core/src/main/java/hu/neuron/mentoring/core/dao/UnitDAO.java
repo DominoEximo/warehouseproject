@@ -3,54 +3,53 @@ package hu.neuron.mentoring.core.dao;
 
 import hu.neuron.mentoring.clientapi.datasource.DatasourceConfig;
 import hu.neuron.mentoring.clientapi.entity.Unit;
+import hu.neuron.mentoring.core.repositories.UnitRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class UnitDAO implements DAO<Unit>{
 
-    static EntityManagerFactory emf;
-    static EntityManager em;
+    @Autowired
+    EntityManagerFactory emf;
+    EntityManager em;
 
-    private static UnitDAO instance = null;
+    @Autowired
+    UnitRepository unitRepository;
 
-    public static synchronized UnitDAO getInstance() {
-        if (instance == null){
-            emf = Persistence
-                    .createEntityManagerFactory("ProductPU");;
-            em = emf.createEntityManager();
-            instance = new UnitDAO();
-            DatasourceConfig.getInstance();
-        }
-
-        return  instance;
+    public UnitDAO() {
     }
-    @Override
-    public Unit findById(int id) {
+
+
+    public Unit findById(long id) {
         return em.find(Unit.class,id);
     }
 
 
     public Unit findByName(String name){
-        TypedQuery<Unit> query = em.createQuery(
-                "SELECT u FROM Unit u WHERE u.unitName = :name" , Unit.class);
-
-        Unit unit = query.setParameter("name", name).getSingleResult();
-        return unit;
+        return unitRepository.findByUnitName(name);
     }
+
+    @Override
+    public Unit findById(int id) {
+        return null;
+    }
+
     @Override
     public List<Unit> getAll() {
-        return em.createQuery("SELECT u FROM Unit u", Unit.class).getResultList();
+
+        return unitRepository.findAll();
     }
 
     @Override
     public void save(Unit unit) {
-        em.getTransaction().begin();
-        em.persist(unit);
-        em.getTransaction().commit();
+        unitRepository.save(unit);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class UnitDAO implements DAO<Unit>{
     }
 
     @Override
-    public void delete(Unit unit) {
-        em.remove(unit);
+    public void delete(long id) {
+        unitRepository.deleteById(id);
     }
 }

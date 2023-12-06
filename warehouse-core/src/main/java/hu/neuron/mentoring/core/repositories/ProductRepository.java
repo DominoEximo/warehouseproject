@@ -14,6 +14,8 @@ import java.util.List;
 public interface ProductRepository extends PagingAndSortingRepository<Product,Long>,JpaRepository<Product,Long> {
 
     List<Product> getAllByCategory(Category category, PageRequest pageRequest);
+    List<Product> getAllByCategory(Category category);
+
 
 
 }

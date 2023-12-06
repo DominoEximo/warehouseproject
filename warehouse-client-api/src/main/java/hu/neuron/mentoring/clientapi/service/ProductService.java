@@ -20,4 +20,7 @@ public interface ProductService extends Serializable {
     List<Unit> getUnits();
 
     List<Product> getByCategoryPaginated(int page,int length,Category category);
+    List<Product> getAllByCategory(Category category);
+
+    void setUpMockedData();
 }
