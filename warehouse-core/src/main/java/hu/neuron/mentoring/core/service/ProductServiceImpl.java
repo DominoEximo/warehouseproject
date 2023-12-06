@@ -7,11 +7,7 @@ import hu.neuron.mentoring.clientapi.service.ProductService;
 import hu.neuron.mentoring.core.dao.CategoryDAO;
 import hu.neuron.mentoring.core.dao.ProductDAO;
 import hu.neuron.mentoring.core.dao.UnitDAO;
-import hu.neuron.mentoring.core.repositories.CategoryRepository;
-import hu.neuron.mentoring.core.repositories.ProductRepository;
-import hu.neuron.mentoring.core.repositories.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -30,7 +26,7 @@ public class ProductServiceImpl  implements ProductService, Serializable {
     UnitDAO unitDao;
     @Override
     public List<Product> getProducts(int page, int length) {
-        List<Product> products = productDAO.getAllPageinated(page,length);
+        List<Product> products = productDAO.getAllPaginated(page,length);
         return products;
     }
 
@@ -57,7 +53,7 @@ public class ProductServiceImpl  implements ProductService, Serializable {
 
     @Override
     public List<Product> getByCategoryPaginated(int page, int length, Category category) {
-        List<Product> products = (List<Product>) productDAO.getByCategoryPageinated(page,length,category);
+        List<Product> products = (List<Product>) productDAO.getByCategoryPaginated(page,length,category);
         return products;
     }
 

@@ -5,18 +5,14 @@ package hu.neuron.mentoring.core.dao;
 import hu.neuron.mentoring.clientapi.datasource.DatasourceConfig;
 import hu.neuron.mentoring.clientapi.entity.Category;
 import hu.neuron.mentoring.clientapi.entity.Product;
-import hu.neuron.mentoring.clientapi.service.ProductService;
 import hu.neuron.mentoring.core.repositories.CategoryRepository;
 import hu.neuron.mentoring.core.repositories.ProductRepository;
 import hu.neuron.mentoring.core.repositories.UnitRepository;
-import hu.neuron.mentoring.core.service.ProductServiceImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.io.Serializable;
@@ -90,10 +86,10 @@ public class ProductDAO implements Serializable, DAO<Product>{
         save(test3);
         save(test4);
     }
-    public List<Product> getAllPageinated(int pageNumber, int pageSize) {
+    public List<Product> getAllPaginated(int pageNumber, int pageSize) {
         return (List<Product>) productRepository.findAll(PageRequest.of(pageNumber-1,pageSize));
     }
-    public List<Product> getByCategoryPageinated(int pageNumber, int pageSize, Category category) {
+    public List<Product> getByCategoryPaginated(int pageNumber, int pageSize, Category category) {
 
         return productRepository.getAllByCategory(category, PageRequest.of(pageNumber-1,pageSize));
     }
