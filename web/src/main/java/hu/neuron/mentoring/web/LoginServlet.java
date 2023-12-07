@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
         }
         else {
             request.setAttribute("errorMessage","Érvénytelen belépési adatok!");
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("login-jsp.jsp");
             rd.forward(request,response);
         }
     }

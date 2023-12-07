@@ -26,7 +26,7 @@ public class UnitDAO implements DAO<Unit>{
     public UnitDAO() {
     }
 
-
+    @Override
     public Unit findById(long id) {
         return em.find(Unit.class,id);
     }
@@ -36,10 +36,6 @@ public class UnitDAO implements DAO<Unit>{
         return unitRepository.findByUnitName(name);
     }
 
-    @Override
-    public Unit findById(int id) {
-        return null;
-    }
 
     @Override
     public List<Unit> getAll() {

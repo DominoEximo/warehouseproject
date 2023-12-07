@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface DAO<T> {
 
-    T findById(int id);
+    T findById(long id);
 
     List<T> getAll();
 

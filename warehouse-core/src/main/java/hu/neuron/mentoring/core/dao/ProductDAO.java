@@ -13,14 +13,12 @@ import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Component
-@SessionScope
 public class ProductDAO implements Serializable, DAO<Product>{
 
     @Autowired
@@ -48,7 +46,7 @@ public class ProductDAO implements Serializable, DAO<Product>{
 
 
     @Override
-    public Product findById(int id) {
+    public Product findById(long id) {
         return em.find(Product.class,id);
     }
 

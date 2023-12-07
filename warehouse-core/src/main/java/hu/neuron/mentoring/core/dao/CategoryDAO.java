@@ -25,18 +25,13 @@ public class CategoryDAO implements DAO<Category>{
 
     public CategoryDAO() {
     }
-
+    @Override
     public Category findById(long id) {
         return categoryRepository.findById(id).get();
     }
 
     public Category findByName(String name){
         return categoryRepository.findByCategoryName(name);
-    }
-
-    @Override
-    public Category findById(int id) {
-        return null;
     }
 
     @Override

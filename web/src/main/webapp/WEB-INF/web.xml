@@ -60,13 +60,29 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
-        <welcome-file>login.html</welcome-file>
-        <welcome-file>login.html</welcome-file>
+        <welcome-file>login.jsf</welcome-file>
     </welcome-file-list>
     <listener>
         <listener-class>
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/spring-security.xml
+            /WEB-INF/applicationContext.xml
+        </param-value>
+    </context-param>
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
 </web-app>

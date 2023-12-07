@@ -20,15 +20,19 @@
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+    <bean id="userDetailsService" class="hu.neuron.mentoring.core.securityConfig.MyUserDetailsService"/>
     <bean id="productService" class="hu.neuron.mentoring.core.service.ProductServiceImpl"/>
     <bean id="categoryService" class="hu.neuron.mentoring.core.service.CategoryServceImpl"/>
     <bean id="unitService" class="hu.neuron.mentoring.core.service.UnitServiceImpl"/>
+    <bean id="userService" class="hu.neuron.mentoring.core.service.UserServiceImpl"/>
+    <bean id="roleService" class="hu.neuron.mentoring.core.service.RoleServiceImpl"/>
     <bean id="productDAO" class="hu.neuron.mentoring.core.dao.ProductDAO"/>
     <bean id="categoryDAO" class="hu.neuron.mentoring.core.dao.CategoryDAO"/>
     <bean id="unitDAO" class="hu.neuron.mentoring.core.dao.UnitDAO"/>
+    <bean id="userDAO" class="hu.neuron.mentoring.core.dao.UserDAO"/>
+    <bean id="roleDAO" class="hu.neuron.mentoring.core.dao.RoleDAO"/>
     <bean lazy-init="true" id="productBean" class="hu.neuron.mentoring.web.beans.ProductBean"/>
     <bean lazy-init="true" id="localeBean" class="hu.neuron.mentoring.web.beans.LocaleBean"/>
     <bean lazy-init="true" id="formProcessBean" class="hu.neuron.mentoring.web.beans.FormProcessBean"/>
-
-
+    <bean lazy-init="true" id="userLoginBean" class="hu.neuron.mentoring.web.beans.UserLoginBean"/>
 </beans>

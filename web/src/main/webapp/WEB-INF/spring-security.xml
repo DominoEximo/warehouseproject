@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://www.springframework.org/schema/c"
+             xmlns:security="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http use-expressions="true" auto-config='true' disable-url-rewriting="false">
+        <csrf disabled="true"/>
+        <intercept-url pattern="/*" access="permitAll()"/>
+        <intercept-url pattern="/css/*" access="permitAll()"/>
+        <intercept-url pattern="/backoffice/*" access="hasAuthority('BACKOFFICE')"/>
+        <intercept-url pattern="/webshop/*" access="hasAuthority('USER')"/>
+        <form-login username-parameter="j_username" password-parameter="j_password" authentication-failure-url="/login.jsf" default-target-url="/webshop/products.jsf" login-page="/login.jsf" login-processing-url="/j_spring_security_check"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDetailsService">
+            <security:password-encoder ref="bCryptPasswordEncoder" />
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="userDetailsService" class="hu.neuron.mentoring.core.securityConfig.MyUserDetailsService"/>
+
+    <beans:bean id="bCryptPasswordEncoder"
+          class="org.springframework.security.crypto.password.NoOpPasswordEncoder"/>
+
+</beans:beans>
