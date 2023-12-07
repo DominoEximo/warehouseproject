@@ -21,7 +21,7 @@ public class Product {
 
     private Integer amount;
 
-    @OneToOne(cascade = CascadeType.MERGE,orphanRemoval = true)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "unit",referencedColumnName = "id")
     private Unit unit;
 

@@ -17,5 +17,10 @@ public interface CategoryService {
 
     void delete(Category category);
 
+    /**
+     * adds predefined categories to the database
+     */
+    void setUpMockedData();
+
 
 }

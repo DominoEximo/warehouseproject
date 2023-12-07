@@ -61,4 +61,9 @@ public class UnitDAO implements DAO<Unit>{
     public void delete(long id) {
         unitRepository.deleteById(id);
     }
+
+    public void setUpMockedData(){
+        save(new Unit("kg"));
+        save(new Unit("lbs"));
+    }
 }

@@ -59,4 +59,12 @@ public class CategoryDAO implements DAO<Category>{
     public void delete(long id) {
         categoryRepository.deleteById(id);
     }
+
+    public void setUpMockedData(){
+        save(new Category("Hus"));
+        save(new Category("Gyumolcs"));
+        save(new Category("Valami"));
+        save(new Category("Ruha"));
+
+    }
 }

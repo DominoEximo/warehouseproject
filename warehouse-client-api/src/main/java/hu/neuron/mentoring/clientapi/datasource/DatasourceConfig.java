@@ -38,7 +38,7 @@ public class DatasourceConfig {
     public static synchronized DatasourceConfig getInstance() {
         if (instance == null){
             instance = new DatasourceConfig();
-            instance.setUpDB();
+            //instance.setUpDB();
         }
 
         return  instance;

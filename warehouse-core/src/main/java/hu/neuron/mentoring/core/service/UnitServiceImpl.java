@@ -39,4 +39,9 @@ public class UnitServiceImpl implements UnitService {
     public void delete(Unit unit) {
         unitDAO.delete(unit.getId());
     }
+
+    @Override
+    public void setUpMockedData() {
+        unitDAO.setUpMockedData();
+    }
 }

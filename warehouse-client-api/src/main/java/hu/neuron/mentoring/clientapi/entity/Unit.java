@@ -13,8 +13,8 @@ public class Unit {
     private String unitName;
 
 
-    public Unit(String categoryName) {
-        this.unitName = categoryName;
+    public Unit(String unitName) {
+        this.unitName = unitName;
     }
 
     public Unit() {

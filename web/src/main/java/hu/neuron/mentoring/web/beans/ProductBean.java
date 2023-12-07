@@ -3,6 +3,7 @@ package hu.neuron.mentoring.web.beans;
 
 import hu.neuron.mentoring.clientapi.service.CategoryService;
 import hu.neuron.mentoring.clientapi.service.ProductService;
+import hu.neuron.mentoring.clientapi.service.UnitService;
 import hu.neuron.mentoring.core.dao.CategoryDAO;
 import hu.neuron.mentoring.core.dao.ProductDAO;
 import hu.neuron.mentoring.clientapi.entity.Category;
@@ -29,6 +30,9 @@ public class ProductBean  implements Serializable {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    UnitService unitService;
+
     private List<Product> products;
 
     private int length = 5;
@@ -45,6 +49,8 @@ public class ProductBean  implements Serializable {
 
     @PostConstruct
     public void init(){
+        categoryService.setUpMockedData();
+        unitService.setUpMockedData();
         productService.setUpMockedData();
         categories = productService.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
         category = "Hus";

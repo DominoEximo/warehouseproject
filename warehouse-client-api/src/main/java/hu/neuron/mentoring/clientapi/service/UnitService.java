@@ -15,4 +15,9 @@ public interface UnitService {
     void save(Unit unit);
 
     void delete(Unit unit);
+
+    /**
+     * adds predefined units to the database
+     */
+    void setUpMockedData();
 }

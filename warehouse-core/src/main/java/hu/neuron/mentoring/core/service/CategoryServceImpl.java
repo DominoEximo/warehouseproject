@@ -38,4 +38,9 @@ public class CategoryServceImpl implements CategoryService {
     public void delete(Category category) {
         categoryDAO.delete(category.getId());
     }
+
+    @Override
+    public void setUpMockedData() {
+        categoryDAO.setUpMockedData();
+    }
 }
