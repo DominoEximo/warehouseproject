@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +71,8 @@ public class UserDAO implements DAO<User>{
         List<Role> bacofficeRoles = new ArrayList<>();
         bacofficeRoles.add(roleRepository.findByName("USER"));
         bacofficeRoles.add(roleRepository.findByName("BACKOFFICE"));
-        save(new User("user","test@gmail.com","06306618148","2002/04/05",'m',"password",userRoles));
-        save(new User("admin","DominoEximo@gmail.com","0630123502","2010/10/12",'f',"password",bacofficeRoles));
+        save(new User("user","test@gmail.com","06306618148",new Date(System.currentTimeMillis()),'m',"password",userRoles));
+        save(new User("admin","DominoEximo@gmail.com","0630123502",new Date(System.currentTimeMillis()),'f',"password",bacofficeRoles));
 
     }
 }

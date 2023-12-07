@@ -2,7 +2,8 @@ package hu.neuron.mentoring.clientapi.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class User {
 
     private String phoneNumber;
 
-    private String birthDate;
+    private Date birthDate;
 
     private Character gender;
 
@@ -36,7 +37,7 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String phoneNumber, String birthDate, Character gender, String password, List<Role> roles) {
+    public User(String name, String email, String phoneNumber, Date birthDate, Character gender, String password, List<Role> roles) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -70,11 +71,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 

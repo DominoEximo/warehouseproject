@@ -25,14 +25,21 @@ public class UserBean implements Serializable {
     RoleService roleService;
     private List<User> users;
 
+    private User userToBeManaged;
+
     private List<String> roles;
+
+    private List<Role> roleList;
 
     private int page = 1;
 
     private int length = 5;
 
+    private String chosenRole;
+
     @PostConstruct
     public void init(){
+        userToBeManaged = new User();
         roles = roleService.findAll().stream().map(Role::getName).collect(Collectors.toList());
         loadUsers();
     }
@@ -60,6 +67,14 @@ public class UserBean implements Serializable {
         this.length = length;
     }
 
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+
     public void loadUsers(){
         users = null;
         users = userService.getAllPaginated(page,length);
@@ -85,5 +100,62 @@ public class UserBean implements Serializable {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public String getChosenRole() {
+        return chosenRole;
+    }
+
+    public void setChosenRole(String chosenRole) {
+        this.chosenRole = chosenRole;
+    }
+
+    public User getUserToBeManaged() {
+        return userToBeManaged;
+    }
+
+    public void setUserToBeManaged(User userToBeManaged) {
+        this.userToBeManaged = userToBeManaged;
+    }
+
+    public void setUpUserToBeManaged(User user){
+        userToBeManaged.setId(user.getId());
+        userToBeManaged.setRoles(user.getRoles());
+        userToBeManaged.setEmail(user.getEmail());
+        userToBeManaged.setPassword(user.getPassword());
+        userToBeManaged.setPhoneNumber(user.getPhoneNumber());
+        userToBeManaged.setName(user.getName());
+        userToBeManaged.setBirthDate(user.getBirthDate());
+        userToBeManaged.setGender(user.getGender());
+    }
+
+    public void listAvailableRoles(User user){
+        setUpUserToBeManaged(user);
+        List<Role> userRoleList = user.getRoles();
+        List<String> names = userRoleList.stream().map(u -> u.getName()).collect(Collectors.toList());
+
+        roleList = roleService.findAll();
+        roleList = roleList.stream().filter(r -> !names.contains(r.getName())).collect(Collectors.toList());
+
+    }
+
+    public void removeRoleFromUser(String role){
+        List<Role> roles = userToBeManaged.getRoles();
+        for (Role R : roles){
+            if (R.getName().equals(role)){
+                roles.remove(R);
+            }
+        }
+        userToBeManaged.setRoles(roles);
+        userService.save(userToBeManaged);
+        userToBeManaged = new User();
+    }
+
+    public void addRoleToUser(String role){
+        List<Role> roles = userToBeManaged.getRoles();
+        roles.add(roleService.findByName(role));
+        userToBeManaged.setRoles(roles);
+        userService.save(userToBeManaged);
+        userToBeManaged = new User();
     }
 }

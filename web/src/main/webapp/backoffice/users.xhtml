@@ -10,9 +10,9 @@
     <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css"/>
     <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css"/>
     <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.60/inputmask/jquery.inputmask.js"></script>
+
 
     <link rel="stylesheet" href="../css/products.css"/>
     <script>
@@ -64,10 +64,16 @@
             </p:column>
 
             <p:column headerText="#{product['userBirth']}">
-                <h:outputText value="#{userVar.birthDate}" />
+                <h:outputText value="#{userVar.birthDate}"/>
             </p:column>
             <p:column headerText="#{product['userGender']}">
                 <h:outputText value="#{userVar.gender}" />
+            </p:column>
+            <p:column headerText="#{product['userFormRole']}">
+                <p:commandButton update="roleForm" disableOnAjax="false" value="#{product['roleFormRemoveAction']}" action="#{userBean.setUpUserToBeManaged(userVar)}"  onclick="PF('dlg2').show()"/>
+            </p:column>
+            <p:column headerText="#{product['userFormRole']}">
+                <p:commandButton update="roleForm2" disableOnAjax="false" value="#{product['roleFormAction']}" action="#{userBean.listAvailableRoles(userVar)}"  onclick="PF('dlg3').show()"/>
             </p:column>
         </p:dataTable>
         <h:form>
@@ -77,7 +83,7 @@
                     <p:commandButton update="usersTable" disableOnAjax="false" value="#{product['next']}"  id="next"  action="#{userBean.nextPage()}" class=" btn btn-dark"/>
                 </div>
                 <span style="display: flex;">
-                    <p:commandButton value="#{product['add']}"  onclick="PF('dlg1').show()"/>
+                    <p:commandButton update="usersTable" value="#{product['add']}" onclick="PF('dlg1').show()"/>
                 </span>
             </div>
         </h:form>
@@ -104,7 +110,7 @@
                     </h:selectOneMenu>
 
                     <p:outputLabel for="@next" value="#{product.userFormBirth}" />
-                    <p:inputMask id="date" value="#{formProcessBean.user.birthDate}" mask="9999/99/99" />
+                    <p:datePicker id="birth" value="#{formProcessBean.user.birthDate}"/>
 
                     <p:outputLabel for="phone" value="#{product.userFormPhone}"/>
                     <p:inputMask id="phone" value="#{formProcessBean.user.phoneNumber}"
@@ -119,7 +125,35 @@
 
                 </h:panelGrid>
 
-                <p:commandButton value="#{product.add}" id="btnForm" process="@form" oncomplete="PF('dlg1').hide()" action="#{formProcessBean.processUserForm()}" styleClass="mr-2"/>
+                <p:commandButton value="#{product.add}" disableOnAjax="false" id="btnForm" process="@form" oncomplete="PF('dlg1').hide()" action="#{formProcessBean.processUserForm()}" styleClass="mr-2"/>
+            </h:form>
+        </p>
+    </p:dialog>
+    <p:dialog id="rolesTableDialog" header="#{product.userFormTitle}" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade">
+        <p class="m-0">
+            <h:form id="roleForm" style="display: flex !important; flex-direction: column; flex-wrap: nowrap; align-items: center">
+                <p:dataTable id="rolesTable" var="roleVar" value="#{userBean.userToBeManaged.roles}">
+                    <p:column headerText="#{product['roleName']}">
+                        <h:outputText value="#{roleVar.name}" />
+                    </p:column>
+                    <p:column headerText="#{product['roleFormRemoveAction']}">
+                        <p:commandButton value="#{product.add}" id="roleRemoveButton" process="@this" oncomplete="PF('dlg2').hide()" action="#{userBean.removeRoleFromUser(roleVar.name)}" styleClass="mr-2"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p>
+    </p:dialog>
+    <p:dialog id="rolesTableDialog2" header="#{product.userFormTitle}" widgetVar="dlg3" minHeight="40" width="350" showEffect="fade">
+        <p class="m-0">
+            <h:form id="roleForm2" style="display: flex !important; flex-direction: column; flex-wrap: nowrap; align-items: center">
+                <p:dataTable id="rolesTable2" var="roleVar" value="#{userBean.roleList}">
+                    <p:column headerText="#{product['roleName']}">
+                        <h:outputText value="#{roleVar.name}" />
+                    </p:column>
+                    <p:column headerText="#{product['roleFormAction']}">
+                        <p:commandButton value="#{product.add}" id="roleAddButton" process="@this" oncomplete="PF('dlg3').hide()" action="#{userBean.addRoleToUser(roleVar.name)}" styleClass="mr-2"/>
+                    </p:column>
+                </p:dataTable>
             </h:form>
         </p>
     </p:dialog>
