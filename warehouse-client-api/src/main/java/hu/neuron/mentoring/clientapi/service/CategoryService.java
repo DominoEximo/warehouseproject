@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface CategoryService {
 
+
     Category findById(long id);
 
     Category findByName(String name);
