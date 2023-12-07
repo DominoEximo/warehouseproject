@@ -85,7 +85,7 @@ public class ProductDAO implements Serializable, DAO<Product>{
         save(test4);
     }
     public List<Product> getAllPaginated(int pageNumber, int pageSize) {
-        return (List<Product>) productRepository.findAll(PageRequest.of(pageNumber-1,pageSize));
+        return productRepository.findAll(PageRequest.of(pageNumber-1,pageSize)).getContent();
     }
     public List<Product> getByCategoryPaginated(int pageNumber, int pageSize, Category category) {
 

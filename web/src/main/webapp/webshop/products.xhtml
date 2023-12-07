@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
       <title>#{product['title']}</title>
@@ -29,31 +30,9 @@
       <div id='loader'><img src="/images/ZZ5H.gif" alt="Loading..."/></div>
       <div id='loaderOverlay'></div>
       <div class="outer-container">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                  <a class="navbar-brand" href="#">#{product['title']}</a>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                  </button>
-
-                  <div class="collapse navbar-collapse optionList" id="navbarSupportedContent">
-
-                        <form class="form-inline my-2 my-lg-0">
-                              <a class="nav-link" href="../products-jsp.jsp">#{product['Products']} <span class="sr-only">(current)</span></a>
-                              <a class="nav-link" href="#">#{product['Orders']} <span class="sr-only">(current)</span></a>
-                              <a class="nav-link" href="/secured/profile.html">#{product['Profile']} <span class="sr-only">(current)</span></a>
-                              <h:form id="form">
-
-                                    <br />
-                                    <h:commandButton value="English"
-                                                     action="#{localeBean.changeLanguage('en')}"
-                                                     rendered="#{localeBean.locale == 'hu_HU'}"/>
-                                    <h:commandButton  value="Magyar"
-                                                     action="#{localeBean.changeLanguage('hu_HU')}"
-                                                     rendered="#{localeBean.locale == 'en'}"/>
-                              </h:form>
-                        </form>
-                  </div>
-            </nav>
+            <ui:insert name="navbar" >
+                  <ui:include src="../navbar.xhtml" />
+            </ui:insert>
             <div class="label-container">
                   <div class="profile-name-container">
                         <span class="profile-brand">#{product['listName']}</span>

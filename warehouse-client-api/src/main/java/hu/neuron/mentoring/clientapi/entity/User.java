@@ -17,7 +17,7 @@ public class User {
 
     private String phoneNumber;
 
-    private Date birthDate;
+    private String birthDate;
 
     private Character gender;
 
@@ -36,7 +36,7 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String phoneNumber, Date birthDate, Character gender, String password, List<Role> roles) {
+    public User(String name, String email, String phoneNumber, String birthDate, Character gender, String password, List<Role> roles) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -70,11 +70,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
