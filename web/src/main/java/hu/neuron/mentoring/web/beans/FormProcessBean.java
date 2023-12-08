@@ -90,7 +90,7 @@ public class FormProcessBean implements Serializable {
         }catch (Exception e){
             logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error during adding product");
-            PrimeFaces.current().dialog().showMessageDynamic(message);
+                PrimeFaces.current().dialog().showMessageDynamic(message);
         }
         setProduct(new Product());
 

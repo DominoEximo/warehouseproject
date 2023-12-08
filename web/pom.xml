@@ -14,7 +14,8 @@
   <packaging>war</packaging>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <rootDirectory>${project.basedir}/src/main/resources/config.properties</rootDirectory>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>11</maven.compiler.target>
     <maven.compiler.source>11</maven.compiler.source>
     <junit.version>5.9.2</junit.version>

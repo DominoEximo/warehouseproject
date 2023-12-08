@@ -233,7 +233,21 @@
     </dependencies>
 </dependencyManagement>
   <build>
+      <resources>
+          <resource>
+              <directory>src/main/resources</directory>
+
+          </resource>
+      </resources>
     <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.2.0</version>
+            <configuration>
+                <encoding>${project.build.sourceEncoding}</encoding>
+            </configuration>
+        </plugin>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>

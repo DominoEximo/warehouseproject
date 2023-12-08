@@ -2,8 +2,8 @@
 <Configuration status="INFO" monitorInterval="60">
     <Appenders>
         <RollingFile name="RollingFile"
-                     fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/app.log"
-                     filePattern="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/app-%d{yyyy-MM-dd}-%i.log.gz">
+                     fileName="${project.basedir}/src/main/resources/logs/app.log"
+                     filePattern="${project.basedir}/src/main/resources/logs/app-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %X{username} %msg%n</Pattern>
             </PatternLayout>
@@ -22,10 +22,10 @@
         <Console name="ConsoleAppender" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
-        <File name="FileAppender" fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\application-${date:yyyyMMdd}.log" immediateFlush="false" append="true">
+        <File name="FileAppender" fileName="${project.basedir}/src/main/resources/application-${date:yyyyMMdd}.log" immediateFlush="false" append="true">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
-        <File name="InfoFile" fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/WAREHOUSE_ALL.log">
+        <File name="InfoFile" fileName="${project.basedir}/src/main/resources/logs/WAREHOUSE_ALL.log">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %X{username} %msg%n</Pattern>
             </PatternLayout>
@@ -35,7 +35,7 @@
             </Filters>
         </File>
         <!-- Separate appender for ERROR messages -->
-        <File name="ErrorFile" fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/WAREHOUSE_ERR.log">
+        <File name="ErrorFile" fileName="${project.basedir}/src/main/resources/logs/WAREHOUSE_ERR.log">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %X{username} %msg%n</Pattern>
             </PatternLayout>
@@ -45,7 +45,7 @@
             </Filters>
         </File>
         <!-- Separate appender for ERROR messages from 3rd-party libraries -->
-        <File name="OtherErrorFile" fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/OTHER_ERR.log">
+        <File name="OtherErrorFile" fileName="${project.basedir}/src/main/resources/logs/OTHER_ERR.log">
             <PatternLayout>
                 <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %X{username} %msg%n</Pattern>
             </PatternLayout>
