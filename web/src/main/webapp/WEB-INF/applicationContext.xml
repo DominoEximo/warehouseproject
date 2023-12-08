@@ -21,6 +21,8 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
     <bean id="userDetailsService" class="hu.neuron.mentoring.core.securityConfig.MyUserDetailsService"/>
+    <bean id="authenticationEventListener" class="hu.neuron.mentoring.web.listeners.AuthenticationEventListener"/>
+    <bean id="authenticationFailureListener" class="hu.neuron.mentoring.web.listeners.AuthenticationFailureListener"/>
     <bean id="productService" class="hu.neuron.mentoring.core.service.ProductServiceImpl"/>
     <bean id="categoryService" class="hu.neuron.mentoring.core.service.CategoryServceImpl"/>
     <bean id="unitService" class="hu.neuron.mentoring.core.service.UnitServiceImpl"/>

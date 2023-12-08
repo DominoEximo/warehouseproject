@@ -7,6 +7,8 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import jakarta.ws.rs.ApplicationPath;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,8 @@ import java.util.Locale;
 @Component
 @ApplicationScoped
 public class LocaleBean implements Serializable {
+
+    private static final Logger logger = LogManager.getLogger(LocaleBean.class);
 
     private String locale = "en";
 
@@ -37,7 +41,12 @@ public class LocaleBean implements Serializable {
 
     @PostConstruct
     public void init(){
-        FacesContext.getCurrentInstance().getViewRoot()
-                .setLocale(new Locale(this.locale));
+        try {
+            FacesContext.getCurrentInstance().getViewRoot()
+                    .setLocale(new Locale(this.locale));
+        }catch (Exception e){
+            logger.error("Error during bean initialization", e);
+        }
+
     }
 }

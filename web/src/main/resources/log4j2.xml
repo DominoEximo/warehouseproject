@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO" monitorInterval="60">
+    <Appenders>
+        <RollingFile name="RollingFile"
+                     fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/app.log"
+                     filePattern="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/app-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %X{username} %msg%n</Pattern>
+            </PatternLayout>
+
+            <!-- Rotate daily at midnight -->
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+
+                <!-- Rotate when the log file reaches 100MB -->
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+
+            <!-- Keep a certain number of archived log files -->
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+        <File name="FileAppender" fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\application-${date:yyyyMMdd}.log" immediateFlush="false" append="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+        <File name="InfoFile" fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/WAREHOUSE_ALL.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %X{username} %msg%n</Pattern>
+            </PatternLayout>
+            <Filters>
+                <!-- Only accept INFO level messages -->
+                <ThresholdFilter level="INFO"/>
+            </Filters>
+        </File>
+        <!-- Separate appender for ERROR messages -->
+        <File name="ErrorFile" fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/WAREHOUSE_ERR.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %X{username} %msg%n</Pattern>
+            </PatternLayout>
+            <Filters>
+                <!-- Only accept ERROR level messages -->
+                <ThresholdFilter level="ERROR"/>
+            </Filters>
+        </File>
+        <!-- Separate appender for ERROR messages from 3rd-party libraries -->
+        <File name="OtherErrorFile" fileName="C:\Users\PappD\IdeaProjects\warehouseproject\web\src\main\resources\logs/OTHER_ERR.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %X{username} %msg%n</Pattern>
+            </PatternLayout>
+            <Filters>
+                <!-- Only accept messages with a specific marker -->
+                <MarkerFilter marker="THIRD_PARTY_ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="ConsoleAppender" />
+            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="RollingFile"/>
+            <AppenderRef ref="InfoFile"/>
+            <AppenderRef ref="ErrorFile"/>
+            <AppenderRef ref="OtherErrorFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

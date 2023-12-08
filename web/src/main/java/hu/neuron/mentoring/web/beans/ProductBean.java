@@ -9,6 +9,8 @@ import hu.neuron.mentoring.clientapi.entity.Product;
 import hu.neuron.mentoring.clientapi.entity.Unit;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 @Component
 @SessionScoped
 public class ProductBean  implements Serializable {
+
+    private static final Logger logger = LogManager.getLogger(ProductBean.class);
 
     @Autowired
     ProductService productService;
@@ -46,12 +50,17 @@ public class ProductBean  implements Serializable {
 
     @PostConstruct
     public void init(){
-        categoryService.setUpMockedData();
-        unitService.setUpMockedData();
-        productService.setUpMockedData();
-        categories = productService.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
-        category = "Hus";
-        units = productService.getUnits().stream().map(Unit::getUnitName).collect(Collectors.toList());
+        try {
+            categoryService.setUpMockedData();
+            unitService.setUpMockedData();
+            productService.setUpMockedData();
+            categories = productService.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
+            category = "Hus";
+            units = productService.getUnits().stream().map(Unit::getUnitName).collect(Collectors.toList());
+        }catch (Exception e){
+            logger.error("Error during bean initialization", e);
+        }
+
     }
 
     public List<Product> getProducts() {
@@ -113,8 +122,18 @@ public class ProductBean  implements Serializable {
     }
 
     public void loadProductsPaginatedFiltered(){
-        products = null;
-        products = productService.getByCategoryPaginated(page,length,categoryService.findByName(category));
+        String transactionName = "loadProductsPaginatedFiltered";
+        try {
+            logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+
+            products = null;
+            products = productService.getByCategoryPaginated(page,length,categoryService.findByName(category));
+
+            logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+        }
+
     }
 
     public void nextPage(){

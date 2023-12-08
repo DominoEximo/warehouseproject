@@ -7,6 +7,8 @@ import hu.neuron.mentoring.clientapi.service.RoleService;
 import hu.neuron.mentoring.clientapi.service.UserService;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,9 @@ import java.util.stream.Collectors;
 @Component
 @SessionScoped
 public class UserBean implements Serializable {
+
+    private static final Logger logger = LogManager.getLogger(UserBean.class);
+
 
     @Autowired
     UserService userService;
@@ -39,9 +44,14 @@ public class UserBean implements Serializable {
 
     @PostConstruct
     public void init(){
-        userToBeManaged = new User();
-        roles = roleService.findAll().stream().map(Role::getName).collect(Collectors.toList());
-        loadUsers();
+        try {
+            userToBeManaged = new User();
+            roles = roleService.findAll().stream().map(Role::getName).collect(Collectors.toList());
+            loadUsers();
+        }catch (Exception e){
+            logger.error("Error during bean initialization", e);
+        }
+
     }
     public List<User> getUsers() {
         return users;
@@ -76,8 +86,16 @@ public class UserBean implements Serializable {
     }
 
     public void loadUsers(){
-        users = null;
-        users = userService.getAllPaginated(page,length);
+        String transactionName = "loadUsers";
+        try {
+            logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+            users = null;
+            users = userService.getAllPaginated(page,length);
+            logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+        }
+
     }
 
     public void nextPage(){

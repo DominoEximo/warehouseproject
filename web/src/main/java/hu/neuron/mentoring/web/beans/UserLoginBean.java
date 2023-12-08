@@ -7,13 +7,19 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.ThreadContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+
 @Component
 @RequestScoped
 public class UserLoginBean{
+
+    private static final Logger logger = LogManager.getLogger(UserLoginBean.class);
 
     private String username;
     private String password;
@@ -38,12 +44,11 @@ public class UserLoginBean{
     public String login() throws ServletException, IOException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpServletRequest request = ((HttpServletRequest)context.getRequest());
-
         ServletResponse resposnse = ((ServletResponse)context.getResponse());
         RequestDispatcher dispatcher = request.getRequestDispatcher("/j_spring_security_check");
         dispatcher.forward(request, resposnse);
         FacesContext.getCurrentInstance().responseComplete();
-
+        logger.info("User logged in.");
 
         return null;
     }
