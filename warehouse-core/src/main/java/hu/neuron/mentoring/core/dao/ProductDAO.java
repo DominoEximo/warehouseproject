@@ -8,7 +8,6 @@ import hu.neuron.mentoring.clientapi.entity.Product;
 import hu.neuron.mentoring.core.repositories.CategoryRepository;
 import hu.neuron.mentoring.core.repositories.ProductRepository;
 import hu.neuron.mentoring.core.repositories.UnitRepository;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +19,6 @@ import java.util.List;
 
 @Component
 public class ProductDAO implements Serializable, DAO<Product>{
-
-    @Autowired
-    EntityManagerFactory emf;
-    EntityManager em;
 
     @Autowired
     ProductRepository productRepository;
@@ -47,7 +42,7 @@ public class ProductDAO implements Serializable, DAO<Product>{
 
     @Override
     public Product findById(long id) {
-        return em.find(Product.class,id);
+        return productRepository.findById(id).get();
     }
 
     @Override
@@ -60,7 +55,7 @@ public class ProductDAO implements Serializable, DAO<Product>{
     }
     @Override
     public Product update(Product product) {
-        return em.merge(product);
+        return productRepository.save(product);
 
     }
 

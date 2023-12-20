@@ -19,9 +19,7 @@ import java.util.List;
 @Component
 public class UserDAO implements DAO<User>{
 
-    @Autowired
-    EntityManagerFactory emf;
-    EntityManager em;
+
 
     @Autowired
     UserRepository userRepository;

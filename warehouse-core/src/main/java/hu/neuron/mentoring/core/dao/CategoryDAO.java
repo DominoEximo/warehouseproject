@@ -17,10 +17,6 @@ import java.util.List;
 public class CategoryDAO implements DAO<Category>{
 
     @Autowired
-    EntityManagerFactory emf;
-    EntityManager em;
-
-    @Autowired
     CategoryRepository categoryRepository;
 
     public CategoryDAO() {
@@ -46,7 +42,7 @@ public class CategoryDAO implements DAO<Category>{
 
     @Override
     public Category update(Category category) {
-        return em.merge(category);
+        return categoryRepository.save(category);
 
     }
 

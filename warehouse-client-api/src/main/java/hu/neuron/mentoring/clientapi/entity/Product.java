@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -31,6 +33,8 @@ public class Product {
 
     private String description;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<Stock> pastData = new ArrayList<>();
 
     public Product(String name, Category category, Integer amount, Unit unit, BigDecimal purchasePrice, BigDecimal sellPrice, String description) {
         this.name = name;

@@ -24,11 +24,13 @@
     <bean id="authenticationEventListener" class="hu.neuron.mentoring.web.listeners.AuthenticationEventListener"/>
     <bean id="authenticationFailureListener" class="hu.neuron.mentoring.web.listeners.AuthenticationFailureListener"/>
     <bean id="productService" class="hu.neuron.mentoring.core.service.ProductServiceImpl"/>
+    <bean id="monetizationService" class="hu.neuron.mentoring.core.service.MonetizationServiceImpl"/>
     <bean id="categoryService" class="hu.neuron.mentoring.core.service.CategoryServceImpl"/>
     <bean id="unitService" class="hu.neuron.mentoring.core.service.UnitServiceImpl"/>
     <bean id="userService" class="hu.neuron.mentoring.core.service.UserServiceImpl"/>
     <bean id="roleService" class="hu.neuron.mentoring.core.service.RoleServiceImpl"/>
     <bean id="productDAO" class="hu.neuron.mentoring.core.dao.ProductDAO"/>
+    <bean id="monetizationDAO" class="hu.neuron.mentoring.core.dao.MonetizationDAO"/>
     <bean id="categoryDAO" class="hu.neuron.mentoring.core.dao.CategoryDAO"/>
     <bean id="unitDAO" class="hu.neuron.mentoring.core.dao.UnitDAO"/>
     <bean id="userDAO" class="hu.neuron.mentoring.core.dao.UserDAO"/>

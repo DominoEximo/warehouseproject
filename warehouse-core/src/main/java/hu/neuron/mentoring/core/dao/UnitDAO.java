@@ -16,9 +16,6 @@ import java.util.List;
 @Component
 public class UnitDAO implements DAO<Unit>{
 
-    @Autowired
-    EntityManagerFactory emf;
-    EntityManager em;
 
     @Autowired
     UnitRepository unitRepository;
@@ -28,7 +25,7 @@ public class UnitDAO implements DAO<Unit>{
 
     @Override
     public Unit findById(long id) {
-        return em.find(Unit.class,id);
+        return unitRepository.findById(id).get();
     }
 
 
@@ -50,7 +47,7 @@ public class UnitDAO implements DAO<Unit>{
 
     @Override
     public Unit update(Unit unit) {
-        return em.merge(unit);
+        return unitRepository.save(unit);
     }
 
     @Override

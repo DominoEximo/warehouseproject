@@ -4,6 +4,7 @@ import hu.neuron.mentoring.clientapi.entity.User;
 import hu.neuron.mentoring.clientapi.service.UserService;
 import hu.neuron.mentoring.core.dao.RoleDAO;
 import hu.neuron.mentoring.core.dao.UserDAO;
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
 
     @Autowired
     UserDAO userDAO;

@@ -48,4 +48,6 @@ public interface ProductService extends Serializable {
      * fills the database with predefined data
      */
     void setUpMockedData();
+
+    void updateProductQuantity(Long productId, int newQuantity);
 }
