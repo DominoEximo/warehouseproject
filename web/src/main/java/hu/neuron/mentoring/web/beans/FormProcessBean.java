@@ -288,6 +288,14 @@ public class FormProcessBean implements Serializable {
         validateInput("Start Date",offerToBeManaged.getStartDate().toString());
         validateInput("End Date",offerToBeManaged.getEndDate().toString());
         validateInput("Price",offerToBeManaged.getPrice().toString());
+        if(offerToBeManaged.getEndDate().getTime() < offerToBeManaged.getStartDate().getTime()){
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid Date");
+            PrimeFaces.current().dialog().showMessageDynamic(message);
+
+        }
+
+
         if (valid){
             try {
                 logger.info("Transaction '{}' started in FormProcessBean", transactionName);

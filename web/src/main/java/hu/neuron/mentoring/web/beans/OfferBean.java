@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @SessionScoped
@@ -46,6 +48,8 @@ public class OfferBean implements Serializable {
     private int page = 1;
 
     private int length = 5;
+
+    private Date searchDate = new Date();
 
     @PostConstruct
     public void init(){
@@ -91,6 +95,7 @@ public class OfferBean implements Serializable {
             logger.info("Transaction '{}' started in OfferBean", transactionName);
             offerList = null;
             offerList = offerService.findAllPaginated(page,length);
+            offerList = offerList.stream().filter(x -> (x.getStartDate().getTime() <= searchDate.getTime() && x.getEndDate().getTime() >= searchDate.getTime())).collect(Collectors.toList());
             logger.info("Transaction '{}' completed successfully in OfferBean", transactionName);
         }catch (Exception e){
             logger.error("Transaction '{}' failed in OfferBean: {}",transactionName,e.getMessage());
@@ -128,5 +133,13 @@ public class OfferBean implements Serializable {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    public Date getSearchDate() {
+        return searchDate;
+    }
+
+    public void setSearchDate(Date searchDate) {
+        this.searchDate = searchDate;
     }
 }

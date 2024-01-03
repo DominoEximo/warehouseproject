@@ -40,6 +40,14 @@
             <h:form>
                 <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{offerBean.length}" modifyValueOnWheel="false"></p:inputNumber>
             </h:form>
+            <span>
+                <p:outputLabel for="@next" value="#{product.searchDate}" />
+                <h:form>
+                    <p:datePicker onchange="submit()" id="searchDate" value="#{offerBean.searchDate}"/>
+                </h:form>
+
+            </span>
+
         </div>
         <div>
             <p:commandButton action="#{offerBean.loadOffers()}" update="offerTable" disableOnAjax="false" id="refresh" value="#{product['refresh']}"  class="refresh-button btn btn-dark"></p:commandButton>
