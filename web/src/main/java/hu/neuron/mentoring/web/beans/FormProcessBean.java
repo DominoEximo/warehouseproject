@@ -41,11 +41,16 @@ public class FormProcessBean implements Serializable {
     @Autowired
     MonetizationService monetizationService;
 
+    @Autowired
+    OfferService offerService;
+
     private Product product;
 
     private User user;
 
     private Monetization monetizationToBeManaged;
+
+    private Offer offerToBeManaged;
 
     private String chosenCategory;
 
@@ -54,6 +59,8 @@ public class FormProcessBean implements Serializable {
     private String chosenRole;
 
     private Long chosenProduct;
+
+    private Long chosenOfferProduct;
 
     private int productQuantity = 0;
 
@@ -67,6 +74,7 @@ public class FormProcessBean implements Serializable {
             user = new User();
             product = new Product();
             monetizationToBeManaged = new Monetization();
+            offerToBeManaged = new Offer();
         }catch (Exception e){
             logger.error("Error during bean initialization", e);
         }
@@ -154,6 +162,22 @@ public class FormProcessBean implements Serializable {
         this.enabled = enabled;
     }
 
+    public Offer getOfferToBeManaged() {
+        return offerToBeManaged;
+    }
+
+    public void setOfferToBeManaged(Offer offerToBeManaged) {
+        this.offerToBeManaged = offerToBeManaged;
+    }
+
+    public Long getChosenOfferProduct() {
+        return chosenOfferProduct;
+    }
+
+    public void setChosenOfferProduct(Long chosenOfferProduct) {
+        this.chosenOfferProduct = chosenOfferProduct;
+    }
+
     public void processForm(){
         String transactionName = "addProduct";
         try {
@@ -217,39 +241,79 @@ public class FormProcessBean implements Serializable {
 
     public void processMonetizationForm(){
         String transactionName = "addMonetization";
-        try {
-            logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+        validateInput("Date",monetizationToBeManaged.getDate().toString());
+        validateInput("Product",chosenProduct.toString());
+        validateInput("Quantity", String.valueOf(productQuantity));
+        if (valid){
+            try {
+                logger.info("Transaction '{}' started in FormProcessBean", transactionName);
 
-            Item item = new Item();
-            item.setProduct(productService.getproductById(chosenProduct));
-            item.setQuantity(productQuantity);
-            List<Item> items = new ArrayList<>();
-            items.add(item);
-            monetizationToBeManaged.setItems(items);
-            productService.updateProductQuantity(chosenProduct,productQuantity);
-            monetizationService.save(monetizationToBeManaged);
+                Item item = new Item();
+                item.setProduct(productService.getproductById(chosenProduct));
+                item.setQuantity(productQuantity);
+                List<Item> items = new ArrayList<>();
+                items.add(item);
+                monetizationToBeManaged.setItems(items);
+                productService.updateProductQuantity(chosenProduct,productQuantity);
+                monetizationService.save(monetizationToBeManaged);
 
-            logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
-            if(enabled){
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Monetization added successfully");
-                PrimeFaces.current().dialog().showMessageDynamic(message);
-            }else {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Monetization modified successfully");
-                PrimeFaces.current().dialog().showMessageDynamic(message);
-            }
+                logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+                if(enabled){
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Monetization added successfully");
+                    PrimeFaces.current().dialog().showMessageDynamic(message);
+                }else {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Monetization modified successfully");
+                    PrimeFaces.current().dialog().showMessageDynamic(message);
+                }
 
-        }catch (Exception e){
-            logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
-            if(enabled){
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during adding monetization");
-                PrimeFaces.current().dialog().showMessageDynamic(message);
-            }else {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during modification of monetization");
-                PrimeFaces.current().dialog().showMessageDynamic(message);
+            }catch (Exception e){
+                logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+                if(enabled){
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during adding monetization");
+                    PrimeFaces.current().dialog().showMessageDynamic(message);
+                }else {
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during modification of monetization");
+                    PrimeFaces.current().dialog().showMessageDynamic(message);
+                }
             }
         }
+
         clearMonetization();
+        valid = true;
     }
+
+    public void processOfferForm(){
+        String transactionName = "addOffer";
+        validateInput("Product",chosenOfferProduct.toString());
+        validateInput("Start Date",offerToBeManaged.getStartDate().toString());
+        validateInput("End Date",offerToBeManaged.getEndDate().toString());
+        validateInput("Price",offerToBeManaged.getPrice().toString());
+        if (valid){
+            try {
+                logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+                offerToBeManaged.setProduct(productService.getproductById(chosenOfferProduct));
+                offerService.save(offerToBeManaged);
+
+                logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Offer added successfully");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+
+
+            }catch (Exception e){
+                logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during adding offer");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+
+
+            }
+        }
+
+        clearOffer();
+        valid = true;
+    }
+
     private void validateInput(String subject, String value) {
         try {
             // Perform your validation logic here
@@ -303,6 +367,11 @@ public class FormProcessBean implements Serializable {
         chosenProduct = null;
         productQuantity = 0;
         enabled = true;
+    }
+
+    private void clearOffer(){
+        offerToBeManaged = new Offer();
+        chosenOfferProduct = null;
     }
 
 

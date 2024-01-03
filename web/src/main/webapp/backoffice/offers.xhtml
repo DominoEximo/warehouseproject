@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:view locale="#{localeBean.locale}">
+<h:head>
+    <title>#{product['title']}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css"/>
+    <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.1.60/inputmask/jquery.inputmask.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#offerTable tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="../css/products.css"/>
+</h:head>
+
+<h:body id="usersBody">
+    <ui:insert name="navbar" >
+        <ui:include src="../navbar.xhtml" />
+    </ui:insert>
+    <div class="label-container">
+        <div class="profile-name-container">
+            <span class="profile-brand">#{product['offerTitle']}</span>
+        </div>
+        <div>
+            <input id="myInput" type="text" placeholder="#{product['search']}"/>
+            <h:form>
+                <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{offerBean.length}" modifyValueOnWheel="false"></p:inputNumber>
+            </h:form>
+        </div>
+        <div>
+            <p:commandButton action="#{offerBean.loadOffers()}" update="offerTable" disableOnAjax="false" id="refresh" value="#{product['refresh']}"  class="refresh-button btn btn-dark"></p:commandButton>
+        </div>
+        <div id="overlay">
+            <div class="cv-spinner">
+                <span class="spinner"></span>
+            </div>
+        </div>
+    </div>
+    <div class="data-container">
+        <p:dataTable id="offerTable" var="offerVar" value="#{offerBean.offerList}">
+            <p:column headerText="#{product['offerId']}">
+                <h:outputText value="#{offerVar.id}" />
+            </p:column>
+
+            <p:column headerText="#{product['offerStartDate']}">
+                <h:outputText value="#{offerVar.startDate}" />
+            </p:column>
+
+            <p:column headerText="#{product['offerEndDate']}">
+                <h:outputText value="#{offerVar.endDate}" />
+            </p:column>
+
+            <p:column headerText="#{product['offerProduct']}">
+                <h:outputText value="#{offerVar.product.name}" />
+            </p:column>
+
+            <p:column headerText="#{product['offerPrice']}">
+                <h:outputText value="#{offerVar.price}" />
+            </p:column>
+        </p:dataTable>
+        <h:form>
+            <div class="button-container">
+                <div>
+                    <p:commandButton update="offerTable" disableOnAjax="false" value="#{product['prev']}" id="prev"  action="#{offerBean.prevPage()}" class=" btn btn-dark"/>
+                    <p:commandButton update="offerTable" disableOnAjax="false" value="#{product['next']}"  id="next"  action="#{offerBean.nextPage()}" class=" btn btn-dark"/>
+                </div>
+                <span style="display: flex;">
+               <p:commandButton update="offerTable editForm" value="#{product['add']}" onclick="PF('dlg1').show()">
+                  <f:actionListener binding="#{offerBean.getProductList()}"/>
+               </p:commandButton>
+            </span>
+            </div>
+        </h:form>
+    </div>
+    <p:dialog header="#{product.offerFormTitle}" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
+        <p class="m-0">
+            <h:form id="editForm" style="display: flex !important; flex-direction: column; flex-wrap: nowrap; align-items: center">
+                <h:panelGrid id="grid" cellpadding="7" columns="2" styleClass="mb-3">
+
+                    <p:outputLabel for="@next" value="#{product.offerFormStartDate}" />
+                    <p:datePicker id="startDate" value="#{formProcessBean.offerToBeManaged.startDate}"/>
+
+                    <p:outputLabel for="@next" value="#{product.offerFormEndDate}" />
+                    <p:datePicker id="endDate" value="#{formProcessBean.offerToBeManaged.endDate}"/>
+
+                    <p:outputLabel for="product" value="#{product.offerFormProduct}"/>
+                    <h:selectOneMenu id="product" value="#{formProcessBean.chosenOfferProduct}" requiredMessage="Product is required">
+                        <f:selectItem itemValue="#{null}" itemLabel="-- select one --" />
+                        <f:selectItems value="#{offerBean.products.entrySet()}" var="entry"
+                                       itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+                        <p:ajax event="change" process="@this" update="@this"></p:ajax>
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="price" value="#{product.offerFormPrice}"/>
+                    <p:inputNumber id="price" value="#{formProcessBean.offerToBeManaged.price}"
+                                   requiredMessage="Price is required"/>
+
+                </h:panelGrid>
+                <span>
+            <p:commandButton value="#{product.add}" disableOnAjax="false" id="btnFormEdit" process="@form" oncomplete="PF('dlg1').hide()" action="#{formProcessBean.processOfferForm()}" styleClass="mr-2"/>
+            </span>
+
+            </h:form>
+        </p>
+    </p:dialog>
+</h:body>
+</f:view>
+</html>

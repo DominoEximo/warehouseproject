@@ -4,6 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:view locale="#{localeBean.locale}" >
 <h:head>
    <title>#{product['title']}</title>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -27,7 +28,7 @@
       <div>
          <input id="myInput" type="text" placeholder="#{product['search']}"/>
          <h:form>
-            <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{userBean.length}" modifyValueOnWheel="false"></p:inputNumber>
+            <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{monetizationBean.length}" modifyValueOnWheel="false"></p:inputNumber>
          </h:form>
       </div>
       <div>
@@ -50,15 +51,7 @@
          </p:column>
 
          <p:column headerText="#{product['monetizationItems']}">
-            <ul>
-               <ui:repeat value="#{monetizationVar.items}" var="item">
-                  <li>
-                     <h:link value="#{item.product.name}" outcome="item">
-                        <f:param name="id" value="#{item.product.id}" />
-                     </h:link>
-                  </li>
-               </ui:repeat>
-            </ul>
+            <h:outputText value="#{monetizationVar.items.get(0).name}" />
          </p:column>
 
          <p:column headerText="#{product['monetizationEdit']}">
@@ -81,7 +74,7 @@
          </div>
       </h:form>
    </div>
-   <p:dialog header="#{product.userFormTitle}" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
+   <p:dialog header="#{product.monetizationFormTitle}" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
       <p class="m-0">
          <h:form id="editForm" style="display: flex !important; flex-direction: column; flex-wrap: nowrap; align-items: center">
             <h:panelGrid id="grid" cellpadding="7" columns="2" styleClass="mb-3">
@@ -111,4 +104,5 @@
       </p>
    </p:dialog>
 </h:body>
+</f:view>
 </html>

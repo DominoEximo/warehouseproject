@@ -1,23 +1,19 @@
 package hu.neuron.mentoring.web.beans;
 
-import jakarta.annotation.ManagedBean;
+
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
-import jakarta.inject.Named;
-import jakarta.ws.rs.ApplicationPath;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.data.repository.cdi.Eager;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Locale;
-
-@Lazy
+@Eager
 @Component
-@ApplicationScoped
+@SessionScoped
 public class LocaleBean implements Serializable {
 
     private static final Logger logger = LogManager.getLogger(LocaleBean.class);

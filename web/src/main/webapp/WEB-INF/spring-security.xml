@@ -14,6 +14,7 @@
         <intercept-url pattern="/jakarta.faces.resource/**" access="permitAll()"/>
         <intercept-url pattern="/backoffice/*" access="hasAuthority('BACKOFFICE')"/>
         <intercept-url pattern="/webshop/*" access="hasAuthority('USER')"/>
+        <intercept-url pattern="/secured/*" access="hasAuthority('BACKOFFICE')"/>
         <form-login username-parameter="j_username" password-parameter="j_password" authentication-failure-url="/login.jsf" default-target-url="/welcome.jsf" login-page="/login.jsf" login-processing-url="/j_spring_security_check"/>
     </http>
 
