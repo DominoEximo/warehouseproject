@@ -24,10 +24,10 @@ public class UserBean implements Serializable {
 
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
     private List<User> users;
 
     private User userToBeManaged;

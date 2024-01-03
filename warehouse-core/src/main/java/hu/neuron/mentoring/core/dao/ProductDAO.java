@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ProductDAO implements Serializable, DAO<Product>{
@@ -42,7 +43,22 @@ public class ProductDAO implements Serializable, DAO<Product>{
 
     @Override
     public Product findById(long id) {
-        return productRepository.findById(id).get();
+
+        Optional<Product> found = productRepository.findById(id);
+        Product product = new Product();
+        if (found.isPresent()){
+            product.setId(found.get().getId());
+            product.setAmount(found.get().getAmount());
+            product.setCategory(found.get().getCategory());
+            product.setUnit(found.get().getUnit());
+            product.setName(found.get().getName());
+            product.setDescription(found.get().getDescription());
+            product.setPastData(found.get().getPastData());
+            product.setPurchasePrice(found.get().getPurchasePrice());
+            product.setSellPrice(found.get().getSellPrice());
+        }
+
+        return product;
     }
 
     @Override

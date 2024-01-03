@@ -40,4 +40,5 @@
     <bean lazy-init="true" id="formProcessBean" class="hu.neuron.mentoring.web.beans.FormProcessBean"/>
     <bean lazy-init="true" id="userLoginBean" class="hu.neuron.mentoring.web.beans.UserLoginBean"/>
     <bean lazy-init="true" id="userBean" class="hu.neuron.mentoring.web.beans.UserBean"/>
+    <bean lazy-init="true" id="monetizationBean" class="hu.neuron.mentoring.web.beans.MonetizationBean"/>
 </beans>

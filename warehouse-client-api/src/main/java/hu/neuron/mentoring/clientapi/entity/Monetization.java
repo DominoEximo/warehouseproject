@@ -13,7 +13,7 @@ public class Monetization {
     private Long id;
     private Date date;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinColumn(name = "monetization_id")
     private List<Item> items;
 

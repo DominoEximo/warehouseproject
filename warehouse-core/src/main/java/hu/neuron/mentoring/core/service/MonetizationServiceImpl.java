@@ -38,6 +38,7 @@ public class MonetizationServiceImpl implements MonetizationService {
         monetizationDAO.save(monetization);
     }
 
+    @Override
     public List<Monetization> findAllPaginated(int pageNumber, int pageSize) {
         return monetizationDAO.getAllPaginated(pageNumber,pageSize);
     }

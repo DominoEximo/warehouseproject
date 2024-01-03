@@ -41,6 +41,6 @@ public class MonetizationDAO implements Serializable, DAO<Monetization>{
     }
 
     public List<Monetization> getAllPaginated(int pageNumber, int pageSize) {
-        return monetizationRepository.getAll(PageRequest.of(pageNumber-1,pageSize));
+        return monetizationRepository.findAll(PageRequest.of(pageNumber-1,pageSize)).getContent();
     }
 }

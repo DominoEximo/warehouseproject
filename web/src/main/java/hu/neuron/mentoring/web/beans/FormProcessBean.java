@@ -1,14 +1,9 @@
 package hu.neuron.mentoring.web.beans;
 
 
-import hu.neuron.mentoring.clientapi.entity.Role;
-import hu.neuron.mentoring.clientapi.entity.User;
-import hu.neuron.mentoring.clientapi.service.CategoryService;
-import hu.neuron.mentoring.clientapi.service.RoleService;
-import hu.neuron.mentoring.clientapi.service.UnitService;
-import hu.neuron.mentoring.clientapi.service.UserService;
+import hu.neuron.mentoring.clientapi.entity.*;
+import hu.neuron.mentoring.clientapi.service.*;
 import hu.neuron.mentoring.core.dao.ProductDAO;
-import hu.neuron.mentoring.clientapi.entity.Product;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
@@ -29,7 +24,7 @@ public class FormProcessBean implements Serializable {
     private static final Logger logger = LogManager.getLogger(FormProcessBean.class);
 
     @Autowired
-    ProductDAO productDAO;
+    ProductService productService;
 
     @Autowired
     CategoryService categoryService;
@@ -43,9 +38,14 @@ public class FormProcessBean implements Serializable {
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    MonetizationService monetizationService;
+
     private Product product;
 
     private User user;
+
+    private Monetization monetizationToBeManaged;
 
     private String chosenCategory;
 
@@ -53,13 +53,20 @@ public class FormProcessBean implements Serializable {
 
     private String chosenRole;
 
+    private Long chosenProduct;
+
+    private int productQuantity = 0;
+
     private Boolean valid = true;
+
+    private Boolean enabled = true;
 
     @PostConstruct
     public void init(){
         try {
             user = new User();
             product = new Product();
+            monetizationToBeManaged = new Monetization();
         }catch (Exception e){
             logger.error("Error during bean initialization", e);
         }
@@ -74,6 +81,79 @@ public class FormProcessBean implements Serializable {
         this.product = product;
     }
 
+    public String getChosenCategory() {
+        return chosenCategory;
+    }
+
+    public void setChosenCategory(String chosenCategory) {
+        this.chosenCategory = chosenCategory;
+    }
+
+    public String getChosenUnit() {
+        return chosenUnit;
+    }
+
+    public void setChosenUnit(String chosenUnit) {
+        this.chosenUnit = chosenUnit;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getChosenRole() {
+        return chosenRole;
+    }
+
+    public void setChosenRole(String chosenRole) {
+        this.chosenRole = chosenRole;
+    }
+
+
+    public Monetization getMonetizationToBeManaged() {
+        return monetizationToBeManaged;
+    }
+
+    public void setMonetizationToBeManaged(Monetization monetization) {
+        this.monetizationToBeManaged = monetization;
+    }
+
+    public Long getChosenProduct() {
+        return chosenProduct;
+    }
+
+    public void setChosenProduct(Long chosenProduct) {
+        this.chosenProduct = chosenProduct;
+    }
+
+    public Boolean getValid() {
+        return valid;
+    }
+
+    public void setValid(Boolean valid) {
+        this.valid = valid;
+    }
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public void processForm(){
         String transactionName = "addProduct";
         try {
@@ -82,7 +162,7 @@ public class FormProcessBean implements Serializable {
             if(product.getName() != null) {
                 product.setCategory(categoryService.findByName(chosenCategory));
                 product.setUnit(unitService.findByName(chosenUnit));
-                productDAO.save(product);
+                productService.addProduct(product);
             }
             logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Product added successfully");
@@ -90,7 +170,7 @@ public class FormProcessBean implements Serializable {
         }catch (Exception e){
             logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error during adding product");
-                PrimeFaces.current().dialog().showMessageDynamic(message);
+            PrimeFaces.current().dialog().showMessageDynamic(message);
         }
         setProduct(new Product());
 
@@ -135,39 +215,41 @@ public class FormProcessBean implements Serializable {
         valid = true;
     }
 
-    public String getChosenCategory() {
-        return chosenCategory;
+    public void processMonetizationForm(){
+        String transactionName = "addMonetization";
+        try {
+            logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+
+            Item item = new Item();
+            item.setProduct(productService.getproductById(chosenProduct));
+            item.setQuantity(productQuantity);
+            List<Item> items = new ArrayList<>();
+            items.add(item);
+            monetizationToBeManaged.setItems(items);
+            productService.updateProductQuantity(chosenProduct,productQuantity);
+            monetizationService.save(monetizationToBeManaged);
+
+            logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+            if(enabled){
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Monetization added successfully");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+            }else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Monetization modified successfully");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+            }
+
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+            if(enabled){
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during adding monetization");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+            }else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during modification of monetization");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+            }
+        }
+        clearMonetization();
     }
-
-    public void setChosenCategory(String chosenCategory) {
-        this.chosenCategory = chosenCategory;
-    }
-
-    public String getChosenUnit() {
-        return chosenUnit;
-    }
-
-    public void setChosenUnit(String chosenUnit) {
-        this.chosenUnit = chosenUnit;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getChosenRole() {
-        return chosenRole;
-    }
-
-    public void setChosenRole(String chosenRole) {
-        this.chosenRole = chosenRole;
-    }
-
-
     private void validateInput(String subject, String value) {
         try {
             // Perform your validation logic here
@@ -206,6 +288,21 @@ public class FormProcessBean implements Serializable {
             }
         }
         return value; // No masking for other values
+    }
+
+    public void setUpMonetizationToBeManaged(Monetization monetization){
+        monetizationToBeManaged.setId(monetization.getId());
+        monetizationToBeManaged.setDate(monetization.getDate());
+        chosenProduct = monetization.getItems().get(0).getProduct().getId();
+        productQuantity = monetization.getItems().get(0).getQuantity();
+        enabled = false;
+    }
+
+    private void clearMonetization(){
+        monetizationToBeManaged = new Monetization();
+        chosenProduct = null;
+        productQuantity = 0;
+        enabled = true;
     }
 
 

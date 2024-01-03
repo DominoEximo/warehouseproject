@@ -51,9 +51,11 @@ public class ProductBean  implements Serializable {
     @PostConstruct
     public void init(){
         try {
-            categoryService.setUpMockedData();
-            unitService.setUpMockedData();
-            productService.setUpMockedData();
+            if(productService.getAll().isEmpty()){
+                categoryService.setUpMockedData();
+                unitService.setUpMockedData();
+                productService.setUpMockedData();
+            }
             categories = productService.getCategories().stream().map(Category::getCategoryName).collect(Collectors.toList());
             category = "Hus";
             units = productService.getUnits().stream().map(Unit::getUnitName).collect(Collectors.toList());

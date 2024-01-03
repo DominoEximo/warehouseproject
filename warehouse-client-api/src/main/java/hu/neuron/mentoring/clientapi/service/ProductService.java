@@ -12,6 +12,10 @@ public interface ProductService extends Serializable {
 
     List<Product> getProducts(int page, int length);
 
+    List<Product> getAll();
+
+    Product getproductById(Long id);
+
     void addProduct(Product product);
 
     void deleteProduct(long id);

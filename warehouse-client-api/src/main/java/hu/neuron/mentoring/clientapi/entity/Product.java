@@ -33,7 +33,7 @@ public class Product {
 
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER)
     private List<Stock> pastData = new ArrayList<>();
 
     public Product(String name, Category category, Integer amount, Unit unit, BigDecimal purchasePrice, BigDecimal sellPrice, String description) {

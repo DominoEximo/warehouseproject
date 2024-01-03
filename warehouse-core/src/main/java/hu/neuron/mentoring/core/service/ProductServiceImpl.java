@@ -33,6 +33,16 @@ public class ProductServiceImpl  implements ProductService, Serializable {
     }
 
     @Override
+    public List<Product> getAll() {
+        return productDAO.getAll();
+    }
+
+    @Override
+    public Product getproductById(Long id) {
+        return productDAO.findById(id);
+    }
+
+    @Override
     public void addProduct(Product product) {
         productDAO.save(product);
 

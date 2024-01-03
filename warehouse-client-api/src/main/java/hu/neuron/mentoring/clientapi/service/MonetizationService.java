@@ -14,4 +14,6 @@ public interface MonetizationService {
     void delete(Monetization monetization);
 
     void update(Monetization monetization);
+
+    public List<Monetization> findAllPaginated(int pageNumber, int pageSize);
 }
