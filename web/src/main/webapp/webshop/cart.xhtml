@@ -26,7 +26,7 @@
     </ui:insert>
 
         <div id="orderContainer" class="data-container">
-            <p:dataTable id="orderTable" var="orderedItem" value="#{orderBean.currentOrder.orderedItems}">
+            <p:dataTable id="orderTable" var="orderedItem" value="#{orderBean.currentOrderItem.orderedItems}">
                 <p:column headerText="#{product['orderedProductName']}">
                     <h:outputText value="#{orderedItem.offer.product.name}" />
                 </p:column>
@@ -49,7 +49,7 @@
                         #{orderBean.overallPrice}
                     </h1>
                     <p:commandButton style="display: flex; justify-content: space-around;"
-                                     disableOnAjax="false" value="#{product.checkout}" action="order.xhtml?faces-redirect=true" disabled="#{orderBean.currentOrder.orderedItems.isEmpty()}"/>
+                                     disableOnAjax="false" value="#{product.checkout}" action="order.xhtml?faces-redirect=true" disabled="#{orderBean.currentOrderItem.orderedItems.isEmpty()}"/>
                 </div>
         </div>
 

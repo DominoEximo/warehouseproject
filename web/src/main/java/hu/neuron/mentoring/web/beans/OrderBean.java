@@ -1,8 +1,6 @@
 package hu.neuron.mentoring.web.beans;
 
-import hu.neuron.mentoring.clientapi.entity.Offer;
-import hu.neuron.mentoring.clientapi.entity.Order;
-import hu.neuron.mentoring.clientapi.entity.Shipment;
+import hu.neuron.mentoring.clientapi.entity.*;
 import hu.neuron.mentoring.clientapi.service.OrderService;
 import hu.neuron.mentoring.clientapi.service.ProductService;
 import hu.neuron.mentoring.clientapi.service.StatusService;
@@ -16,14 +14,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.tags.shaded.org.apache.xpath.operations.Or;
 import org.primefaces.PrimeFaces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -44,7 +40,13 @@ public class OrderBean implements Serializable {
     @Autowired
     StatusService statusService;
 
-    private Order currentOrder;
+    private OrderItem currentOrderItem;
+
+    private OrderItem orderToBeManaged;
+
+    private List<String> orderToBeManagedAddress;
+
+    private List<OrderItem> orders;
 
     private Integer orderQuantity;
 
@@ -54,14 +56,32 @@ public class OrderBean implements Serializable {
     private String addressCountry;
     private String addressStreet;
 
+    private int page = 1;
+
+    private int length = 5;
+
+    private Map<Long,String> statuses;
+
+    private Long chosenStatus;
+
+    private String selectedStatus;
+
+    private List<String> statusNames;
+
     @PostConstruct
     public void init(){
         try {
             statusService.setUpMockedData();
-            currentOrder = new Order();
-            currentOrder.setOrderedItems(new ArrayList<>());
+            currentOrderItem = new OrderItem();
+            statuses = new LinkedHashMap<Long,String>();
+            currentOrderItem.setOrderedItems(new ArrayList<>());
+            orderToBeManaged = new OrderItem();
+            orderToBeManaged.setOrderedItems(new ArrayList<>());
+            orderToBeManagedAddress = new ArrayList<>();
             overallPrice = 0.0;
             orderQuantity = 0;
+            statusNames = statusService.findAll().stream().map(Status::getStatusName).collect(Collectors.toList());
+            getStatusList();
         }catch (Exception e){
             logger.error("Error during bean initialization", e);
         }
@@ -70,26 +90,27 @@ public class OrderBean implements Serializable {
 
     public void addOfferToOrder(Offer offer){
         String transactionName = "addOfferToOrder";
-        if (orderQuantity > 0 && orderQuantity <= offer.getProduct().getAmount()){
+        if (offer.getQuantity() > 0 && offer.getQuantity() <= offer.getProduct().getAmount()){
             try {
                 logger.info("Transaction '{}' started in OrderBean", transactionName);
                 Shipment shipment = new Shipment();
                 shipment.setOffer(offer);
-                shipment.setQuantity(orderQuantity);
-                productService.updateProductQuantity(offer.getProduct().getId(),offer.getProduct().getAmount() - orderQuantity);
-                List<Long> offers = currentOrder.getOrderedItems().stream().map(x -> x.getOffer().getId()).collect(Collectors.toList());
+                shipment.setQuantity(offer.getQuantity());
+                productService.updateProductQuantity(offer.getProduct().getId(),offer.getProduct().getAmount() - offer.getQuantity());
+                List<Long> offers = currentOrderItem.getOrderedItems().stream().map(x -> x.getOffer().getId()).collect(Collectors.toList());
                 if (offers.contains(offer.getId())){
-                    for (Shipment shipment1: currentOrder.getOrderedItems()){
+                    for (Shipment shipment1: currentOrderItem.getOrderedItems()){
                         if (shipment1.getOffer().getId().equals(offer.getId())){
-                            shipment1.setQuantity(shipment1.getQuantity() + orderQuantity);
+                            shipment1.setQuantity(shipment1.getQuantity() + offer.getQuantity());
                             break;
                         }
                     }
                 }else{
-                    currentOrder.getOrderedItems().add(shipment);
+                    currentOrderItem.getOrderedItems().add(shipment);
+                    shipment.setOrderItem(currentOrderItem);
                 }
 
-                overallPrice = overallPrice + orderQuantity * offer.getPrice().intValue();
+                overallPrice = overallPrice + offer.getQuantity() * offer.getPrice().intValue();
                 logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
 
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Item successfully added to cart");
@@ -106,7 +127,7 @@ public class OrderBean implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid quantity of items");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
-        orderQuantity = 0;
+        offer.setQuantity(0);
     }
 
     public void removeOffer(Offer offer, int amountToReturn){
@@ -116,7 +137,7 @@ public class OrderBean implements Serializable {
 
             productService.updateProductQuantity(offer.getProduct().getId(), productService.getproductById(offer.getProduct().getId()).getAmount() + amountToReturn);
 
-            currentOrder.getOrderedItems().removeIf(shipment -> shipment.getOffer().getId().equals(offer.getId()));
+            currentOrderItem.getOrderedItems().removeIf(shipment -> shipment.getOffer().getId().equals(offer.getId()));
 
             overallPrice = overallPrice - (amountToReturn * offer.getPrice());
 
@@ -138,20 +159,22 @@ public class OrderBean implements Serializable {
         try {
             logger.info("Transaction '{}' started in OrderBean", transactionName);
 
-            currentOrder.setUser(userService.findByName(getUsername()));
+            currentOrderItem.setUser(userService.findByName(getUsername()));
 
-            if (currentOrder.getShippingOption().equals("shipping")){
+            if (currentOrderItem.getShippingOption().equals("shipping")){
 
-                currentOrder.setAddress(addressPostalCode + " " + addressCountry + " " + addressStreet);
+                currentOrderItem.setAddress(addressPostalCode + " " + addressCountry + " " + addressStreet);
 
             }
             else{
-                currentOrder.setAddress("");
+                currentOrderItem.setAddress("");
             }
 
-            currentOrder.setStatus(statusService.findByName("Pending"));
+            currentOrderItem.setStatus(statusService.findByName("Pending"));
 
-            orderService.save(currentOrder);
+            currentOrderItem.setOrderDate(new Date());
+
+            orderService.save(currentOrderItem);
 
             flushOrder();
 
@@ -179,16 +202,106 @@ public class OrderBean implements Serializable {
         return null;
     }
 
+    public void loadOrders(){
+        String transactionName = "loadOrders";
+        try {
+            logger.info("Transaction '{}' started in OrderBean", transactionName);
+            orders = null;
+            orders = orderService.findAllPaginated(page,length);
+            logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in OrderBean: {}",transactionName,e.getMessage());
+        }
+    }
+
+    public void loadFilteredOrders(){
+        String transactionName = "filterOffersByStatus";
+        try {
+            if(selectedStatus == null || selectedStatus.isEmpty()){
+                loadOrders();
+            }
+            else {
+                logger.info("Transaction '{}' started in OrderBean", transactionName);
+                orders = null;
+                orders = orderService.findAllByStatus(selectedStatus);
+                logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
+            }
+
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in OrderBean: {}",transactionName,e.getMessage());
+        }
+    }
+
+
+    public void getStatusList(){
+        statuses.clear();
+        for (Status status : statusService.findAll()){
+            statuses.put(status.getId(),status.getStatusName());
+        }
+    }
+
+    public void nextPage(){
+        if(orderService.findAllPaginated(page,length).size() / length >= page){
+            page += 1;
+            loadOrders();
+        }
+    }
+    public void prevPage(){
+        if(page > 1){
+            page -= 1;
+            loadOrders();
+        }
+
+    }
+
+    public void setUpOrderToBeManaged(OrderItem order){
+        orderToBeManaged.setId(order.getId());
+        orderToBeManaged.setUser(order.getUser());
+        orderToBeManaged.setAddress(order.getAddress());
+        orderToBeManaged.setOrderDate(order.getOrderDate());
+        orderToBeManaged.setStatus(order.getStatus());
+        orderToBeManaged.setPaymentOption(order.getPaymentOption());
+        orderToBeManaged.setOrderedItems(order.getOrderedItems());
+        orderToBeManaged.setShippingOption(order.getShippingOption());
+        orderToBeManagedAddress = List.of(orderToBeManaged.getAddress().split(" "));
+
+    }
+
+    public void editOrder(){
+        String transactionName = "editOrder";
+        try {
+            logger.info("Transaction '{}' started in OrderBean", transactionName);
+            orderToBeManaged.setStatus(statusService.findById(chosenStatus));
+            orderService.save(orderToBeManaged);
+            clearOrderToBeManaged();
+            logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successfully edited order");
+            PrimeFaces.current().dialog().showMessageDynamic(message);
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in OrderBean: {}",transactionName,e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error while editing order");
+            PrimeFaces.current().dialog().showMessageDynamic(message);
+        }
+    }
+
+    public void clearOrderToBeManaged(){
+        orderToBeManaged = new OrderItem();
+        orderToBeManaged.setOrderedItems(new ArrayList<>());
+        orderToBeManagedAddress = new ArrayList<>();
+    }
+
     public void flushOrder(){
-        currentOrder = new Order();
+        currentOrderItem = new OrderItem();
+        currentOrderItem.setOrderedItems(new ArrayList<>());
+        overallPrice = 0.0;
     }
 
-    public Order getCurrentOrder() {
-        return currentOrder;
+    public OrderItem getCurrentOrderItem() {
+        return currentOrderItem;
     }
 
-    public void setCurrentOrder(Order currentOrder) {
-        this.currentOrder = currentOrder;
+    public void setCurrentOrderItem(OrderItem currentOrderItem) {
+        this.currentOrderItem = currentOrderItem;
     }
 
     public Integer getOrderQuantity() {
@@ -229,5 +342,77 @@ public class OrderBean implements Serializable {
 
     public void setAddressStreet(String addressStreet) {
         this.addressStreet = addressStreet;
+    }
+
+    public List<OrderItem> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderItem> orders) {
+        this.orders = orders;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public OrderItem getOrderToBeManaged() {
+        return orderToBeManaged;
+    }
+
+    public void setOrderToBeManaged(OrderItem orderToBeManaged) {
+        this.orderToBeManaged = orderToBeManaged;
+    }
+
+    public List<String> getOrderToBeManagedAddress() {
+        return orderToBeManagedAddress;
+    }
+
+    public void setOrderToBeManagedAddress(List<String> orderToBeManagedAddress) {
+        this.orderToBeManagedAddress = orderToBeManagedAddress;
+    }
+
+    public Map<Long, String> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(Map<Long, String> statuses) {
+        this.statuses = statuses;
+    }
+
+    public Long getChosenStatus() {
+        return chosenStatus;
+    }
+
+    public void setChosenStatus(Long chosenStatus) {
+        this.chosenStatus = chosenStatus;
+    }
+
+    public String getSelectedStatus() {
+        return selectedStatus;
+    }
+
+    public void setSelectedStatus(String selectedStatus) {
+        this.selectedStatus = selectedStatus;
+    }
+
+    public List<String> getStatusNames() {
+        return statusNames;
+    }
+
+    public void setStatusNames(List<String> statusNames) {
+        this.statusNames = statusNames;
     }
 }

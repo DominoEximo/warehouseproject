@@ -62,7 +62,7 @@
                             <h1>
                                 <p:outputLabel for="quantity" value="#{product.productQuantity}"/>
                                 <br/>
-                                <p:inputNumber id="quantity" value="#{orderBean.orderQuantity}" minValue="0" maxValue="#{offer.product.amount}" decimalPlaces="0" />
+                                <p:inputNumber id="quantity" value="#{offer.quantity}" minValue="0" maxValue="#{offer.product.amount}" decimalPlaces="0" />
                             </h1>
 
                             <f:facet name="footer">

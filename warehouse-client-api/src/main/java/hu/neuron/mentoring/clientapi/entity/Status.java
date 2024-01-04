@@ -16,14 +16,16 @@ public class Status {
 
     private String statusName;
 
-    public Long getId() {
-        return id;
-    }
+
 
     public  Status(){}
 
     public Status(String statusName) {
         this.statusName = statusName;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {

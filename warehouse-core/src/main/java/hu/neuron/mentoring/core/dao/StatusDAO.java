@@ -1,10 +1,7 @@
 package hu.neuron.mentoring.core.dao;
 
-import hu.neuron.mentoring.clientapi.entity.Order;
 import hu.neuron.mentoring.clientapi.entity.Status;
-import hu.neuron.mentoring.clientapi.entity.Unit;
 import hu.neuron.mentoring.core.repositories.StatusRepository;
-import hu.neuron.mentoring.core.repositories.UnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

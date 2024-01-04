@@ -3,6 +3,8 @@ package hu.neuron.mentoring.clientapi.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Data
 public class Shipment {
@@ -18,8 +20,13 @@ public class Shipment {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private OrderItem orderItem;
 
+
+
+
+    public Shipment() {
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -45,11 +52,13 @@ public class Shipment {
         this.quantity = quantity;
     }
 
-    public Order getOrder() {
-        return order;
+    public OrderItem getOrderItem() {
+        return orderItem;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
     }
+
+
 }

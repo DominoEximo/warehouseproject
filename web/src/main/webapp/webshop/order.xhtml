@@ -45,20 +45,21 @@
                 <h:panelGrid id="grid" cellpadding="7" columns="2" styleClass="mb-3">
 
                     <p:outputLabel for="@next" value="#{product.checkoutFormPayment}" />
-                    <p:selectOneRadio id="payment" value="#{orderBean.currentOrder.paymentOption}" layout="lineDirection">
+                    <p:selectOneRadio id="payment" value="#{orderBean.currentOrderItem.paymentOption}" layout="lineDirection">
                         <f:selectItem itemLabel="#{product.checkoutFormPaymentCash}" itemValue="cash"/>
                         <f:selectItem itemLabel="#{product.checkoutFormPaymentCard}" itemValue="card"/>
+                        <p:ajax event="change" update="@form" process="@this" />
                     </p:selectOneRadio>
 
                     <p:outputLabel for="@next" value="#{product.checkoutFormDelivery}" />
-                    <p:selectOneRadio id="delivery" value="#{orderBean.currentOrder.shippingOption}" layout="lineDirection">
+                    <p:selectOneRadio id="delivery" value="#{orderBean.currentOrderItem.shippingOption}" layout="lineDirection">
                         <f:selectItem itemLabel="#{product.checkoutFormDeliveryPersonal}" itemValue="personal"/>
                         <f:selectItem itemLabel="#{product.checkoutFormDeliveryShipping}" itemValue="shipping"/>
                         <p:ajax event="change" update="@form" process="@this" />
                     </p:selectOneRadio>
 
                     <div style="display: flex !important;flex-direction: column !important;">
-                        <p:panel style="display: flex" id="deliverySection" rendered="#{orderBean.currentOrder.shippingOption eq 'shipping'}">
+                        <p:panel style="display: flex" id="deliverySection" rendered="#{orderBean.currentOrderItem.shippingOption eq 'shipping'}">
 
                             <p:outputLabel for="@next" value="#{product.checkoutAddressPC}" />
                             <br/>

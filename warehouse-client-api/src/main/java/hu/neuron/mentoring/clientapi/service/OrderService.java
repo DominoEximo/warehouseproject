@@ -1,22 +1,24 @@
 package hu.neuron.mentoring.clientapi.service;
 
-import hu.neuron.mentoring.clientapi.entity.Offer;
-import hu.neuron.mentoring.clientapi.entity.Order;
+import hu.neuron.mentoring.clientapi.entity.OrderItem;
+import hu.neuron.mentoring.clientapi.entity.Status;
 
 import java.util.List;
 
 public interface OrderService {
 
-    Order findById(long id);
-    List<Order> findAll();
+    OrderItem findById(long id);
+    List<OrderItem> findAll();
 
-    void save(Order order);
+    void save(OrderItem orderItem);
 
-    void delete(Order order);
+    void delete(OrderItem orderItem);
 
-    void update(Order order);
+    void update(OrderItem orderItem);
 
-    List<Order> findAllPaginated(int pageNumber, int pageSize);
+    List<OrderItem> findAllPaginated(int pageNumber, int pageSize);
+
+    List<OrderItem> findAllByStatus(String status);
 
 
 }

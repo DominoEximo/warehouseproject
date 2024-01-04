@@ -3,12 +3,12 @@ package hu.neuron.mentoring.clientapi.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
-public class Order {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,12 @@ public class Order {
 
     private String address;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Date orderDate;
+
+    @OneToMany(mappedBy = "orderItem", cascade = CascadeType.ALL,orphanRemoval = true , fetch = FetchType.EAGER)
     private List<Shipment> orderedItems;
 
-    public Order() {
+    public OrderItem() {
     }
 
     public Long getId() {
@@ -90,5 +92,11 @@ public class Order {
         this.orderedItems = orderedItems;
     }
 
+    public Date getOrderDate() {
+        return orderDate;
+    }
 
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
 }

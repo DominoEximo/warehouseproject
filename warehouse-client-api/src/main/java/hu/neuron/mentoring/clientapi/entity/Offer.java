@@ -19,6 +19,7 @@ public class Offer {
     private Date endDate;
     private Double price;
 
+    private int quantity;
 
     public Offer() {
     }
@@ -64,4 +65,11 @@ public class Offer {
     }
 
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }
