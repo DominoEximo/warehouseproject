@@ -51,6 +51,8 @@ public class OfferBean implements Serializable {
 
     private Date searchDate = new Date();
 
+    private String selectedCategory;
+
     @PostConstruct
     public void init(){
         try {
@@ -103,6 +105,50 @@ public class OfferBean implements Serializable {
 
     }
 
+    public void loadAvailableOffers(){
+        String transactionName = "loadAvailableOffers";
+        try {
+            logger.info("Transaction '{}' started in OfferBean", transactionName);
+            offerList = null;
+            offerList = offerService.findAll();
+            offerList = offerList.stream().filter(x -> (x.getStartDate().getTime() <= new Date().getTime() && x.getEndDate().getTime() >= new Date().getTime())).collect(Collectors.toList());
+            logger.info("Transaction '{}' completed successfully in OfferBean", transactionName);
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in OfferBean: {}",transactionName,e.getMessage());
+        }
+    }
+
+    public void refreshOffers(){
+        String transactionName = "refreshOffers";
+        try {
+            logger.info("Transaction '{}' started in OfferBean", transactionName);
+            offerList = null;
+            offerList = offerService.findAll();
+            logger.info("Transaction '{}' completed successfully in OfferBean", transactionName);
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in OfferBean: {}",transactionName,e.getMessage());
+        }
+    }
+
+    public void loadFilteredOffers(){
+        String transactionName = "filterOffersByCategory";
+        try {
+            if(selectedCategory == null || selectedCategory.isEmpty()){
+                loadAvailableOffers();
+            }
+            else {
+                logger.info("Transaction '{}' started in OfferBean", transactionName);
+                offerList = null;
+                offerList = offerService.findAllByProductCategory(selectedCategory);
+                offerList = offerList.stream().filter(x -> (x.getStartDate().getTime() <= new Date().getTime() && x.getEndDate().getTime() >= new Date().getTime())).collect(Collectors.toList());
+                logger.info("Transaction '{}' completed successfully in OfferBean", transactionName);
+            }
+
+        }catch (Exception e){
+            logger.error("Transaction '{}' failed in OfferBean: {}",transactionName,e.getMessage());
+        }
+    }
+
     public List<Offer> getOfferList() {
         return offerList;
     }
@@ -141,5 +187,13 @@ public class OfferBean implements Serializable {
 
     public void setSearchDate(Date searchDate) {
         this.searchDate = searchDate;
+    }
+
+    public String getSelectedCategory() {
+        return selectedCategory;
+    }
+
+    public void setSelectedCategory(String selectedCategory) {
+        this.selectedCategory = selectedCategory;
     }
 }

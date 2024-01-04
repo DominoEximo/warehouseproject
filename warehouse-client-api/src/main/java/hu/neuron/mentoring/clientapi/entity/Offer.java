@@ -19,6 +19,7 @@ public class Offer {
     private Date endDate;
     private Double price;
 
+
     public Offer() {
     }
 
@@ -61,4 +62,6 @@ public class Offer {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+
 }

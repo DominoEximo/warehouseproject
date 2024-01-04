@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="../css/products.css"/>
 </h:head>
 
-<h:body id="usersBody">
+<h:body id="usersBody" onload="#{offerBean.loadOffers()}">
     <ui:insert name="navbar" >
         <ui:include src="../navbar.xhtml" />
     </ui:insert>
@@ -65,11 +65,15 @@
             </p:column>
 
             <p:column headerText="#{product['offerStartDate']}">
-                <h:outputText value="#{offerVar.startDate}" />
+                <h:outputText value="#{offerVar.startDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                </h:outputText>
             </p:column>
 
             <p:column headerText="#{product['offerEndDate']}">
-                <h:outputText value="#{offerVar.endDate}" />
+                <h:outputText value="#{offerVar.endDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                </h:outputText>
             </p:column>
 
             <p:column headerText="#{product['offerProduct']}">

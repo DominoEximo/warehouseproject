@@ -1,5 +1,6 @@
 package hu.neuron.mentoring.clientapi.service;
 
+import hu.neuron.mentoring.clientapi.entity.Category;
 import hu.neuron.mentoring.clientapi.entity.Offer;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface OfferService {
     void update(Offer offer);
 
     List<Offer> findAllPaginated(int pageNumber, int pageSize);
+
+    List<Offer> findAllByProductCategory(String category);
 }

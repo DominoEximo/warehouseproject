@@ -17,6 +17,9 @@ public class OfferDAO implements Serializable, DAO<Offer>{
     @Autowired
     OfferRepository offerRepository;
 
+    public OfferDAO() {
+    }
+
     @Override
     public Offer findById(long id) {
         Optional<Offer> found = offerRepository.findById(id);

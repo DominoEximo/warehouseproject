@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view locale="#{localeBean.locale}">
+    <h:head>
+        <title>#{product['title']}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
+        <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css"/>
+        <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css"/>
+        <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+        <link rel="stylesheet" href="../css/products.css"/>
+
+    </h:head>
+
+    <h:body>
+    <ui:insert name="navbar" >
+        <ui:include src="../navbar.xhtml" />
+    </ui:insert>
+
+        <div id="orderContainer" class="data-container">
+            <p:dataTable id="orderTable" var="orderedItem" value="#{orderBean.currentOrder.orderedItems}">
+                <p:column headerText="#{product['orderedProductName']}">
+                    <h:outputText value="#{orderedItem.offer.product.name}" />
+                </p:column>
+
+                <p:column headerText="#{product['orderedProductQuantity']}">
+                    <h:outputText value="#{orderedItem.quantity}"/>
+                </p:column>
+
+                <p:column headerText="#{product['orderedProductPrice']}">
+                    <h:outputText value="#{orderedItem.quantity * orderedItem.offer.price}"/>
+                </p:column>
+
+                <p:column headerText="#{product['monetizationEdit']}">
+                    <p:commandButton update="orderTable @all" disableOnAjax="false" value="X" action="#{orderBean.removeOffer(orderedItem.offer,(orderedItem.quantity * orderedItem.offer.price) / orderedItem.offer.price)}"/>
+                </p:column>
+
+            </p:dataTable>
+                <div id="priceDisplay" style="display: flex;flex-wrap: wrap;align-items: center;align-content: center;justify-content: center;flex-direction: column;">
+                    <h1  style="display: flex; justify-content: space-around;">
+                        #{orderBean.overallPrice}
+                    </h1>
+                    <p:commandButton style="display: flex; justify-content: space-around;"
+                                     disableOnAjax="false" value="#{product.checkout}" action="order.xhtml?faces-redirect=true" disabled="#{orderBean.currentOrder.orderedItems.isEmpty()}"/>
+                </div>
+        </div>
+
+    </h:body>
+</f:view>
+</html>

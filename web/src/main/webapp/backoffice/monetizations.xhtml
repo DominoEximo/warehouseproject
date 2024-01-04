@@ -51,7 +51,7 @@
          </p:column>
 
          <p:column headerText="#{product['monetizationItems']}">
-            <h:outputText value="#{monetizationVar.items.get(0).name}" />
+            <h:outputText value="#{monetizationVar.items.get(0).product.name}" />
          </p:column>
 
          <p:column headerText="#{product['monetizationEdit']}">
@@ -91,7 +91,7 @@
                </h:selectOneMenu>
 
                <p:outputLabel for="quantity" value="#{product.productQuantity}"/>
-               <p:inputNumber id="quantity" value="#{formProcessBean.productQuantity}"
+               <p:inputNumber id="quantity" value="#{formProcessBean.productQuantity}" minValue="0"
                             requiredMessage="Quantity is required"/>
 
             </h:panelGrid>
