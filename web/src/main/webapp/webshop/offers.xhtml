@@ -66,7 +66,7 @@
                             </h1>
 
                             <f:facet name="footer">
-                                <p:commandButton icon="pi pi-check" render="@all" update="offers" disableOnAjax="false" process="@form" value="#{product.addToCart}" action="#{orderBean.addOfferToOrder(offer)}"/>
+                                <p:commandButton icon="pi pi-check" onclick="updateMaxValue()" render="@all" update="offersForm" disableOnAjax="false" process="@form" value="#{product.addToCart}" action="#{orderBean.addOfferToOrder(offer)}"/>
                             </f:facet>
                         </p:card>
                     </p:column>
@@ -93,6 +93,22 @@
                 }
             }
             /* ]]> */
+        </script>
+
+        <script>
+            function updateMaxValue() {
+                // Assume you have a variable for the quantity in the cart
+                var quantityInCart = document.getElementById('quantity').value; // Replace with your actual quantity value
+
+                // Get the input element
+                var myNumberInput = document.getElementById('quantity');
+
+                // Get the initial max value from the attribute
+                var initialMaxValue = parseInt(myNumberInput.max);
+
+                // Update the max attribute based on the quantity in the cart
+                myNumberInput.max = Math.max(initialMaxValue - quantityInCart, 0);
+            }
         </script>
 
     </h:body>

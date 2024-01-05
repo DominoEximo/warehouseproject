@@ -108,7 +108,7 @@
                     <p:datePicker id="endDate" value="#{formProcessBean.offerToBeManaged.endDate}"/>
 
                     <p:outputLabel for="product" value="#{product.offerFormProduct}"/>
-                    <h:selectOneMenu id="product" value="#{formProcessBean.chosenOfferProduct}" requiredMessage="Product is required">
+                    <h:selectOneMenu style="width: 100%" id="product" value="#{formProcessBean.chosenOfferProduct}" requiredMessage="Product is required">
                         <f:selectItem itemValue="#{null}" itemLabel="-- select one --" />
                         <f:selectItems value="#{offerBean.products.entrySet()}" var="entry"
                                        itemValue="#{entry.key}" itemLabel="#{entry.value}" />

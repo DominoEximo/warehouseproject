@@ -142,7 +142,7 @@
 
                     </p:dataTable>
                     <span>
-                        <p:commandButton update="orderTable" value="#{product.orderEdit}" disableOnAjax="false" id="btnFormEdit" process="@form" oncomplete="PF('dlg1').hide()" action="#{orderBean.editOrder()}" styleClass="mr-2"/>
+                        <p:commandButton update="@all" value="#{product.orderEdit}" disableOnAjax="false" id="btnFormEdit" process="@form" oncomplete="PF('dlg1').hide()" action="#{orderBean.editOrder()}" styleClass="mr-2"/>
                     </span>
 
                 </h:form>
