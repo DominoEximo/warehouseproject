@@ -35,96 +35,87 @@
         </ui:insert>
         <div class="label-container">
             <div class="profile-name-container">
-                <span class="profile-brand">#{product['offerTitle']}</span>
+                <span class="profile-brand">#{product['ordersTitle']}</span>
             </div>
-            <div>
-                <input id="myInput" type="text" placeholder="#{product['search']}"/>
-                <h:form style="display: flex;justify-content: center;align-items: center;margin: auto;margin-bottom: 20px;text-align: center;">
-                    <h:selectOneMenu id="categories" value="#{orderBean.selectedStatus}">
-                        <f:selectItem itemValue="#{null}" itemLabel="-- select one --" />
-                        <f:selectItems value="#{orderBean.statusNames}"/>
-                        <p:ajax event="change" process="@this" update="@this orderTable" oncomplete="#{orderBean.loadFilteredOrders()}"></p:ajax>
-                    </h:selectOneMenu>
-                </h:form>
+        </div>
+
+
+            <div style="margin-left: 70%;position: absolute;">
+                <div style="display: inline-block;">
+                    <input style="width: 100%;" id="myInput" type="text" placeholder="#{product['search']}"/>
+                    <h:form style="display: flex;justify-content: center;align-items: center;margin: auto;margin-bottom: 20px;text-align: center;">
+                        <h:selectOneMenu style="width: 100%;margin-bottom: -20px;" id="categories" value="#{orderBean.selectedStatus}">
+                            <f:selectItem itemValue="#{null}" itemLabel="-- select one --" />
+                            <f:selectItems value="#{orderBean.statusNames}"/>
+                            <p:ajax event="change" process="@this" update="@this orderTable" oncomplete="#{orderBean.loadFilteredOrders()}"></p:ajax>
+                        </h:selectOneMenu>
+                    </h:form>
+                    <h:form>
+                        <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{orderBean.length}" modifyValueOnWheel="false"></p:inputNumber>
+                    </h:form>
+                </div>
+
+                <div>
+                    <p:commandButton action="#{orderBean.loadOrders()}" update="orderTable" disableOnAjax="false" id="refresh" value="#{product['refresh']}"  class="refresh-button btn btn-dark"></p:commandButton>
+                </div>
+            </div>
+            <div class="data-container">
+                <p:dataTable id="orderTable" var="orderVar" value="#{orderBean.orders}">
+                    <p:column headerText="#{product['orderID']}">
+                        <h:outputText value="#{orderVar.id}" />
+                    </p:column>
+
+                    <p:column headerText="#{product['orderUser']}">
+                        <h:outputText value="#{orderVar.user.name}"/>
+                    </p:column>
+
+                    <p:column headerText="#{product['orderDate']}">
+                        <h:outputText value="#{orderVar.orderDate}">
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{product['orderStatus']}">
+                        <h:outputText value="#{orderVar.status.statusName}"/>
+                    </p:column>
+
+                    <p:column headerText="#{product['orderEdit']}">
+                        <p:commandButton update="orderTable editForm" value="#{product['orderDetails']}" onclick="PF('dlg1').show()">
+                            <f:actionListener binding="#{orderBean.setUpOrderToBeManaged(orderVar)}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
                 <h:form>
-                    <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{orderBean.length}" modifyValueOnWheel="false"></p:inputNumber>
-                </h:form>
-                <span>
-
-            </span>
-
-            </div>
-            <div>
-                <p:commandButton action="#{orderBean.loadOrders()}" update="orderTable" disableOnAjax="false" id="refresh" value="#{product['refresh']}"  class="refresh-button btn btn-dark"></p:commandButton>
-            </div>
-            <div id="overlay">
-                <div class="cv-spinner">
-                    <span class="spinner"></span>
-                </div>
-            </div>
-        </div>
-        <div class="data-container">
-            <p:dataTable id="orderTable" var="orderVar" value="#{orderBean.orders}">
-                <p:column headerText="#{product['orderID']}">
-                    <h:outputText value="#{orderVar.id}" />
-                </p:column>
-
-                <p:column headerText="#{product['orderUser']}">
-                    <h:outputText value="#{orderVar.user.name}"/>
-                </p:column>
-
-                <p:column headerText="#{product['orderDate']}">
-                    <h:outputText value="#{orderVar.orderDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd" />
-                    </h:outputText>
-                </p:column>
-
-                <p:column headerText="#{product['orderStatus']}">
-                    <h:outputText value="#{orderVar.status.statusName}"/>
-                </p:column>
-
-                <p:column headerText="#{product['orderEdit']}">
-                    <p:commandButton update="orderTable editForm" value="#{product['orderDetails']}" onclick="PF('dlg1').show()">
-                        <f:actionListener binding="#{orderBean.setUpOrderToBeManaged(orderVar)}"/>
-                    </p:commandButton>
-                </p:column>
-            </p:dataTable>
-            <h:form>
-                <div class="button-container">
-                    <div>
-                        <p:commandButton update="orderTable" disableOnAjax="false" value="#{product['prev']}" id="prev"  action="#{orderBean.prevPage()}" class=" btn btn-dark"/>
-                        <p:commandButton update="orderTable" disableOnAjax="false" value="#{product['next']}"  id="next"  action="#{orderBean.nextPage()}" class=" btn btn-dark"/>
+                    <div class="button-container">
+                        <div>
+                            <p:commandButton update="orderTable" disableOnAjax="false" value="#{product['prev']}" id="prev"  action="#{orderBean.prevPage()}" class=" btn btn-dark"/>
+                            <p:commandButton update="orderTable" disableOnAjax="false" value="#{product['next']}"  id="next"  action="#{orderBean.nextPage()}" class=" btn btn-dark"/>
+                        </div>
                     </div>
-                    <span style="display: flex;">
-            </span>
-                </div>
-            </h:form>
-        </div>
-        <p:dialog header="#{product.offerFormTitle}" widgetVar="dlg1" minHeight="400" width="350" showEffect="fade">
+                </h:form>
+            </div>
+
+        <p:dialog header="#{product.orderDetails}" widgetVar="dlg1" minHeight="400" width="350" showEffect="fade">
             <p class="m-0">
                 <h:form id="editForm" style="display: flex !important; flex-direction: column; flex-wrap: nowrap; align-items: center">
                     <h:panelGrid id="grid" cellpadding="7" columns="2" styleClass="mb-3">
 
-                        <p:outputLabel for="@next" value="#{product.name}"/>
+                        <h:outputText value="#{product.name}"/>
                         <h:outputText id="user" value="#{orderBean.orderToBeManaged.user.name}" />
-                        <br/>
 
-                        <p:outputLabel for="@next" value="#{product.orderStatus}"/>
+
+                        <h:outputText value="#{product.orderStatus}"/>
                         <h:selectOneMenu id="status" value="#{orderBean.chosenStatus}" requiredMessage="Status is required" hideNoSelectionOption="#{not empty orderBean.orderToBeManaged.status.statusName}">
                             <f:selectItem itemValue="#{orderBean.orderToBeManaged.status.statusName}" itemLabel="#{orderBean.orderToBeManaged.status.statusName}" noSelectionOption="true" />
                             <f:selectItems value="#{orderBean.statuses.entrySet()}" var="entry"
                                            itemValue="#{entry.key}" itemLabel="#{entry.value}" />
                             <p:ajax event="change" process="@this" update="@this"></p:ajax>
                         </h:selectOneMenu>
-                        <br/>
 
-
-
-
-                        <p:outputLabel for="@next" value="#{product.checkoutFormPayment}" />
+                        <h:outputText value="#{product.checkoutFormPayment}" />
                         <h:outputText id="payment" value="#{orderBean.orderToBeManaged.paymentOption}" />
 
-                        <p:outputLabel for="@next" value="#{product.checkoutFormDelivery}" />
+                        <h:outputText value="#{product.checkoutFormDelivery}" />
                         <h:outputText id="shipping" value="#{orderBean.orderToBeManaged.shippingOption}" />
 
                         <div style="display: flex !important;flex-direction: column !important;">
@@ -135,26 +126,24 @@
                                 <h:outputText id="address" value="#{orderBean.orderToBeManaged.address}" />
                             </p:panel>
                         </div>
-
-                        <p:dataTable id="orderedItemsTable" var="orderedItem" value="#{orderBean.orderToBeManaged.orderedItems}">
-                            <p:column headerText="#{product['orderedProductName']}">
-                                <h:outputText value="#{orderedItem.offer.product.name}" />
-                            </p:column>
-
-                            <p:column headerText="#{product['orderedProductQuantity']}">
-                                <h:outputText value="#{orderedItem.quantity}"/>
-                            </p:column>
-
-                            <p:column headerText="#{product['orderedProductPrice']}">
-                                <h:outputText value="#{orderedItem.quantity * orderedItem.offer.price}"/>
-                            </p:column>
-
-                        </p:dataTable>
-
                     </h:panelGrid>
+                    <p:dataTable id="orderedItemsTable" var="orderedItem" value="#{orderBean.orderToBeManaged.orderedItems}">
+                        <p:column headerText="#{product['orderedProductName']}">
+                            <h:outputText value="#{orderedItem.offer.product.name}" />
+                        </p:column>
+
+                        <p:column headerText="#{product['orderedProductQuantity']}">
+                            <h:outputText value="#{orderedItem.quantity}"/>
+                        </p:column>
+
+                        <p:column headerText="#{product['orderedProductPrice']}">
+                            <h:outputText value="#{orderedItem.quantity * orderedItem.offer.price}"/>
+                        </p:column>
+
+                    </p:dataTable>
                     <span>
-            <p:commandButton update="orderTable" value="#{product.orderEdit}" disableOnAjax="false" id="btnFormEdit" process="@form" oncomplete="PF('dlg1').hide()" action="#{orderBean.editOrder()}" styleClass="mr-2"/>
-            </span>
+                        <p:commandButton update="orderTable" value="#{product.orderEdit}" disableOnAjax="false" id="btnFormEdit" process="@form" oncomplete="PF('dlg1').hide()" action="#{orderBean.editOrder()}" styleClass="mr-2"/>
+                    </span>
 
                 </h:form>
             </p>

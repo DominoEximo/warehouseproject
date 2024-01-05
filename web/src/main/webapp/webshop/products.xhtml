@@ -37,31 +37,27 @@
                   <div class="profile-name-container">
                         <span class="profile-brand">#{product['listName']}</span>
                   </div>
+            </div>
+            <div style="margin-left: 70%;position: absolute;">
                   <div>
-                        <input id="myInput" type="text" placeholder="#{product['search']}"/>
+                        <input style="width: 100%;" id="myInput" type="text" placeholder="#{product['search']}"/>
                         <h:form>
                               <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{productBean.length}" modifyValueOnWheel="false"></p:inputNumber>
                         </h:form>
                         <h:form>
-                              <h:selectOneMenu id="categories" value="#{productBean.category}">
+                              <h:selectOneMenu style="width: 100%;" id="categories" value="#{productBean.category}">
                                     <f:selectItems value="#{productBean.categories}"/>
                                     <p:ajax event="change" process="@this" update="@this"></p:ajax>
                               </h:selectOneMenu>
                         </h:form>
-                              <h:selectOneMenu id="units" value="#{productBean.unit}">
+                              <h:selectOneMenu style="width: 100%;" id="units" value="#{productBean.unit}">
                                     <f:selectItem itemLabel="Select One" itemValue=""/>
                                     <f:selectItems  value="#{productBean.units}"/>
                               </h:selectOneMenu>
 
-
                   </div>
                   <div>
                         <p:commandButton action="#{productBean.loadProductsPaginatedFiltered()}" update="productsTable" disableOnAjax="false" id="refresh" value="#{product['refresh']}"  class="refresh-button btn btn-dark"></p:commandButton>
-                  </div>
-                  <div id="overlay">
-                        <div class="cv-spinner">
-                              <span class="spinner"></span>
-                        </div>
                   </div>
             </div>
             <div class="data-container">

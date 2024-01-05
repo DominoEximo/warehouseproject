@@ -21,12 +21,15 @@
    <ui:insert name="navbar" >
       <ui:include src="../navbar.xhtml" />
    </ui:insert>
+
    <div class="label-container">
       <div class="profile-name-container">
          <span class="profile-brand">#{product['monetizationTitle']}</span>
       </div>
+   </div>
+   <div style="margin-left: 70%;position: absolute;">
       <div>
-         <input id="myInput" type="text" placeholder="#{product['search']}"/>
+         <input style="width: 100%;" id="myInput" type="text" placeholder="#{product['search']}"/>
          <h:form>
             <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{monetizationBean.length}" modifyValueOnWheel="false"></p:inputNumber>
          </h:form>
@@ -34,12 +37,8 @@
       <div>
          <p:commandButton action="#{monetizationBean.loadMonetizations()}" update="monetizationTable" disableOnAjax="false" id="refresh" value="#{product['refresh']}"  class="refresh-button btn btn-dark"></p:commandButton>
       </div>
-      <div id="overlay">
-         <div class="cv-spinner">
-            <span class="spinner"></span>
-         </div>
-      </div>
    </div>
+
    <div class="data-container">
       <p:dataTable id="monetizationTable" var="monetizationVar" value="#{monetizationBean.monetizationList}">
          <p:column headerText="#{product['monetizationId']}">

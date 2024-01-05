@@ -35,8 +35,11 @@
         <div class="profile-name-container">
             <span class="profile-brand">#{product['offerTitle']}</span>
         </div>
-        <div>
-            <input id="myInput" type="text" placeholder="#{product['search']}"/>
+    </div>
+    <div style="margin-left: 70%;position: absolute;">
+
+        <div style="display: inline-block;">
+            <input style="width: 100%;" id="myInput" type="text" placeholder="#{product['search']}"/>
             <h:form>
                 <p:inputNumber onchange="submit()" id="length" placeholder="Length" value="#{offerBean.length}" modifyValueOnWheel="false"></p:inputNumber>
             </h:form>
@@ -51,11 +54,6 @@
         </div>
         <div>
             <p:commandButton action="#{offerBean.loadOffers()}" update="offerTable" disableOnAjax="false" id="refresh" value="#{product['refresh']}"  class="refresh-button btn btn-dark"></p:commandButton>
-        </div>
-        <div id="overlay">
-            <div class="cv-spinner">
-                <span class="spinner"></span>
-            </div>
         </div>
     </div>
     <div class="data-container">
