@@ -2,13 +2,12 @@ package hu.neuron.mentoring.core.dao;
 
 
 
-import hu.neuron.mentoring.clientapi.datasource.DatasourceConfig;
+
 import hu.neuron.mentoring.clientapi.entity.Category;
 import hu.neuron.mentoring.clientapi.entity.Product;
 import hu.neuron.mentoring.core.repositories.CategoryRepository;
 import hu.neuron.mentoring.core.repositories.ProductRepository;
 import hu.neuron.mentoring.core.repositories.UnitRepository;
-import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -80,7 +79,7 @@ public class ProductDAO implements Serializable, DAO<Product>{
     }
 
     public void setUpMockedData(){
-        DatasourceConfig.getInstance();
+
         Product test = new Product("Csirke",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(40),BigDecimal.valueOf(300),"Hús");
         Product test2 = new Product("Körte",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(2),BigDecimal.valueOf(2000),"körtee");
         Product test3 = new Product("Alma",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("lbs"),BigDecimal.valueOf(10),BigDecimal.valueOf(10),"Almaa");
