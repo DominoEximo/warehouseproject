@@ -248,6 +248,7 @@ public class FormProcessBean implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, ERROR_MESSAGE, "Invalid credentials");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
+        clearUser();
         valid = true;
     }
 
@@ -256,6 +257,7 @@ public class FormProcessBean implements Serializable {
         validateInput("Date",monetizationToBeManaged.getDate().toString());
         validateInput("Product",chosenProduct.toString());
         validateInput("Quantity", String.valueOf(productQuantity));
+        if (productQuantity == 0){ valid = false;}
         if (Boolean.TRUE.equals(valid)){
             try {
                 logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
@@ -288,6 +290,9 @@ public class FormProcessBean implements Serializable {
                     PrimeFaces.current().dialog().showMessageDynamic(message);
                 }
             }
+        }else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid monetization values");
+            PrimeFaces.current().dialog().showMessageDynamic(message);
         }
 
         clearMonetization();

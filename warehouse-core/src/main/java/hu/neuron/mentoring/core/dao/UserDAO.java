@@ -70,8 +70,8 @@ public class UserDAO implements DAO<User>{
         List<Role> bacofficeRoles = new ArrayList<>();
         bacofficeRoles.add(roleRepository.findByName("USER"));
         bacofficeRoles.add(roleRepository.findByName("BACKOFFICE"));
-        save(new User("user","test@gmail.com","06306618148",new Date(System.currentTimeMillis()),'m',"password",userRoles));
-        save(new User("admin","DominoEximo@gmail.com","0630123502",new Date(System.currentTimeMillis()),'f',"password",bacofficeRoles));
+        save(new User("user","test@gmail.com","(+36) 232-2222",new Date(System.currentTimeMillis()),'m',"password",userRoles));
+        save(new User("admin","DominoEximo@gmail.com","(+36) 232-1234",new Date(System.currentTimeMillis()),'f',"password",bacofficeRoles));
 
     }
 }

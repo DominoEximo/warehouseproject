@@ -47,7 +47,9 @@
          </p:column>
 
          <p:column headerText="#{product['monetizationDate']}">
-            <h:outputText value="#{monetizationVar.date}" />
+            <h:outputText value="#{monetizationVar.date}">
+               <f:convertDateTime pattern="yyyy-MM-dd" />
+            </h:outputText>
          </p:column>
 
          <p:column headerText="#{product['monetizationItems']}">
