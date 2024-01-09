@@ -49,4 +49,5 @@
     <bean lazy-init="true" id="monetizationBean" class="hu.neuron.mentoring.web.beans.MonetizationBean"/>
     <bean lazy-init="true" id="offerBean" class="hu.neuron.mentoring.web.beans.OfferBean"/>
     <bean lazy-init="true" id="orderBean" class="hu.neuron.mentoring.web.beans.OrderBean"/>
+
 </beans>
