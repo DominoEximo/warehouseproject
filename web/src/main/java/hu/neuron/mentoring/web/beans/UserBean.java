@@ -165,11 +165,7 @@ public class UserBean implements Serializable {
 
     public void removeRoleFromUser(String role){
         List<Role> roles = userToBeManaged.getRoles();
-        for (Role R : roles){
-            if (R.getName().equals(role)){
-                roles.remove(R);
-            }
-        }
+        roles.removeIf(R -> R.getName().equals(role));
         userToBeManaged.setRoles(roles);
         userService.save(userToBeManaged);
         userToBeManaged = new User();

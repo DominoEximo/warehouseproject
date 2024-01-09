@@ -218,7 +218,7 @@ public class FormProcessBean implements Serializable {
         validateInput("Phone Number",user.getPhoneNumber());
         validateInput("Birth Date",user.getBirthDate().toString());
         validateInput("Gender",user.getGender().toString());
-        if(valid){
+        if(Boolean.TRUE.equals(valid)){
             try {
                 logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
@@ -231,6 +231,8 @@ public class FormProcessBean implements Serializable {
                 roles.add(roleService.findByName(chosenRole));
                 user.setRoles(roles);
                 userService.save(user);
+
+
 
                 logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
 
@@ -254,7 +256,7 @@ public class FormProcessBean implements Serializable {
         validateInput("Date",monetizationToBeManaged.getDate().toString());
         validateInput("Product",chosenProduct.toString());
         validateInput("Quantity", String.valueOf(productQuantity));
-        if (valid){
+        if (Boolean.TRUE.equals(valid)){
             try {
                 logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
@@ -269,7 +271,7 @@ public class FormProcessBean implements Serializable {
 
                 logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
                 FacesMessage message;
-                if(enabled){
+                if(Boolean.TRUE.equals(enabled)){
                     message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Monetization added successfully");
                 }else {
                     message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Monetization modified successfully");
@@ -278,7 +280,7 @@ public class FormProcessBean implements Serializable {
 
             }catch (Exception e){
                 logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
-                if(enabled){
+                if(Boolean.TRUE.equals(enabled)){
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during adding monetization");
                     PrimeFaces.current().dialog().showMessageDynamic(message);
                 }else {
@@ -306,7 +308,7 @@ public class FormProcessBean implements Serializable {
         }
 
 
-        if (valid){
+        if (Boolean.TRUE.equals(valid)){
             try {
                 logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
                 offerToBeManaged.setProduct(productService.getproductById(chosenOfferProduct));
@@ -344,6 +346,10 @@ public class FormProcessBean implements Serializable {
                         logger.info("Validation successful for {}: {}", subject, maskSensitiveInfo(subject,value));
                     }
                 }
+                else {
+                    logger.info("Validation successful for {}: {}", subject, maskSensitiveInfo(subject,value));
+                }
+
             } else {
                 // Log validation failure
                 logger.warn("Validation failed for {}: Value is null", subject);
@@ -361,10 +367,14 @@ public class FormProcessBean implements Serializable {
 
             return "*****";
         } else if (value.contains("@")) {
-            String[] parts = value.split("@");
-            if (parts.length == 2) {
-                String maskedUsername = parts[0].replaceAll(".", "*");
-                return maskedUsername + "@" + parts[1];
+            int atIndex = value.indexOf('@');
+            int dotIndex = value.lastIndexOf('.');
+
+            if (atIndex >= 2 && dotIndex > atIndex + 1) {
+                String maskedEmail = value.substring(0, 2) + "*****" +
+                        value.substring(atIndex, atIndex + 2) + "****" +
+                        value.substring(dotIndex, dotIndex + 1) + "***";
+                return maskedEmail;
             }
         }
         return value;
@@ -388,6 +398,11 @@ public class FormProcessBean implements Serializable {
     private void clearOffer(){
         offerToBeManaged = new Offer();
         chosenOfferProduct = null;
+    }
+
+    private void clearUser(){
+        user = new User();
+        chosenRole = null;
     }
 
 
