@@ -15,6 +15,11 @@ public class MonetizationDAO implements Serializable, DAO<Monetization>{
 
     @Autowired
     MonetizationRepository monetizationRepository;
+
+    public MonetizationDAO() {
+        //Constructor
+    }
+
     @Override
     public Monetization findById(long id) {
         return monetizationRepository.findById(id).get();

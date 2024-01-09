@@ -26,6 +26,16 @@ import java.util.stream.Collectors;
 @SessionScoped
 public class OrderBean implements Serializable {
 
+    private static final String TRANSACTION_STARTED_MESSAGE = "Transaction '{}' started in OrderBean";
+
+    private static final String TRANSACTION_SUCCESS_MESSAGE = "Transaction '{}' completed successfully in OrderBean";
+
+    private static final String TRANSACTION_FAILED_MESSAGE = "Transaction '{}' failed in OrderBean";
+
+    private static final String SUCCESS_MESSAGE = "Success";
+
+    private static final String ERROR_MESSAGE = "Error";
+
     private static final Logger logger = LogManager.getLogger(OrderBean.class);
 
     @Autowired
@@ -73,7 +83,7 @@ public class OrderBean implements Serializable {
         try {
             statusService.setUpMockedData();
             currentOrderItem = new OrderItem();
-            statuses = new LinkedHashMap<Long,String>();
+            statuses = new LinkedHashMap<>();
             currentOrderItem.setOrderedItems(new ArrayList<>());
             orderToBeManaged = new OrderItem();
             orderToBeManaged.setOrderedItems(new ArrayList<>());
@@ -92,7 +102,7 @@ public class OrderBean implements Serializable {
         String transactionName = "addOfferToOrder";
         if (offer.getQuantity() > 0 && offer.getQuantity() <= offer.getProduct().getAmount()){
             try {
-                logger.info("Transaction '{}' started in OrderBean", transactionName);
+                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
                 Shipment shipment = new Shipment();
                 shipment.setOffer(offer);
                 shipment.setQuantity(offer.getQuantity());
@@ -111,20 +121,20 @@ public class OrderBean implements Serializable {
                 }
 
                 overallPrice = overallPrice + offer.getQuantity() * offer.getPrice().intValue();
-                logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
+                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
 
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Item successfully added to cart");
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Item successfully added to cart");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
 
             }catch (Exception e){
-                logger.error("Transaction '{}' failed in OrderBean: {}",transactionName,e.getMessage());
+                logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
 
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during adding item to cart");
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during adding item to cart");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
             }
         }else{
 
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid quantity of items");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid quantity of items");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
         offer.setQuantity(0);
@@ -133,7 +143,7 @@ public class OrderBean implements Serializable {
     public void removeOffer(Offer offer, int amountToReturn){
         String transactionName = "deleteOfferFromCart";
         try {
-            logger.info("Transaction '{}' started in OrderBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
             productService.updateProductQuantity(offer.getProduct().getId(), productService.getproductById(offer.getProduct().getId()).getAmount() + amountToReturn);
 
@@ -142,13 +152,14 @@ public class OrderBean implements Serializable {
             overallPrice = overallPrice - (amountToReturn * offer.getPrice());
 
 
-            logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
 
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Item successfully removed from cart");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Item successfully removed from cart");
             PrimeFaces.current().dialog().showMessageDynamic(message);
 
         }catch (Exception e){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error while deleting offer");
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error while deleting offer");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
 
@@ -157,7 +168,7 @@ public class OrderBean implements Serializable {
     public void storeOrder(){
         String transactionName = "order";
         try {
-            logger.info("Transaction '{}' started in OrderBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
             currentOrderItem.setUser(userService.findByName(getUsername()));
 
@@ -178,13 +189,14 @@ public class OrderBean implements Serializable {
 
             flushOrder();
 
-            logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
 
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successfully ordered");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Successfully ordered");
             PrimeFaces.current().dialog().showMessageDynamic(message);
 
         }catch (Exception e){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error while processing order");
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error while processing order");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
     }
@@ -205,12 +217,12 @@ public class OrderBean implements Serializable {
     public void loadOrders(){
         String transactionName = "loadOrders";
         try {
-            logger.info("Transaction '{}' started in OrderBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
             orders = null;
             orders = orderService.findAllPaginated(page,length);
-            logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in OrderBean: {}",transactionName,e.getMessage());
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
         }
     }
 
@@ -221,14 +233,14 @@ public class OrderBean implements Serializable {
                 loadOrders();
             }
             else {
-                logger.info("Transaction '{}' started in OrderBean", transactionName);
+                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
                 orders = null;
                 orders = orderService.findAllByStatus(selectedStatus);
-                logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
+                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
             }
 
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in OrderBean: {}",transactionName,e.getMessage());
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
         }
     }
 
@@ -270,16 +282,16 @@ public class OrderBean implements Serializable {
     public void editOrder(){
         String transactionName = "editOrder";
         try {
-            logger.info("Transaction '{}' started in OrderBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
             orderToBeManaged.setStatus(statusService.findById(chosenStatus));
             orderService.save(orderToBeManaged);
             clearOrderToBeManaged();
-            logger.info("Transaction '{}' completed successfully in OrderBean", transactionName);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Successfully edited order");
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Successfully edited order");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in OrderBean: {}",transactionName,e.getMessage());
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error while editing order");
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error while editing order");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
     }

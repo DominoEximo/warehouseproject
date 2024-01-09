@@ -16,6 +16,7 @@ public class CategoryDAO implements DAO<Category>{
     CategoryRepository categoryRepository;
 
     public CategoryDAO() {
+        //Constructor
     }
     @Override
     public Category findById(long id) {

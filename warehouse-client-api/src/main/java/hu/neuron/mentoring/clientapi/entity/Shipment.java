@@ -26,6 +26,7 @@ public class Shipment {
 
 
     public Shipment() {
+        //Constructor
     }
 
     public void setId(Long id) {

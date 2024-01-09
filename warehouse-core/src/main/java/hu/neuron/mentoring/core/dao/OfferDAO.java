@@ -18,6 +18,7 @@ public class OfferDAO implements Serializable, DAO<Offer>{
     OfferRepository offerRepository;
 
     public OfferDAO() {
+        //Constructor
     }
 
     @Override

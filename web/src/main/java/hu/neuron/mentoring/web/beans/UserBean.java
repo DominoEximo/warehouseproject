@@ -20,6 +20,12 @@ import java.util.stream.Collectors;
 @SessionScoped
 public class UserBean implements Serializable {
 
+    private static final String TRANSACTION_STARTED_MESSAGE = "Transaction '{}' started in UserBean";
+
+    private static final String TRANSACTION_SUCCESS_MESSAGE = "Transaction '{}' completed successfully in UserBean";
+
+    private static final String TRANSACTION_FAILED_MESSAGE = "Transaction '{}' failed in UserBean";
+
     private static final Logger logger = LogManager.getLogger(UserBean.class);
 
 
@@ -88,12 +94,12 @@ public class UserBean implements Serializable {
     public void loadUsers(){
         String transactionName = "loadUsers";
         try {
-            logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
             users = null;
             users = userService.getAllPaginated(page,length);
-            logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
         }
 
     }
@@ -170,9 +176,9 @@ public class UserBean implements Serializable {
     }
 
     public void addRoleToUser(String role){
-        List<Role> roles = userToBeManaged.getRoles();
-        roles.add(roleService.findByName(role));
-        userToBeManaged.setRoles(roles);
+        List<Role> userRoles = userToBeManaged.getRoles();
+        userRoles.add(roleService.findByName(role));
+        userToBeManaged.setRoles(userRoles);
         userService.save(userToBeManaged);
         userToBeManaged = new User();
     }

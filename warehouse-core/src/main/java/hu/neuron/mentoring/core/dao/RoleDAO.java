@@ -13,6 +13,10 @@ public class RoleDAO implements DAO<Role>{
     @Autowired
     RoleRepository roleRepository;
 
+    public RoleDAO() {
+        //Constructor
+    }
+
     @Override
     public Role findById(long id) {
         return roleRepository.findById(id).get();

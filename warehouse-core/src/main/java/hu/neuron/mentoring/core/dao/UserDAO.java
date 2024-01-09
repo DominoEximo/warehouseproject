@@ -28,6 +28,7 @@ public class UserDAO implements DAO<User>{
     RoleRepository roleRepository;
 
     public UserDAO() {
+        //Constructor
     }
 
     @Override

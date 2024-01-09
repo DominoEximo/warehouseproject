@@ -48,7 +48,7 @@ public class OfferServiceImpl implements OfferService{
     @Override
     public List<Offer> findAllByProductCategory(String category) {
         List<Offer> offers = findAll();
-        List<Offer> filtered = offers.stream().filter(o -> o.getProduct().getCategory().getCategoryName().equals(category)).collect(Collectors.toList());
-        return filtered;
+        return offers.stream().filter(o -> o.getProduct().getCategory().getCategoryName().equals(category)).collect(Collectors.toList());
+
     }
 }

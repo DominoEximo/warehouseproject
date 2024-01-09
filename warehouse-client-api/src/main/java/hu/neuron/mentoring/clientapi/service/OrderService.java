@@ -1,7 +1,6 @@
 package hu.neuron.mentoring.clientapi.service;
 
 import hu.neuron.mentoring.clientapi.entity.OrderItem;
-import hu.neuron.mentoring.clientapi.entity.Status;
 
 import java.util.List;
 

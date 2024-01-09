@@ -71,8 +71,7 @@ public class ProductServiceImpl  implements ProductService, Serializable {
 
     @Override
     public List<Product> getAllByCategory(Category category) {
-        List<Product> products = productDAO.getAllByCategory(category);
-        return products;
+        return productDAO.getAllByCategory(category);
     }
 
     @Override

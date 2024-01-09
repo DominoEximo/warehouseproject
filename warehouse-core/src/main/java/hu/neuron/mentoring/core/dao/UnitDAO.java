@@ -17,6 +17,7 @@ public class UnitDAO implements DAO<Unit>{
     UnitRepository unitRepository;
 
     public UnitDAO() {
+        //Constructor
     }
 
     @Override

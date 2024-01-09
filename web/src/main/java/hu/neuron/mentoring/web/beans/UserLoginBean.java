@@ -19,8 +19,6 @@ import java.io.IOException;
 @RequestScoped
 public class UserLoginBean{
 
-    private static final Logger logger = LogManager.getLogger(UserLoginBean.class);
-
     private String username;
     private String password;
 

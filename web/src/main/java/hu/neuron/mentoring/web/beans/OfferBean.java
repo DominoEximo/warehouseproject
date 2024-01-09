@@ -26,6 +26,13 @@ import java.util.stream.Collectors;
 @SessionScoped
 public class OfferBean implements Serializable {
 
+    private static final String TRANSACTION_STARTED_MESSAGE = "Transaction '{}' started in OfferBean";
+
+    private static final String TRANSACTION_SUCCESS_MESSAGE = "Transaction '{}' completed successfully in OfferBean";
+
+    private static final String TRANSACTION_FAILED_MESSAGE = "Transaction '{}' failed in OfferBean";
+
+
     private static final Logger logger = LogManager.getLogger(OfferBean.class);
 
     @Autowired
@@ -57,7 +64,7 @@ public class OfferBean implements Serializable {
     public void init(){
         try {
             offerList = offerService.findAll();
-            products = new LinkedHashMap<Long,String>();
+            products = new LinkedHashMap<>();
             if (productService.getAll().isEmpty()){
                 categoryService.setUpMockedData();
                 unitService.setUpMockedData();
@@ -94,13 +101,13 @@ public class OfferBean implements Serializable {
     public void loadOffers(){
         String transactionName = "loadOffers";
         try {
-            logger.info("Transaction '{}' started in OfferBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
             offerList = null;
             offerList = offerService.findAllPaginated(page,length);
             offerList = offerList.stream().filter(x -> (x.getStartDate().getTime() <= searchDate.getTime() && x.getEndDate().getTime() >= searchDate.getTime())).collect(Collectors.toList());
-            logger.info("Transaction '{}' completed successfully in OfferBean", transactionName);
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in OfferBean: {}",transactionName,e.getMessage());
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
         }
 
     }
@@ -108,25 +115,25 @@ public class OfferBean implements Serializable {
     public void loadAvailableOffers(){
         String transactionName = "loadAvailableOffers";
         try {
-            logger.info("Transaction '{}' started in OfferBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
             offerList = null;
             offerList = offerService.findAll();
             offerList = offerList.stream().filter(x -> (x.getStartDate().getTime() <= new Date().getTime() && x.getEndDate().getTime() >= new Date().getTime())).collect(Collectors.toList());
-            logger.info("Transaction '{}' completed successfully in OfferBean", transactionName);
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in OfferBean: {}",transactionName,e.getMessage());
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
         }
     }
 
     public void refreshOffers(){
         String transactionName = "refreshOffers";
         try {
-            logger.info("Transaction '{}' started in OfferBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
             offerList = null;
             offerList = offerService.findAll();
-            logger.info("Transaction '{}' completed successfully in OfferBean", transactionName);
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in OfferBean: {}",transactionName,e.getMessage());
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
         }
     }
 
@@ -137,15 +144,15 @@ public class OfferBean implements Serializable {
                 loadAvailableOffers();
             }
             else {
-                logger.info("Transaction '{}' started in OfferBean", transactionName);
+                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
                 offerList = null;
                 offerList = offerService.findAllByProductCategory(selectedCategory);
                 offerList = offerList.stream().filter(x -> (x.getStartDate().getTime() <= new Date().getTime() && x.getEndDate().getTime() >= new Date().getTime())).collect(Collectors.toList());
-                logger.info("Transaction '{}' completed successfully in OfferBean", transactionName);
+                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
             }
 
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in OfferBean: {}",transactionName,e.getMessage());
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
         }
     }
 

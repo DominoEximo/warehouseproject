@@ -22,6 +22,7 @@ public class Offer {
     private int quantity;
 
     public Offer() {
+        //Constructor
     }
 
     public Long getId() {

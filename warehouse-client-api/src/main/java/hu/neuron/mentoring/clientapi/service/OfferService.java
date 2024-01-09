@@ -1,6 +1,5 @@
 package hu.neuron.mentoring.clientapi.service;
 
-import hu.neuron.mentoring.clientapi.entity.Category;
 import hu.neuron.mentoring.clientapi.entity.Offer;
 
 import java.util.List;

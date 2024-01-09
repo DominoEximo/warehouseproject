@@ -49,7 +49,7 @@ public class MonetizationBean implements Serializable{
     public void init(){
         try {
             monetizationList = monetizationService.findAll();
-            products = new LinkedHashMap<Long,String>();
+            products = new LinkedHashMap<>();
             if (productService.getAll().isEmpty()){
                 categoryService.setUpMockedData();
                 unitService.setUpMockedData();

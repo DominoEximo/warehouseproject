@@ -15,6 +15,7 @@ public class StatusDAO implements DAO<Status>{
     StatusRepository statusRepository;
 
     public StatusDAO() {
+        //Constructor
     }
 
     @Override

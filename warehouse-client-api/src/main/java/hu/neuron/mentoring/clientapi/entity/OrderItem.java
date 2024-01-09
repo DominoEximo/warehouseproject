@@ -34,6 +34,7 @@ public class OrderItem {
     private List<Shipment> orderedItems;
 
     public OrderItem() {
+        //Constructor
     }
 
     public Long getId() {

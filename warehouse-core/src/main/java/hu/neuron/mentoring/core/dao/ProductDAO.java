@@ -31,7 +31,7 @@ public class ProductDAO implements Serializable, DAO<Product>{
 
 
     public ProductDAO() {
-
+        //Constructor
     }
 
     @Override

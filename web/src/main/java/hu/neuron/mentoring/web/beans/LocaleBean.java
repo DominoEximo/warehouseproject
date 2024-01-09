@@ -27,9 +27,16 @@ public class LocaleBean implements Serializable {
     }
 
     public String changeLanguage(String locale) {
-        this.locale = locale;
-        FacesContext.getCurrentInstance().getViewRoot()
-                .setLocale(new Locale(this.locale));
+        try {
+            this.locale = locale;
+            FacesContext.getCurrentInstance().getViewRoot()
+                    .setLocale(new Locale(this.locale));
+            logger.info("Successfully changed language");
+            return locale;
+        }catch (Exception e){
+            logger.error("Error while changing language",e.getMessage());
+        }
+
         return locale;
     }
 

@@ -22,6 +22,12 @@ import java.util.stream.Collectors;
 @SessionScoped
 public class ProductBean  implements Serializable {
 
+    private static final String TRANSACTION_STARTED_MESSAGE = "Transaction '{}' started in ProductBean";
+
+    private static final String TRANSACTION_SUCCESS_MESSAGE = "Transaction '{}' completed successfully in ProductBean";
+
+    private static final String TRANSACTION_FAILED_MESSAGE = "Transaction '{}' failed in ProductBean";
+
     private static final Logger logger = LogManager.getLogger(ProductBean.class);
 
     @Autowired
@@ -126,14 +132,14 @@ public class ProductBean  implements Serializable {
     public void loadProductsPaginatedFiltered(){
         String transactionName = "loadProductsPaginatedFiltered";
         try {
-            logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
             products = null;
             products = productService.getByCategoryPaginated(page,length,categoryService.findByName(category));
 
-            logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
         }
 
     }

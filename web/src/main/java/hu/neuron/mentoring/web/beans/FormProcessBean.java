@@ -21,6 +21,16 @@ import java.util.List;
 @SessionScoped
 public class FormProcessBean implements Serializable {
 
+    private static final String TRANSACTION_STARTED_MESSAGE = "Transaction '{}' started in FormProcessBean";
+
+    private static final String TRANSACTION_SUCCESS_MESSAGE = "Transaction '{}' completed successfully in FormProcessBean";
+
+    private static final String TRANSACTION_FAILED_MESSAGE = "Transaction '{}' failed in FormProcessBean";
+
+    private static final String SUCCESS_MESSAGE = "Success";
+
+    private static final String ERROR_MESSAGE = "Error";
+
     private static final Logger logger = LogManager.getLogger(FormProcessBean.class);
 
     @Autowired
@@ -181,19 +191,19 @@ public class FormProcessBean implements Serializable {
     public void processForm(){
         String transactionName = "addProduct";
         try {
-            logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+            logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
             if(product.getName() != null) {
                 product.setCategory(categoryService.findByName(chosenCategory));
                 product.setUnit(unitService.findByName(chosenUnit));
                 productService.addProduct(product);
             }
-            logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Product added successfully");
+            logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Product added successfully");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }catch (Exception e){
-            logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error during adding product");
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, ERROR_MESSAGE, "Error during adding product");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
         setProduct(new Product());
@@ -210,7 +220,7 @@ public class FormProcessBean implements Serializable {
         validateInput("Gender",user.getGender().toString());
         if(valid){
             try {
-                logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
                 List<Role> roles;
                 if(user.getRoles() == null){
@@ -222,18 +232,18 @@ public class FormProcessBean implements Serializable {
                 user.setRoles(roles);
                 userService.save(user);
 
-                logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
 
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "User added successfully");
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "User added successfully");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
             }catch (Exception e){
-                logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Error during adding user");
+                logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, ERROR_MESSAGE, "Error during adding user");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
             }
 
         }else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Invalid credentials");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, ERROR_MESSAGE, "Invalid credentials");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
         valid = true;
@@ -246,7 +256,7 @@ public class FormProcessBean implements Serializable {
         validateInput("Quantity", String.valueOf(productQuantity));
         if (valid){
             try {
-                logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
                 Item item = new Item();
                 item.setProduct(productService.getproductById(chosenProduct));
@@ -257,22 +267,22 @@ public class FormProcessBean implements Serializable {
                 productService.updateProductQuantity(chosenProduct,productQuantity);
                 monetizationService.save(monetizationToBeManaged);
 
-                logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
+                FacesMessage message;
                 if(enabled){
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Monetization added successfully");
-                    PrimeFaces.current().dialog().showMessageDynamic(message);
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Monetization added successfully");
                 }else {
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Monetization modified successfully");
-                    PrimeFaces.current().dialog().showMessageDynamic(message);
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Monetization modified successfully");
                 }
+                PrimeFaces.current().dialog().showMessageDynamic(message);
 
             }catch (Exception e){
-                logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+                logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
                 if(enabled){
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during adding monetization");
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during adding monetization");
                     PrimeFaces.current().dialog().showMessageDynamic(message);
                 }else {
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during modification of monetization");
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during modification of monetization");
                     PrimeFaces.current().dialog().showMessageDynamic(message);
                 }
             }
@@ -290,7 +300,7 @@ public class FormProcessBean implements Serializable {
         validateInput("Price",offerToBeManaged.getPrice().toString());
         if(offerToBeManaged.getEndDate().getTime() < offerToBeManaged.getStartDate().getTime()){
             valid = false;
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Invalid Date");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid Date");
             PrimeFaces.current().dialog().showMessageDynamic(message);
 
         }
@@ -298,20 +308,20 @@ public class FormProcessBean implements Serializable {
 
         if (valid){
             try {
-                logger.info("Transaction '{}' started in FormProcessBean", transactionName);
+                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
                 offerToBeManaged.setProduct(productService.getproductById(chosenOfferProduct));
                 offerService.save(offerToBeManaged);
 
-                logger.info("Transaction '{}' completed successfully in FormProcessBean", transactionName);
+                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
 
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Offer added successfully");
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Offer added successfully");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
 
 
             }catch (Exception e){
-                logger.error("Transaction '{}' failed in FormProcessBean: {}",transactionName,e.getMessage());
+                logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
 
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Error during adding offer");
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during adding offer");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
 
 
@@ -324,8 +334,6 @@ public class FormProcessBean implements Serializable {
 
     private void validateInput(String subject, String value) {
         try {
-            // Perform your validation logic here
-            // For illustration purposes, let's assume a simple validation (e.g., not null)
             if (value != null) {
                 if (subject.equals("Email")){
                     if (!value.contains("@")){

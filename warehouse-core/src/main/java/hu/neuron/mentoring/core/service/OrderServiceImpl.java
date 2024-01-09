@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderItem> findAllByStatus(String status) {
         List<OrderItem> orders = findAll();
-        List<OrderItem> filtered = orders.stream().filter(o -> o.getStatus().getStatusName().equals(status)).collect(Collectors.toList());
-        return filtered;
+        return orders.stream().filter(o -> o.getStatus().getStatusName().equals(status)).collect(Collectors.toList());
+
     }
 }
