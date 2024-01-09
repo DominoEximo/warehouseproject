@@ -44,11 +44,10 @@ public class UserLoginBean{
     public String login() throws ServletException, IOException {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         HttpServletRequest request = ((HttpServletRequest)context.getRequest());
-        ServletResponse resposnse = ((ServletResponse)context.getResponse());
+        ServletResponse response = ((ServletResponse)context.getResponse());
         RequestDispatcher dispatcher = request.getRequestDispatcher("/j_spring_security_check");
-        dispatcher.forward(request, resposnse);
+        dispatcher.forward(request, response);
         FacesContext.getCurrentInstance().responseComplete();
-        logger.info("User logged in.");
 
         return null;
     }

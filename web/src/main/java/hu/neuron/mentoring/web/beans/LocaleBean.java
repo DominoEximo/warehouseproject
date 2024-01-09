@@ -6,12 +6,10 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.data.repository.cdi.Eager;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Locale;
-@Eager
 @Component
 @SessionScoped
 public class LocaleBean implements Serializable {
@@ -35,14 +33,5 @@ public class LocaleBean implements Serializable {
         return locale;
     }
 
-    @PostConstruct
-    public void init(){
-        try {
-            FacesContext.getCurrentInstance().getViewRoot()
-                    .setLocale(new Locale(this.locale));
-        }catch (Exception e){
-            logger.error("Error during bean initialization", e);
-        }
 
-    }
 }
