@@ -356,9 +356,9 @@ public class FormProcessBean implements Serializable {
     }
 
     private String maskSensitiveInfo(String subject,String value) {
-        // Mask emails and passwords
+
         if ("Password".equalsIgnoreCase(subject)) {
-            // Mask the entire password
+
             return "*****";
         } else if (value.contains("@")) {
             String[] parts = value.split("@");
@@ -367,7 +367,7 @@ public class FormProcessBean implements Serializable {
                 return maskedUsername + "@" + parts[1];
             }
         }
-        return value; // No masking for other values
+        return value;
     }
 
     public void setUpMonetizationToBeManaged(Monetization monetization){
