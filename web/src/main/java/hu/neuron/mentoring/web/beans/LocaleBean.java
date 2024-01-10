@@ -1,7 +1,6 @@
 package hu.neuron.mentoring.web.beans;
 
 
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import org.apache.logging.log4j.LogManager;
@@ -26,18 +25,15 @@ public class LocaleBean implements Serializable {
         this.locale = locale;
     }
 
-    public String changeLanguage(String locale) {
+    public void changeLanguage(String locale) {
         try {
             this.locale = locale;
             FacesContext.getCurrentInstance().getViewRoot()
                     .setLocale(new Locale(this.locale));
             logger.info("Successfully changed language");
-            return locale;
         }catch (Exception e){
             logger.error("Error while changing language",e.getMessage());
         }
-
-        return locale;
     }
 
 

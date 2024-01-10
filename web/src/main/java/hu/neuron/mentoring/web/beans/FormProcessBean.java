@@ -301,6 +301,7 @@ public class FormProcessBean implements Serializable {
 
     public void processOfferForm(){
         String transactionName = "addOffer";
+        try {
         validateInput("Product",chosenOfferProduct.toString());
         validateInput("Start Date",offerToBeManaged.getStartDate().toString());
         validateInput("End Date",offerToBeManaged.getEndDate().toString());
@@ -311,10 +312,8 @@ public class FormProcessBean implements Serializable {
             PrimeFaces.current().dialog().showMessageDynamic(message);
 
         }
-
-
         if (Boolean.TRUE.equals(valid)){
-            try {
+
                 logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
                 offerToBeManaged.setProduct(productService.getproductById(chosenOfferProduct));
                 offerService.save(offerToBeManaged);
@@ -324,19 +323,21 @@ public class FormProcessBean implements Serializable {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Offer added successfully");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
 
-
-            }catch (Exception e){
-                logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
-
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during adding offer");
-                PrimeFaces.current().dialog().showMessageDynamic(message);
-
-
-            }
+        }else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid arguments");
+            PrimeFaces.current().dialog().showMessageDynamic(message);
         }
-
         clearOffer();
         valid = true;
+
+        }catch (Exception e){
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during adding offer");
+            PrimeFaces.current().dialog().showMessageDynamic(message);
+
+
+        }
     }
 
     private void validateInput(String subject, String value) {
@@ -376,10 +377,10 @@ public class FormProcessBean implements Serializable {
             int dotIndex = value.lastIndexOf('.');
 
             if (atIndex >= 2 && dotIndex > atIndex + 1) {
-                String maskedEmail = value.substring(0, 2) + "*****" +
+                return value.substring(0, 2) + "*****" +
                         value.substring(atIndex, atIndex + 2) + "****" +
-                        value.substring(dotIndex, dotIndex + 1) + "***";
-                return maskedEmail;
+                        value.charAt(dotIndex) + "***";
+
             }
         }
         return value;
