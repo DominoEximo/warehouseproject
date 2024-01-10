@@ -3,18 +3,18 @@ import hu.neuron.mentoring.clientapi.service.OfferService;
 import hu.neuron.mentoring.clientapi.service.OrderService;
 import hu.neuron.mentoring.clientapi.service.ProductService;
 import hu.neuron.mentoring.clientapi.service.UserService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "classpath:/testContext.xml")
 public class AddOfferToCartIT {
 
