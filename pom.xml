@@ -20,6 +20,7 @@
     <maven.compiler.target>11</maven.compiler.target>
     <maven.compiler.source>11</maven.compiler.source>
     <junit.version>5.9.2</junit.version>
+    <jacoco.version>0.8.11</jacoco.version>
   </properties>
 
 
@@ -237,6 +238,7 @@
             <version>6.1.2</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 </dependencyManagement>
   <build>
@@ -255,31 +257,36 @@
             <version>3.3.2</version>
         </plugin>
         <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.11</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>prepare-package</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+        <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.2.5</version>
             <configuration>
                 <includes>
-                    <include>**/*IT.java</include>   <!-- Include integration tests -->
+                    <include>**/Test*.java</include>
+                    <include>**/*IT.java</include>
                 </includes>
             </configuration>
         </plugin>
+
     </plugins>
   </build>
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <!-- select non-aggregate reports -->
-                            <report>report</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
 </project>
