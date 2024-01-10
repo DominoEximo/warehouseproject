@@ -212,40 +212,42 @@ public class FormProcessBean implements Serializable {
 
     public void processUserForm(){
         String transactionName = "addUser";
-        validateInput("Username",user.getName());
-        validateInput("Password",user.getPassword());
-        validateInput("Email",user.getEmail());
-        validateInput("Phone Number",user.getPhoneNumber());
-        validateInput("Birth Date",user.getBirthDate().toString());
-        validateInput("Gender",user.getGender().toString());
-        if(Boolean.TRUE.equals(valid)){
-            try {
-                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
+        try {
+            validateInput("Username",user.getName());
+            validateInput("Password",user.getPassword());
+            validateInput("Email",user.getEmail());
+            validateInput("Phone Number",user.getPhoneNumber());
+            validateInput("Birth Date",user.getBirthDate().toString());
+            validateInput("Gender",user.getGender().toString());
+            if(Boolean.TRUE.equals(valid)){
 
-                List<Role> roles;
-                if(user.getRoles() == null){
-                    roles = new ArrayList<>();
-                }else {
-                    roles = user.getRoles();
-                }
-                roles.add(roleService.findByName(chosenRole));
-                user.setRoles(roles);
-                userService.save(user);
+                    logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
+
+                    List<Role> roles;
+                    if(user.getRoles() == null){
+                        roles = new ArrayList<>();
+                    }else {
+                        roles = user.getRoles();
+                    }
+                    roles.add(roleService.findByName(chosenRole));
+                    user.setRoles(roles);
+                    userService.save(user);
 
 
 
-                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
+                    logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
 
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "User added successfully");
-                PrimeFaces.current().dialog().showMessageDynamic(message);
-            }catch (Exception e){
-                logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, ERROR_MESSAGE, "Error during adding user");
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "User added successfully");
+                    PrimeFaces.current().dialog().showMessageDynamic(message);
+
+
+            }else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, ERROR_MESSAGE, "Invalid credentials");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
             }
-
-        }else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, ERROR_MESSAGE, "Invalid credentials");
+        }catch (Exception e){
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, ERROR_MESSAGE, "Error during adding user");
             PrimeFaces.current().dialog().showMessageDynamic(message);
         }
         clearUser();
@@ -254,47 +256,48 @@ public class FormProcessBean implements Serializable {
 
     public void processMonetizationForm(){
         String transactionName = "addMonetization";
-        validateInput("Date",monetizationToBeManaged.getDate().toString());
-        validateInput("Product",chosenProduct.toString());
-        validateInput("Quantity", String.valueOf(productQuantity));
-        if (productQuantity == 0){ valid = false;}
-        if (Boolean.TRUE.equals(valid)){
-            try {
-                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
+        try {
+            validateInput("Date",monetizationToBeManaged.getDate().toString());
+            validateInput("Product",chosenProduct.toString());
+            validateInput("Quantity", String.valueOf(productQuantity));
+            if (productQuantity == 0){ valid = false;}
+            if (Boolean.TRUE.equals(valid)){
 
-                Item item = new Item();
-                item.setProduct(productService.getproductById(chosenProduct));
-                item.setQuantity(productQuantity);
-                List<Item> items = new ArrayList<>();
-                items.add(item);
-                monetizationToBeManaged.setItems(items);
-                productService.updateProductQuantity(chosenProduct,productQuantity);
-                monetizationService.save(monetizationToBeManaged);
+                    logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
 
-                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
-                FacesMessage message;
-                if(Boolean.TRUE.equals(enabled)){
-                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Monetization added successfully");
-                }else {
-                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Monetization modified successfully");
-                }
+                    Item item = new Item();
+                    item.setProduct(productService.getproductById(chosenProduct));
+                    item.setQuantity(productQuantity);
+                    List<Item> items = new ArrayList<>();
+                    items.add(item);
+                    monetizationToBeManaged.setItems(items);
+                    productService.updateProductQuantity(chosenProduct,productQuantity);
+                    monetizationService.save(monetizationToBeManaged);
+
+                    logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
+                    FacesMessage message;
+                    if(Boolean.TRUE.equals(enabled)){
+                        message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Monetization added successfully");
+                    }else {
+                        message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Monetization modified successfully");
+                    }
+                    PrimeFaces.current().dialog().showMessageDynamic(message);
+
+
+            }else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid monetization values");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
-
-            }catch (Exception e){
-                logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
-                if(Boolean.TRUE.equals(enabled)){
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during adding monetization");
-                    PrimeFaces.current().dialog().showMessageDynamic(message);
-                }else {
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during modification of monetization");
-                    PrimeFaces.current().dialog().showMessageDynamic(message);
-                }
             }
-        }else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid monetization values");
-            PrimeFaces.current().dialog().showMessageDynamic(message);
+        }catch (Exception e){
+            logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
+            if(Boolean.TRUE.equals(enabled)){
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during adding monetization");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+            }else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Error during modification of monetization");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+            }
         }
-
         clearMonetization();
         valid = true;
     }
@@ -302,34 +305,31 @@ public class FormProcessBean implements Serializable {
     public void processOfferForm(){
         String transactionName = "addOffer";
         try {
-        validateInput("Product",chosenOfferProduct.toString());
-        validateInput("Start Date",offerToBeManaged.getStartDate().toString());
-        validateInput("End Date",offerToBeManaged.getEndDate().toString());
-        validateInput("Price",offerToBeManaged.getPrice().toString());
-        if(offerToBeManaged.getEndDate().getTime() < offerToBeManaged.getStartDate().getTime()){
-            valid = false;
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid Date");
-            PrimeFaces.current().dialog().showMessageDynamic(message);
-
-        }
-        if (Boolean.TRUE.equals(valid)){
-
-                logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
-                offerToBeManaged.setProduct(productService.getproductById(chosenOfferProduct));
-                offerService.save(offerToBeManaged);
-
-                logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
-
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Offer added successfully");
+            validateInput("Product",chosenOfferProduct.toString());
+            validateInput("Start Date",offerToBeManaged.getStartDate().toString());
+            validateInput("End Date",offerToBeManaged.getEndDate().toString());
+            validateInput("Price",offerToBeManaged.getPrice().toString());
+            if(offerToBeManaged.getEndDate().getTime() < offerToBeManaged.getStartDate().getTime()){
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid Date");
                 PrimeFaces.current().dialog().showMessageDynamic(message);
 
-        }else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid arguments");
-            PrimeFaces.current().dialog().showMessageDynamic(message);
-        }
-        clearOffer();
-        valid = true;
+            }
+            if (Boolean.TRUE.equals(valid)){
 
+                    logger.info(TRANSACTION_STARTED_MESSAGE.replace("{}",transactionName));
+                    offerToBeManaged.setProduct(productService.getproductById(chosenOfferProduct));
+                    offerService.save(offerToBeManaged);
+
+                    logger.info(TRANSACTION_SUCCESS_MESSAGE.replace("{}",transactionName));
+
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, SUCCESS_MESSAGE, "Offer added successfully");
+                    PrimeFaces.current().dialog().showMessageDynamic(message);
+
+            }else {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, ERROR_MESSAGE, "Invalid arguments");
+                PrimeFaces.current().dialog().showMessageDynamic(message);
+            }
         }catch (Exception e){
             logger.error(TRANSACTION_FAILED_MESSAGE.replace("{}",transactionName),e.getMessage());
 
@@ -338,6 +338,8 @@ public class FormProcessBean implements Serializable {
 
 
         }
+        clearOffer();
+        valid = true;
     }
 
     private void validateInput(String subject, String value) {
