@@ -49,10 +49,11 @@ public class CategoryDAO implements DAO<Category>{
     }
 
     public void setUpMockedData(){
-        save(new Category("Hus"));
-        save(new Category("Gyumolcs"));
-        save(new Category("Valami"));
-        save(new Category("Ruha"));
-
+        if (findByName("Hus") == null){
+            save(new Category("Hus"));
+            save(new Category("Gyumolcs"));
+            save(new Category("Valami"));
+            save(new Category("Ruha"));
+        }
     }
 }

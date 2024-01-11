@@ -53,7 +53,9 @@ public class UnitDAO implements DAO<Unit>{
     }
 
     public void setUpMockedData(){
-        save(new Unit("kg"));
-        save(new Unit("lbs"));
+        if (findByName("kg") == null){
+            save(new Unit("kg"));
+            save(new Unit("lbs"));
+        }
     }
 }

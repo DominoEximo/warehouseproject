@@ -81,18 +81,18 @@ public class ProductDAO implements Serializable, DAO<Product>{
     public void setUpMockedData(){
 
         Product test = new Product("Csirke",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(40),BigDecimal.valueOf(300),"Hús");
-        Product test2 = new Product("Körte",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(2),BigDecimal.valueOf(2000),"körtee");
-        Product test3 = new Product("Alma",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("lbs"),BigDecimal.valueOf(10),BigDecimal.valueOf(10),"Almaa");
-        Product test4 = new Product("Csirke3",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús");
+        Product test2 = new Product("Körte",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(2),BigDecimal.valueOf(2000),"Körte");
+        Product test3 = new Product("Alma",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("lbs"),BigDecimal.valueOf(10),BigDecimal.valueOf(10),"Alma");
+        Product test4 = new Product("Sertés",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Sertés hús");
+        Product test5 = new Product("Marha",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(40),BigDecimal.valueOf(300),"Marha hús");
+        Product test6 = new Product("Barack",categoryRepository.findByCategoryName("Gyumolcs"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(2),BigDecimal.valueOf(2000),"Barack");
 
-        for (int i = 0; i< 10; i++){
-            save(new Product("Csirke3",categoryRepository.findByCategoryName("Hus"),10, unitRepository.findByUnitName("kg"),BigDecimal.valueOf(4),BigDecimal.valueOf(300),"Hús"));
-
-        }
         save(test);
         save(test2);
         save(test3);
         save(test4);
+        save(test5);
+        save(test6);
     }
     public List<Product> getAllPaginated(int pageNumber, int pageSize) {
         return productRepository.findAll(PageRequest.of(pageNumber-1,pageSize)).getContent();

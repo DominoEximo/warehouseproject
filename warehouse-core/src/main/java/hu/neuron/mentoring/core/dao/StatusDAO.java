@@ -56,8 +56,10 @@ public class StatusDAO implements DAO<Status>{
     }
 
     public void setUpMockedData(){
-        save(new Status("Pending"));
-        save(new Status("Shipped"));
-        save(new Status("Canceled"));
+        if (findByName("Pending") == null){
+            save(new Status("Pending"));
+            save(new Status("Shipped"));
+            save(new Status("Canceled"));
+        }
     }
 }

@@ -65,13 +65,15 @@ public class UserDAO implements DAO<User>{
     }
 
     public void setUpMockedData(){
-        List<Role> userRoles = new ArrayList<>();
-        userRoles.add(roleRepository.findByName("USER"));
-        List<Role> bacofficeRoles = new ArrayList<>();
-        bacofficeRoles.add(roleRepository.findByName("USER"));
-        bacofficeRoles.add(roleRepository.findByName("BACKOFFICE"));
-        save(new User("user","test@gmail.com","(+36) 232-2222",new Date(System.currentTimeMillis()),'m',"password",userRoles));
-        save(new User("admin","DominoEximo@gmail.com","(+36) 232-1234",new Date(System.currentTimeMillis()),'f',"password",bacofficeRoles));
+        if (findByName("user") == null){
+            List<Role> userRoles = new ArrayList<>();
+            userRoles.add(roleRepository.findByName("USER"));
+            List<Role> bacofficeRoles = new ArrayList<>();
+            bacofficeRoles.add(roleRepository.findByName("USER"));
+            bacofficeRoles.add(roleRepository.findByName("BACKOFFICE"));
+            save(new User("user","test@gmail.com","(+36) 232-2222",new Date(System.currentTimeMillis()),'m',"password",userRoles));
+            save(new User("admin","DominoEximo@gmail.com","(+36) 232-1234",new Date(System.currentTimeMillis()),'f',"password",bacofficeRoles));
 
+        }
     }
 }
