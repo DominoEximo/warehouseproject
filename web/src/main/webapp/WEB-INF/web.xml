@@ -50,4 +50,10 @@
         <param-name>log4jConfiguration</param-name>
         <param-value>classpath:log4j2.xml</param-value>
     </context-param>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/customForbiddenPage.jsf</location>
+    </error-page>
+
 </web-app>
