@@ -20,16 +20,6 @@
 
         <link rel="stylesheet" href="../css/products.css"/>
 
-        <style>
-            .delivery-panel {
-                margin-top: 10px;
-            }
-
-            .delivery-panel .ui-inputtext {
-                width: 100%;
-            }
-        </style>
-
     </h:head>
     <h:body id="usersBody">
     <ui:insert name="navbar" >
@@ -78,7 +68,7 @@
                     </div>
                 </h:panelGrid>
                 <span>
-                     <p:commandButton value="#{product.add}" disableOnAjax="false" id="orderSubmitButton" process="@form" action="#{orderBean.storeOrder()}" styleClass="mr-2"/>
+                     <p:commandButton update="@all" value="#{product.add}" disableOnAjax="false" id="orderSubmitButton" process="@form" action="#{orderBean.storeOrder()}" styleClass="mr-2"/>
                 </span>
 
             </h:form>
